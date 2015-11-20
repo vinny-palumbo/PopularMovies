@@ -64,6 +64,8 @@ public class MovieFragment extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml
         int id = item.getItemId();
         if(id == R.id.action_refresh){
+            FetchMovieTask movieTask = new FetchMovieTask();
+            movieTask.execute();
             return true;
         }
         return super.onOptionsItemSelected(item);
