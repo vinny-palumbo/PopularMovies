@@ -2,6 +2,5 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:id="@+id/grid_item_movie_imageview"
-    android:gravity="center_vertical"
-    android:background="@android:drawable/sym_def_app_icon">
+    android:gravity="center_vertical">
 </ImageView>
