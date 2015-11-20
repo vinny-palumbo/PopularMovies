@@ -13,6 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,11 +95,60 @@ public class MovieFragment extends Fragment {
         return rootView;
     }
 
-    public class FetchMovieTask extends AsyncTask<String, Void, Void> {
+    public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
 
-        @Override protected Void doInBackground(String... params) {
+
+
+
+
+
+        /**
+        * Take the String representing the complete forecast in JSON Format and
+        * pull out the data we need for each movie
+        *
+        * Fortunately parsing is easy:  constructor takes the JSON string and converts it
+        * into an Object hierarchy for us.
+        */
+        private String[] getMovieDataFromJson(String movieJsonStr) throws JSONException {
+
+            // The API gives us 20 movies
+            final int numMovies = 20;
+
+            // These are the names of the JSON objects that need to be extracted.
+            final String TMDB_RESULTS = "results";
+            final String TMDB_POSTER = "poster_path";
+
+            JSONObject movieJson = new JSONObject(movieJsonStr);
+            JSONArray movieArray = movieJson.getJSONArray(TMDB_RESULTS);
+
+            String[] resultStrs = new String[numMovies];
+            for(int i = 0; i < movieArray.length(); i++) {
+                String posterPath;
+
+                // Get the JSON object representing the movie
+                JSONObject movie = movieArray.getJSONObject(i);
+
+                // the poster path is in a String associated to the key "poster_path"
+                posterPath = movie.getString(TMDB_POSTER);
+
+                resultStrs[i] = posterPath;
+            }
+
+            for (String s : resultStrs) {
+                Log.v(LOG_TAG, "Forecast entry: " + s);
+            }
+            return resultStrs;
+
+        }
+
+
+
+
+
+
+        @Override protected String[] doInBackground(String... params) {
             // If there's no zip code, there's nothing to look up.  Verify size of params.
             if (params.length == 0) {
                 return null;
@@ -160,6 +213,7 @@ public class MovieFragment extends Fragment {
                     return null;
                 }
                 movieJsonStr = buffer.toString();
+                Log.v(LOG_TAG, "Forecast string: " + movieJsonStr);
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the movie data, there's no point in attempting
@@ -177,6 +231,15 @@ public class MovieFragment extends Fragment {
                     }
                 }
             }
+
+            try {
+                return getMovieDataFromJson(movieJsonStr);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+                e.printStackTrace();
+            }
+
+            // This will only happen if there was an error getting or parsing the movie.
             return null;
         }
     }
