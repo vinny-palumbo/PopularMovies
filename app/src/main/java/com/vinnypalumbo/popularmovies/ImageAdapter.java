@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -23,8 +23,8 @@ public class ImageAdapter extends ArrayAdapter<MoviePoster> {
         MoviePoster moviePoster = getItem(position);
         View rootView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_movie, parent, false);
 
-        ImageView posterImage = (ImageView) rootView.findViewById(R.id.grid_item_movie_imageview);
-        posterImage.setImageResource(moviePoster.image);
+        TextView posterImage = (TextView) rootView.findViewById(R.id.grid_item_movie_textview);
+        posterImage.setText(moviePoster.image);
 
         return rootView;
     }

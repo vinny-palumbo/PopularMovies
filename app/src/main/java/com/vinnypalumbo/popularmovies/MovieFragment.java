@@ -23,7 +23,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -35,19 +37,21 @@ public class MovieFragment extends Fragment {
     public MovieFragment() {
     }
 
-    MoviePoster[] moviePosters = {
-            new MoviePoster(R.drawable.interstellar),
-            new MoviePoster(R.drawable.interstellar),
-            new MoviePoster(R.drawable.interstellar),
-            new MoviePoster(R.drawable.interstellar),
-            new MoviePoster(R.drawable.interstellar),
-            new MoviePoster(R.drawable.interstellar),
-            new MoviePoster(R.drawable.interstellar),
-            new MoviePoster(R.drawable.interstellar),
-            new MoviePoster(R.drawable.interstellar),
-            new MoviePoster(R.drawable.interstellar),
-            new MoviePoster(R.drawable.interstellar)
+    MoviePoster[] data = {
+            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
+            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
+            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
+            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
+            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
+            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
+            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
+            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
+            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
+            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
+            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg")
     };
+
+    List<MoviePoster> moviePosters = new ArrayList<MoviePoster>(Arrays.asList(data));
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -83,7 +87,7 @@ public class MovieFragment extends Fragment {
 
         mMovieAdapter = new ImageAdapter(
                 getActivity(),
-                Arrays.asList(moviePosters)
+                moviePosters
         );
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
@@ -95,7 +99,7 @@ public class MovieFragment extends Fragment {
         return rootView;
     }
 
-    public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
+    public class FetchMovieTask extends AsyncTask<String, Void, MoviePoster[]> {
 
         private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
 
@@ -111,7 +115,7 @@ public class MovieFragment extends Fragment {
         * Fortunately parsing is easy:  constructor takes the JSON string and converts it
         * into an Object hierarchy for us.
         */
-        private String[] getMovieDataFromJson(String movieJsonStr) throws JSONException {
+        private MoviePoster[] getMovieDataFromJson(String movieJsonStr) throws JSONException {
 
             // The API gives us 20 movies
             final int numMovies = 20;
@@ -123,7 +127,7 @@ public class MovieFragment extends Fragment {
             JSONObject movieJson = new JSONObject(movieJsonStr);
             JSONArray movieArray = movieJson.getJSONArray(TMDB_RESULTS);
 
-            String[] resultStrs = new String[numMovies];
+            MoviePoster[] resultStrs = new MoviePoster[numMovies];
             for(int i = 0; i < movieArray.length(); i++) {
                 String posterPath;
 
@@ -133,11 +137,11 @@ public class MovieFragment extends Fragment {
                 // the poster path is in a String associated to the key "poster_path"
                 posterPath = movie.getString(TMDB_POSTER);
 
-                resultStrs[i] = posterPath;
+                resultStrs[i] = new MoviePoster(posterPath);
             }
 
-            for (String s : resultStrs) {
-                Log.v(LOG_TAG, "Forecast entry: " + s);
+            for (MoviePoster movie : resultStrs) {
+                Log.v(LOG_TAG, "Forecast entry: " + movie.image);
             }
             return resultStrs;
 
@@ -148,7 +152,7 @@ public class MovieFragment extends Fragment {
 
 
 
-        @Override protected String[] doInBackground(String... params) {
+        @Override protected MoviePoster[] doInBackground(String... params) {
             // If there's no zip code, there's nothing to look up.  Verify size of params.
             if (params.length == 0) {
                 return null;
@@ -244,11 +248,11 @@ public class MovieFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(String[] result) {
+        protected void onPostExecute(MoviePoster[] result) {
             if (result != null) {
                 mMovieAdapter.clear();
-                for (String movieStr : result) {
-                    mMovieAdapter.add(movieStr);
+                for (MoviePoster moviePoster : result) {
+                    mMovieAdapter.add(moviePoster);
                 }
                 // New data is back from the server.  Hooray!
             }
