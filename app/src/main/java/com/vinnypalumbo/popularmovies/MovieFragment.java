@@ -242,5 +242,16 @@ public class MovieFragment extends Fragment {
             // This will only happen if there was an error getting or parsing the movie.
             return null;
         }
+
+        @Override
+        protected void onPostExecute(String[] result) {
+            if (result != null) {
+                mMovieAdapter.clear();
+                for (String movieStr : result) {
+                    mMovieAdapter.add(movieStr);
+                }
+                // New data is back from the server.  Hooray!
+            }
+        }
     }
 }
