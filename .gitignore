@@ -5,4 +5,8 @@
 .DS_Store
 /build
 /captures
+
+##Gradle-based build
+.gradle
+build/
 gradle.properties
