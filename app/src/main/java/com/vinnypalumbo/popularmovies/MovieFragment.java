@@ -1,5 +1,6 @@
 package com.vinnypalumbo.popularmovies;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -65,7 +66,7 @@ public class MovieFragment extends Fragment {
         int id = item.getItemId();
         if(id == R.id.action_refresh){
             FetchMovieTask movieTask = new FetchMovieTask();
-            movieTask.execute();
+            movieTask.execute("popularity.desc");
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -90,11 +91,16 @@ public class MovieFragment extends Fragment {
         return rootView;
     }
 
-    public class FetchMovieTask extends AsyncTask<Void, Void, Void> {
+    public class FetchMovieTask extends AsyncTask<String, Void, Void> {
 
         private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
 
-        @Override protected Void doInBackground(Void... params) {
+        @Override protected Void doInBackground(String... params) {
+            // If there's no zip code, there's nothing to look up.  Verify size of params.
+            if (params.length == 0) {
+                return null;
+            }
+
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -107,7 +113,25 @@ public class MovieFragment extends Fragment {
                 // Construct the URL for the TheMovieDB query
                 // Possible parameters are avaiable at TMDB's movie API page, at
                 // http://docs.themoviedb.apiary.io/#reference/discover/discovermovie
-                URL url = new URL("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc");
+
+                //URL url = new URL("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc");
+
+                final String FORECAST_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
+                final String SORT_PARAM = "sort_by";
+                final String APIKEY_PARAM = "api_key";
+
+                Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                    .appendQueryParameter(SORT_PARAM, params[0])
+                    .appendQueryParameter(APIKEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
+                    .build();
+
+                URL url = new URL(builtUri.toString());
+
+                Log.v(LOG_TAG, "Built URI " + builtUri.toString());
+
+
+
+
 
                 // Create the request to TheMovieDB, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
