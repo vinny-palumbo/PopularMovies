@@ -38,17 +38,17 @@ public class MovieFragment extends Fragment {
     }
 
     MoviePoster[] data = {
-            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
-            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
-            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
-            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
-            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
-            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
-            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
-            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
-            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
-            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg"),
-            new MoviePoster("/1n9D32o30XOHMdMWuIT4AaA5ruI.jpg")
+            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
+            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
+            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
+            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
+            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
+            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
+            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
+            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
+            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
+            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
+            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg")
     };
 
     List<MoviePoster> moviePosters = new ArrayList<MoviePoster>(Arrays.asList(data));
@@ -102,14 +102,9 @@ public class MovieFragment extends Fragment {
     public class FetchMovieTask extends AsyncTask<String, Void, MoviePoster[]> {
 
         private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
-
-
-
-
-
-
+        
         /**
-        * Take the String representing the complete forecast in JSON Format and
+        * Take the String representing the movie results in JSON Format and
         * pull out the data we need for each movie
         *
         * Fortunately parsing is easy:  constructor takes the JSON string and converts it
@@ -147,11 +142,6 @@ public class MovieFragment extends Fragment {
 
         }
 
-
-
-
-
-
         @Override protected MoviePoster[] doInBackground(String... params) {
             // If there's no zip code, there's nothing to look up.  Verify size of params.
             if (params.length == 0) {
@@ -185,10 +175,6 @@ public class MovieFragment extends Fragment {
                 URL url = new URL(builtUri.toString());
 
                 Log.v(LOG_TAG, "Built URI " + builtUri.toString());
-
-
-
-
 
                 // Create the request to TheMovieDB, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
