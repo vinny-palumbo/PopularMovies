@@ -11,7 +11,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,6 +97,14 @@ public class MovieFragment extends Fragment {
         // Get a reference to the ListView, and attach the Adapter to it
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
         gridView.setAdapter(mMovieAdapter);
+        // setup on click event
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                MoviePoster moviePoster = mMovieAdapter.getItem(position);
+                Toast.makeText(getActivity(), moviePoster.image, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return rootView;
     }
