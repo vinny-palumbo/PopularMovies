@@ -135,9 +135,6 @@ public class MovieFragment extends Fragment {
                 resultStrs[i] = new MoviePoster(posterPath);
             }
 
-            for (MoviePoster movie : resultStrs) {
-                Log.v(LOG_TAG, "Forecast entry: " + movie.image);
-            }
             return resultStrs;
 
         }
@@ -174,8 +171,6 @@ public class MovieFragment extends Fragment {
 
                 URL url = new URL(builtUri.toString());
 
-                Log.v(LOG_TAG, "Built URI " + builtUri.toString());
-
                 // Create the request to TheMovieDB, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -203,7 +198,6 @@ public class MovieFragment extends Fragment {
                     return null;
                 }
                 movieJsonStr = buffer.toString();
-                Log.v(LOG_TAG, "Forecast string: " + movieJsonStr);
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the movie data, there's no point in attempting
