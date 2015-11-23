@@ -102,7 +102,7 @@ public class MovieFragment extends Fragment {
     public class FetchMovieTask extends AsyncTask<String, Void, MoviePoster[]> {
 
         private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
-        
+
         /**
         * Take the String representing the movie results in JSON Format and
         * pull out the data we need for each movie
