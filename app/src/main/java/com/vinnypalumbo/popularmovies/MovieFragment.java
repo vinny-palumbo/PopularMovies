@@ -28,8 +28,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -40,22 +38,6 @@ public class MovieFragment extends Fragment {
 
     public MovieFragment() {
     }
-
-    MoviePoster[] data = {
-            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
-            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
-            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
-            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
-            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
-            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
-            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
-            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
-            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
-            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg"),
-            new MoviePoster("/z2sJd1OvAGZLxgjBdSnQoLCfn3M.jpg")
-    };
-
-    List<MoviePoster> moviePosters = new ArrayList<MoviePoster>(Arrays.asList(data));
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -77,15 +59,25 @@ public class MovieFragment extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml
         int id = item.getItemId();
         if(id == R.id.action_refresh){
-            FetchMovieTask movieTask = new FetchMovieTask();
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String sorting = prefs.getString(
-                    getString(R.string.pref_sort_key),
-                    getString(R.string.pref_sort_popularity));
-            movieTask.execute(sorting);
+            updateMovies();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateMovies() {
+        FetchMovieTask movieTask = new FetchMovieTask();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sorting = prefs.getString(
+                getString(R.string.pref_sort_key),
+                getString(R.string.pref_sort_popularity));
+        movieTask.execute(sorting);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateMovies();
     }
 
 
@@ -95,7 +87,7 @@ public class MovieFragment extends Fragment {
 
         mMovieAdapter = new ImageAdapter(
                 getActivity(),
-                moviePosters
+                new ArrayList<MoviePoster>()
         );
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
