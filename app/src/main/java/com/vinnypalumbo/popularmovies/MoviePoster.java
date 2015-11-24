@@ -4,9 +4,9 @@ package com.vinnypalumbo.popularmovies;
  * Created by Vincent on 2015-11-19.
  */
 public class MoviePoster {
-    int image; // drawable reference id
+    String image; // poster path returned by API
 
-    public MoviePoster(int image){
+    public MoviePoster(String image){
         this.image = image;
     }
 }

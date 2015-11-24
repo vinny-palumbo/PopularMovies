@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -20,11 +22,12 @@ public class ImageAdapter extends ArrayAdapter<MoviePoster> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
+        final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500/";
         MoviePoster moviePoster = getItem(position);
         View rootView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_movie, parent, false);
 
-        ImageView posterImage = (ImageView) rootView.findViewById(R.id.grid_item_movie_imageview);
-        posterImage.setImageResource(moviePoster.image);
+        ImageView posterImageView = (ImageView) rootView.findViewById(R.id.grid_item_movie_imageview);
+        Picasso.with(getContext()).load(IMAGE_BASE_URL + moviePoster.image).into(posterImageView);
 
         return rootView;
     }
