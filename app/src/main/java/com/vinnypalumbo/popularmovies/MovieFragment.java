@@ -1,9 +1,11 @@
 package com.vinnypalumbo.popularmovies;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -76,7 +78,11 @@ public class MovieFragment extends Fragment {
         int id = item.getItemId();
         if(id == R.id.action_refresh){
             FetchMovieTask movieTask = new FetchMovieTask();
-            movieTask.execute("popularity.desc");
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String sorting = prefs.getString(
+                    getString(R.string.pref_sort_key),
+                    getString(R.string.pref_sort_popularity));
+            movieTask.execute(sorting);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -135,6 +141,7 @@ public class MovieFragment extends Fragment {
             JSONArray movieArray = movieJson.getJSONArray(TMDB_RESULTS);
 
             MoviePoster[] resultStrs = new MoviePoster[numMovies];
+
             for(int i = 0; i < movieArray.length(); i++) {
                 String posterPath;
 
