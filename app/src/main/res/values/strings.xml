@@ -6,4 +6,22 @@
     <string name="hello_world">Hello World!</string>
     <string name="title_activity_settings">Settings</string>
 
+
+    <!-- Label for the sort preference [CHAR LIMIT=30] -->
+    <string name="pref_sort_label">Sort by</string>
+
+    <!-- Label for popularity option in sort preference [CHAR LIMIT=25] -->
+    <string name="pref_sort_label_popularity">Most Popular</string>
+
+    <!-- Label for rating option in sort preference [CHAR LIMIT=25] -->
+    <string name="pref_sort_label_rating">Highest Rated</string>
+
+    <!-- Key name for sort preference in SharedPreferences [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_key" translatable="false">sort</string>
+
+    <!-- Value in SharedPreferences for popularity sort option [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_popularity" translatable="false">popularity.desc</string>
+
+    <!-- Value in SharedPreferences for rating sort option [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_rating" translatable="false">vote_average.desc</string>
 </resources>
