@@ -58,7 +58,7 @@ public class MovieFragment extends Fragment {
 
         mMovieAdapter = new ImageAdapter(
                 getActivity(),
-                new ArrayList<MoviePoster>()
+                new ArrayList<Movie>()
         );
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
@@ -70,9 +70,9 @@ public class MovieFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                MoviePoster moviePoster = mMovieAdapter.getItem(position);
+                Movie movie = mMovieAdapter.getItem(position);
                 Intent intent = new Intent(getActivity(), DetailActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, moviePoster.posterPath);
+                        .putExtra(Intent.EXTRA_TEXT, movie.posterPath);
                 startActivity(intent);
             }
         });
@@ -80,7 +80,7 @@ public class MovieFragment extends Fragment {
         return rootView;
     }
 
-    public class FetchMovieTask extends AsyncTask<String, Void, MoviePoster[]> {
+    public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
 
         private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
 
@@ -91,7 +91,7 @@ public class MovieFragment extends Fragment {
         * Fortunately parsing is easy:  constructor takes the JSON string and converts it
         * into an Object hierarchy for us.
         */
-        private MoviePoster[] getMovieDataFromJson(String movieJsonStr) throws JSONException {
+        private Movie[] getMovieDataFromJson(String movieJsonStr) throws JSONException {
 
             // The API gives us 20 movies
             final int numMovies = 20;
@@ -103,7 +103,7 @@ public class MovieFragment extends Fragment {
             JSONObject movieJson = new JSONObject(movieJsonStr);
             JSONArray movieArray = movieJson.getJSONArray(TMDB_RESULTS);
 
-            MoviePoster[] resultStrs = new MoviePoster[numMovies];
+            Movie[] resultStrs = new Movie[numMovies];
 
             for(int i = 0; i < movieArray.length(); i++) {
                 String posterPath;
@@ -114,14 +114,14 @@ public class MovieFragment extends Fragment {
                 // the poster path is in a String associated to the key "poster_path"
                 posterPath = movie.getString(TMDB_POSTER);
 
-                resultStrs[i] = new MoviePoster("", posterPath, "", 0.0, "");
+                resultStrs[i] = new Movie("", posterPath, "", 0.0, "");
             }
 
             return resultStrs;
 
         }
 
-        @Override protected MoviePoster[] doInBackground(String... params) {
+        @Override protected Movie[] doInBackground(String... params) {
             // If there's no zip code, there's nothing to look up.  Verify size of params.
             if (params.length == 0) {
                 return null;
@@ -210,11 +210,11 @@ public class MovieFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(MoviePoster[] result) {
+        protected void onPostExecute(Movie[] result) {
             if (result != null) {
                 mMovieAdapter.clear();
-                for (MoviePoster moviePoster : result) {
-                    mMovieAdapter.add(moviePoster);
+                for (Movie movie : result) {
+                    mMovieAdapter.add(movie);
                 }
                 // New data is back from the server.  Hooray!
             }
