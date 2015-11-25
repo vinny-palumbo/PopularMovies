@@ -144,10 +144,13 @@ public class MovieFragment extends Fragment {
 
                 final String FORECAST_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
                 final String SORT_PARAM = "sort_by";
+                final String COUNT_PARAM = "vote_count.gte";
+                final String COUNT_VALUE = "500";
                 final String APIKEY_PARAM = "api_key";
 
                 Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                     .appendQueryParameter(SORT_PARAM, params[0])
+                    .appendQueryParameter(COUNT_PARAM, COUNT_VALUE)
                     .appendQueryParameter(APIKEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                     .build();
 
