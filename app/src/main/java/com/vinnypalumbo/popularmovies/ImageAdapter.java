@@ -27,7 +27,7 @@ public class ImageAdapter extends ArrayAdapter<MoviePoster> {
         View rootView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_movie, parent, false);
 
         ImageView posterImageView = (ImageView) rootView.findViewById(R.id.grid_item_movie_imageview);
-        Picasso.with(getContext()).load(IMAGE_BASE_URL + moviePoster.image).into(posterImageView);
+        Picasso.with(getContext()).load(IMAGE_BASE_URL + moviePoster.posterPath).into(posterImageView);
 
         return rootView;
     }

@@ -72,7 +72,7 @@ public class MovieFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 MoviePoster moviePoster = mMovieAdapter.getItem(position);
                 Intent intent = new Intent(getActivity(), DetailActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, moviePoster.image);
+                        .putExtra(Intent.EXTRA_TEXT, moviePoster.posterPath);
                 startActivity(intent);
             }
         });
@@ -114,7 +114,7 @@ public class MovieFragment extends Fragment {
                 // the poster path is in a String associated to the key "poster_path"
                 posterPath = movie.getString(TMDB_POSTER);
 
-                resultStrs[i] = new MoviePoster(posterPath);
+                resultStrs[i] = new MoviePoster("", posterPath, "", 0.0, "");
             }
 
             return resultStrs;
