@@ -1,13 +1,93 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:showIn="@layout/activity_detail"
-    tools:context="com.vinnypalumbo.popularmovies.DetailActivityFragment">
+<!-- Inspired from the fragment_detail.xml of Sunshine app -->
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/detail_text"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MovieFragment"
+    android:orientation="vertical">
 
-</RelativeLayout>
+    <!-- Header: Original Title -->
+    <TextView
+        android:fontFamily="sans-serif-condensed"
+        android:id="@+id/detail_title"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/white"
+        android:paddingLeft="30dp"
+        android:background="#7f19e6"
+        android:minHeight="120dp"
+        android:textSize="40sp"
+        android:gravity="center_vertical"
+        android:text="Interstellar"/>
+
+    <!-- Scroll everything but the title -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_gravity="left"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp">
+
+            <!-- Main content: poster, release year, rating -->
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="horizontal">
+
+                <!-- poster -->
+                <ImageView
+                    android:id="@+id/detail_poster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/interstellar"/>
+
+                <LinearLayout
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="16dp">
+
+                    <!-- release year -->
+                    <TextView
+                        android:fontFamily="sans-serif-light"
+                        android:id="@+id/detail_year"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textSize="30sp"
+                        android:text="2014"/>
+
+                    <!-- rating -->
+                    <TextView
+                        android:id="@+id/detail_rating"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textColor="@android:color/secondary_text_light"
+                        android:textSize="20sp"
+                        android:text="8.3/10"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- plot synopsis -->
+            <TextView
+                android:id="@+id/detail_plot"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:paddingTop="16dp"
+                android:text="Interstellar chronicles the adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

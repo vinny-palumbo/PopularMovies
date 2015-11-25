@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -25,8 +24,8 @@ public class DetailActivityFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
             String movieStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-            ((TextView) rootView.findViewById(R.id.detail_text))
-                .setText(movieStr);
+            //((TextView) rootView.findViewById(R.id.detail_pressure_textview))
+              //  .setText(movieStr);
         }
 
         return rootView;
