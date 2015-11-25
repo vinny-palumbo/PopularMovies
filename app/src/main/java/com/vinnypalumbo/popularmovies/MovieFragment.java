@@ -98,7 +98,12 @@ public class MovieFragment extends Fragment {
 
             // These are the names of the JSON objects that need to be extracted.
             final String TMDB_RESULTS = "results";
+            final String TMDB_TITLE = "original_title";
             final String TMDB_POSTER = "poster_path";
+            final String TMDB_PLOT = "overview";
+            final String TMDB_RATING = "vote_average";
+            final String TMDB_DATE = "release_date";
+
 
             JSONObject movieJson = new JSONObject(movieJsonStr);
             JSONArray movieArray = movieJson.getJSONArray(TMDB_RESULTS);
@@ -106,15 +111,31 @@ public class MovieFragment extends Fragment {
             Movie[] resultStrs = new Movie[numMovies];
 
             for(int i = 0; i < movieArray.length(); i++) {
+                String originalTitle;
                 String posterPath;
+                String overview;
+                Double voteAverage;
+                String releaseDate;
 
                 // Get the JSON object representing the movie
                 JSONObject movie = movieArray.getJSONObject(i);
 
+                // the title is in a String associated to the key "original_title"
+                originalTitle = movie.getString(TMDB_TITLE);
+
                 // the poster path is in a String associated to the key "poster_path"
                 posterPath = movie.getString(TMDB_POSTER);
 
-                resultStrs[i] = new Movie("", posterPath, "", 0.0, "");
+                // the plot synopsis is in a String associated to the key "overview"
+                overview = movie.getString(TMDB_PLOT);
+
+                // the rating is in a Double associated to the key "vote_average"
+                voteAverage = movie.getDouble(TMDB_RATING);
+
+                // the release date is in a String associated to the key "release_date"
+                releaseDate = movie.getString(TMDB_DATE);
+
+                resultStrs[i] = new Movie(originalTitle, posterPath, overview, voteAverage, releaseDate);
             }
 
             return resultStrs;
