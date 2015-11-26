@@ -19,8 +19,7 @@
         android:background="#7f19e6"
         android:minHeight="120dp"
         android:textSize="40sp"
-        android:gravity="center_vertical"
-        android:text="Interstellar"/>
+        android:gravity="center_vertical" />
 
     <!-- Scroll everything but the title -->
     <ScrollView
@@ -47,8 +46,7 @@
                 <ImageView
                     android:id="@+id/detail_poster"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/interstellar"/>
+                    android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:layout_height="wrap_content"
@@ -65,8 +63,7 @@
                         android:id="@+id/detail_year"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:textSize="30sp"
-                        android:text="2014"/>
+                        android:textSize="30sp" />
 
                     <!-- rating -->
                     <TextView
@@ -74,8 +71,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:textColor="@android:color/secondary_text_light"
-                        android:textSize="20sp"
-                        android:text="8.3/10"/>
+                        android:textSize="20sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -85,8 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:paddingTop="16dp"
-                android:text="Interstellar chronicles the adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage"/>
+                android:paddingTop="16dp" />
 
         </LinearLayout>
 
