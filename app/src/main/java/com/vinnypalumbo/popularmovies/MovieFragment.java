@@ -84,6 +84,14 @@ public class MovieFragment extends Fragment {
 
         private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
 
+        private String formatVoteAverage(String voteAverage){
+            return voteAverage + "/10";
+        }
+
+        private String formatReleaseDate(String releaseDate){
+            return releaseDate.substring(0,4);
+        }
+
         /**
         * Take the String representing the movie results in JSON Format and
         * pull out the data we need for each movie
@@ -114,7 +122,7 @@ public class MovieFragment extends Fragment {
                 String originalTitle;
                 String posterPath;
                 String overview;
-                Double voteAverage;
+                String voteAverage;
                 String releaseDate;
 
                 // Get the JSON object representing the movie
@@ -130,11 +138,13 @@ public class MovieFragment extends Fragment {
                 overview = movie.getString(TMDB_PLOT);
 
                 // the rating is in a Double associated to the key "vote_average"
-                voteAverage = movie.getDouble(TMDB_RATING);
+                voteAverage = String.valueOf(movie.getDouble(TMDB_RATING));
 
                 // the release date is in a String associated to the key "release_date"
                 releaseDate = movie.getString(TMDB_DATE);
 
+                voteAverage = formatVoteAverage(voteAverage);
+                releaseDate = formatReleaseDate(releaseDate);
                 resultStrs[i] = new Movie(originalTitle, posterPath, overview, voteAverage, releaseDate);
             }
 

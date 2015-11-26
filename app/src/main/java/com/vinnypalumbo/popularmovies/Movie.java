@@ -11,11 +11,11 @@ public class Movie implements Parcelable {
     String originalTitle;
     String posterPath;
     String overview;
-    Double voteAverage;
+    String voteAverage;
     String releaseDate;
 
 
-    public Movie(String title, String poster, String plot, Double rating, String date)
+    public Movie(String title, String poster, String plot, String rating, String date)
     {
         this.originalTitle = title;
         this.posterPath = poster;
@@ -28,7 +28,7 @@ public class Movie implements Parcelable {
         originalTitle = in.readString();
         posterPath = in.readString();
         overview = in.readString();
-        voteAverage = in.readDouble();
+        voteAverage = in.readString();
         releaseDate = in.readString();
     }
 
@@ -44,7 +44,7 @@ public class Movie implements Parcelable {
         parcel.writeString(originalTitle);
         parcel.writeString(posterPath);
         parcel.writeString(overview);
-        parcel.writeDouble(voteAverage);
+        parcel.writeString(voteAverage);
         parcel.writeString(releaseDate);
     }
 
