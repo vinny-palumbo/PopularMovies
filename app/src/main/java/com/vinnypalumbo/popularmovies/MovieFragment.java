@@ -72,7 +72,11 @@ public class MovieFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Movie movie = mMovieAdapter.getItem(position);
                 Intent intent = new Intent(getActivity(), DetailActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, movie.posterPath);
+                        .putExtra("title", movie.originalTitle)
+                        .putExtra("poster", movie.posterPath)
+                        .putExtra("plot", movie.overview)
+                        .putExtra("rating", movie.voteAverage)
+                        .putExtra("year", movie.releaseDate);
                 startActivity(intent);
             }
         });
