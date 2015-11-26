@@ -18,8 +18,8 @@
         android:paddingRight="30dp"
         android:background="#7f19e6"
         android:minHeight="120dp"
-        android:textSize="40sp"
-        android:gravity="center_vertical" />
+        android:textSize="35sp"
+        android:gravity="center_vertical"/>
 
     <!-- Scroll everything but the title -->
     <ScrollView
