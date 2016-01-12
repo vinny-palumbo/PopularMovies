@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.sunshine.app.data;
+package com.vinnypalumbo.popularmovies.data;
 
 import android.test.AndroidTestCase;
 
@@ -23,7 +23,7 @@ public class TestDb extends AndroidTestCase {
 
     // Since we want each test to start with a clean slate
     void deleteTheDatabase() {
-        mContext.deleteDatabase(WeatherDbHelper.DATABASE_NAME);
+        mContext.deleteDatabase(com.vinnypalumbo.popularmovies.data.MovieDbHelper.DATABASE_NAME);
     }
 
     /*
@@ -41,18 +41,18 @@ public class TestDb extends AndroidTestCase {
         a good time to change your column names to match mine.
 
         Note that this only tests that the Location table has the correct columns, since we
-        give you the code for the weather table.  This test does not look at the
+        give you the code for the movie table.  This test does not look at the
      */
 //    public void testCreateDb() throws Throwable {
 //        // build a HashSet of all of the table names we wish to look for
 //        // Note that there will be another table in the DB that stores the
 //        // Android metadata (db version information)
 //        final HashSet<String> tableNameHashSet = new HashSet<String>();
-//        tableNameHashSet.add(WeatherContract.LocationEntry.TABLE_NAME);
-//        tableNameHashSet.add(WeatherContract.WeatherEntry.TABLE_NAME);
+//        tableNameHashSet.add(MovieContract.LocationEntry.TABLE_NAME);
+//        tableNameHashSet.add(MovieContract.MovieEntry.TABLE_NAME);
 //
-//        mContext.deleteDatabase(WeatherDbHelper.DATABASE_NAME);
-//        SQLiteDatabase db = new WeatherDbHelper(
+//        mContext.deleteDatabase(MovieDbHelper.DATABASE_NAME);
+//        SQLiteDatabase db = new MovieDbHelper(
 //                this.mContext).getWritableDatabase();
 //        assertEquals(true, db.isOpen());
 //
@@ -68,12 +68,12 @@ public class TestDb extends AndroidTestCase {
 //        } while( c.moveToNext() );
 //
 //        // if this fails, it means that your database doesn't contain both the location entry
-//        // and weather entry tables
-//        assertTrue("Error: Your database was created without both the location entry and weather entry tables",
+//        // and movie entry tables
+//        assertTrue("Error: Your database was created without both the location entry and movie entry tables",
 //                tableNameHashSet.isEmpty());
 //
 //        // now, do our tables contain the correct columns?
-//        c = db.rawQuery("PRAGMA table_info(" + WeatherContract.LocationEntry.TABLE_NAME + ")",
+//        c = db.rawQuery("PRAGMA table_info(" + MovieContract.LocationEntry.TABLE_NAME + ")",
 //                null);
 //
 //        assertTrue("Error: This means that we were unable to query the database for table information.",
@@ -81,11 +81,11 @@ public class TestDb extends AndroidTestCase {
 //
 //        // Build a HashSet of all of the column names we want to look for
 //        final HashSet<String> locationColumnHashSet = new HashSet<String>();
-//        locationColumnHashSet.add(WeatherContract.LocationEntry._ID);
-//        locationColumnHashSet.add(WeatherContract.LocationEntry.COLUMN_CITY_NAME);
-//        locationColumnHashSet.add(WeatherContract.LocationEntry.COLUMN_COORD_LAT);
-//        locationColumnHashSet.add(WeatherContract.LocationEntry.COLUMN_COORD_LONG);
-//        locationColumnHashSet.add(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING);
+//        locationColumnHashSet.add(MovieContract.LocationEntry._ID);
+//        locationColumnHashSet.add(MovieContract.LocationEntry.COLUMN_CITY_NAME);
+//        locationColumnHashSet.add(MovieContract.LocationEntry.COLUMN_COORD_LAT);
+//        locationColumnHashSet.add(MovieContract.LocationEntry.COLUMN_COORD_LONG);
+//        locationColumnHashSet.add(MovieContract.LocationEntry.COLUMN_LOCATION_SETTING);
 //
 //        int columnNameIndex = c.getColumnIndex("name");
 //        do {
@@ -129,12 +129,12 @@ public class TestDb extends AndroidTestCase {
     /*
         Students:  Here is where you will build code to test that we can insert and query the
         database.  We've done a lot of work for you.  You'll want to look in TestUtilities
-        where you can use the "createWeatherValues" function.  You can
+        where you can use the "createMovieValues" function.  You can
         also make use of the validateCurrentRecord function from within TestUtilities.
      */
-    public void testWeatherTable() {
+    public void testMovieTable() {
         // First insert the location, and then use the locationRowId to insert
-        // the weather. Make sure to cover as many failure cases as you can.
+        // the movie. Make sure to cover as many failure cases as you can.
 
         // Instead of rewriting all of the code we've already written in testLocationTable
         // we can move this code to insertLocation and then call insertLocation from both
@@ -144,7 +144,7 @@ public class TestDb extends AndroidTestCase {
         // First step: Get reference to writable database
 
         // Create ContentValues of what you want to insert
-        // (you can use the createWeatherValues TestUtilities function if you wish)
+        // (you can use the createMovieValues TestUtilities function if you wish)
 
         // Insert ContentValues into database and get a row ID back
 
@@ -161,9 +161,9 @@ public class TestDb extends AndroidTestCase {
 
 
     /*
-        Students: This is a helper method for the testWeatherTable quiz. You can move your
+        Students: This is a helper method for the testMovieTable quiz. You can move your
         code from testLocationTable to here so that you can call this code from both
-        testWeatherTable and testLocationTable.
+        testMovieTable and testLocationTable.
      */
     public long insertLocation() {
         return -1L;

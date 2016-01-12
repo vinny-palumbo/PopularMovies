@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.sunshine.app.data;
+package com.vinnypalumbo.popularmovies.data;
 
 import android.provider.BaseColumns;
 import android.text.format.Time;
 
 /**
- * Defines table and column names for the weather database.
+ * Defines table and column names for the movie database.
  */
-public class WeatherContract {
+public class MovieContract {
 
     // To make it easy to query for the exact date, we normalize all dates that go into
     // the database to the start of the the Julian day at UTC.
@@ -36,26 +36,26 @@ public class WeatherContract {
     /*
         Inner class that defines the table contents of the location table
         Students: This is where you will add the strings.  (Similar to what has been
-        done for WeatherEntry)
+        done for MovieEntry)
      */
     public static final class LocationEntry implements BaseColumns {
         public static final String TABLE_NAME = "location";
 
     }
 
-    /* Inner class that defines the table contents of the weather table */
-    public static final class WeatherEntry implements BaseColumns {
+    /* Inner class that defines the table contents of the movie table */
+    public static final class MovieEntry implements BaseColumns {
 
-        public static final String TABLE_NAME = "weather";
+        public static final String TABLE_NAME = "movie";
 
         // Column with the foreign key into the location table.
         public static final String COLUMN_LOC_KEY = "location_id";
         // Date, stored as long in milliseconds since the epoch
         public static final String COLUMN_DATE = "date";
-        // Weather id as returned by API, to identify the icon to be used
-        public static final String COLUMN_WEATHER_ID = "weather_id";
+        // Movie id as returned by API, to identify the icon to be used
+        public static final String COLUMN_MOVIE_ID = "movie_id";
 
-        // Short description and long description of the weather, as provided by API.
+        // Short description and long description of the movie, as provided by API.
         // e.g "clear" vs "sky is clear".
         public static final String COLUMN_SHORT_DESC = "short_desc";
 
