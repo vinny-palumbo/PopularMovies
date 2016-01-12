@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -32,8 +33,25 @@ import java.util.ArrayList;
 public class MovieFragment extends Fragment {
 
     private ImageAdapter mMovieAdapter;
+    private ArrayList<Movie> listOfMovies;
 
     public MovieFragment() {
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("key", (ArrayList<? extends Parcelable>) listOfMovies);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            listOfMovies = savedInstanceState.getParcelableArrayList("key");
+        }else{
+            listOfMovies = new ArrayList<Movie>();
+        }
     }
 
     @Override
@@ -58,7 +76,7 @@ public class MovieFragment extends Fragment {
 
         mMovieAdapter = new ImageAdapter(
                 getActivity(),
-                new ArrayList<Movie>()
+                listOfMovies
         );
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
