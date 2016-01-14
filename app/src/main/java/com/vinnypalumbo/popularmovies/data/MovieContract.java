@@ -16,63 +16,61 @@
 package com.vinnypalumbo.popularmovies.data;
 
 import android.provider.BaseColumns;
-import android.text.format.Time;
 
 /**
  * Defines table and column names for the movie database.
  */
 public class MovieContract {
 
-    // To make it easy to query for the exact date, we normalize all dates that go into
-    // the database to the start of the the Julian day at UTC.
-    public static long normalizeDate(long startDate) {
-        // normalize the start date to the beginning of the (UTC) day
-        Time time = new Time();
-        time.set(startDate);
-        int julianDay = Time.getJulianDay(startDate, time.gmtoff);
-        return time.setJulianDay(julianDay);
-    }
 
     /*
-        Inner class that defines the table contents of the location table
-        Students: This is where you will add the strings.  (Similar to what has been
-        done for MovieEntry)
+        Inner class that defines the contents of the watchlist table
      */
-    public static final class LocationEntry implements BaseColumns {
-        public static final String TABLE_NAME = "location";
+    public static final class WatchlistEntry implements BaseColumns {
+        public static final String TABLE_NAME = "watchlist";
+
+        // Movie id as returned by API. Stored as int.
+        public static final String COLUMN_MOVIE_ID = "movie_id";
+
+        // Title of the movie.
+        public static final String COLUMN_TITLE = "title";
+
+        // Movie Poster. Stored as string.
+        public static final String COLUMN_POSTER = "poster";
+
+        // Movie synopsis.
+        public static final String COLUMN_PLOT = "plot";
+
+        // Movie vote average. Stored as floats
+        public static final String COLUMN_RATING = "rating";
+
+        // Movie Release Date
+        public static final String COLUMN_DATE = "date";
 
     }
 
-    /* Inner class that defines the table contents of the movie table */
+    /* Inner class that defines the contents of the movie table */
     public static final class MovieEntry implements BaseColumns {
 
         public static final String TABLE_NAME = "movie";
 
-        // Column with the foreign key into the location table.
-        public static final String COLUMN_LOC_KEY = "location_id";
-        // Date, stored as long in milliseconds since the epoch
-        public static final String COLUMN_DATE = "date";
-        // Movie id as returned by API, to identify the icon to be used
+        // Movie id as returned by API. Stored as int.
         public static final String COLUMN_MOVIE_ID = "movie_id";
 
-        // Short description and long description of the movie, as provided by API.
-        // e.g "clear" vs "sky is clear".
-        public static final String COLUMN_SHORT_DESC = "short_desc";
+        // Title of the movie. Stored as a string.
+        public static final String COLUMN_TITLE = "title";
 
-        // Min and max temperatures for the day (stored as floats)
-        public static final String COLUMN_MIN_TEMP = "min";
-        public static final String COLUMN_MAX_TEMP = "max";
+        // Movie Poster. Stored as string.
+        public static final String COLUMN_POSTER = "poster";
 
-        // Humidity is stored as a float representing percentage
-        public static final String COLUMN_HUMIDITY = "humidity";
+        // Movie synopsis. Stored as a string.
+        public static final String COLUMN_PLOT = "plot";
 
-        // Humidity is stored as a float representing percentage
-        public static final String COLUMN_PRESSURE = "pressure";
+        // Movie vote average. Stored a float.
+        public static final String COLUMN_RATING = "rating";
 
-        // Windspeed is stored as a float representing windspeed  mph
-        public static final String COLUMN_WIND_SPEED = "wind";
+        // Movie Release Date. Stored as a string.
+        public static final String COLUMN_DATE = "date";
 
-        // Degrees are meteorological degrees (e.g, 0 is north, 180 is south).  Stored as floats.
-        public static final String COLUMN_DEGREES = "degrees";
     }
 }
