@@ -15,7 +15,11 @@
  */
 package com.vinnypalumbo.popularmovies.data;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
+
+import java.util.HashSet;
 
 public class TestDb extends AndroidTestCase {
 
@@ -35,70 +39,70 @@ public class TestDb extends AndroidTestCase {
     }
 
     /*
-        Students: Uncomment this test once you've written the code to create the Location
-        table.  Note that you will have to have chosen the same column names that I did in
-        my solution for this test to compile, so if you haven't yet done that, this is
-        a good time to change your column names to match mine.
+        Students: Uncomment this test once you've written the code to create the Watchlist
+        table.
 
-        Note that this only tests that the Location table has the correct columns, since we
+        Note that this only tests that the Watchlist table has the correct columns, since we
         give you the code for the movie table.  This test does not look at the
      */
-//    public void testCreateDb() throws Throwable {
-//        // build a HashSet of all of the table names we wish to look for
-//        // Note that there will be another table in the DB that stores the
-//        // Android metadata (db version information)
-//        final HashSet<String> tableNameHashSet = new HashSet<String>();
-//        tableNameHashSet.add(MovieContract.LocationEntry.TABLE_NAME);
-//        tableNameHashSet.add(MovieContract.MovieEntry.TABLE_NAME);
-//
-//        mContext.deleteDatabase(MovieDbHelper.DATABASE_NAME);
-//        SQLiteDatabase db = new MovieDbHelper(
-//                this.mContext).getWritableDatabase();
-//        assertEquals(true, db.isOpen());
-//
-//        // have we created the tables we want?
-//        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
-//
-//        assertTrue("Error: This means that the database has not been created correctly",
-//                c.moveToFirst());
-//
-//        // verify that the tables have been created
-//        do {
-//            tableNameHashSet.remove(c.getString(0));
-//        } while( c.moveToNext() );
-//
-//        // if this fails, it means that your database doesn't contain both the location entry
-//        // and movie entry tables
-//        assertTrue("Error: Your database was created without both the location entry and movie entry tables",
-//                tableNameHashSet.isEmpty());
-//
-//        // now, do our tables contain the correct columns?
-//        c = db.rawQuery("PRAGMA table_info(" + MovieContract.LocationEntry.TABLE_NAME + ")",
-//                null);
-//
-//        assertTrue("Error: This means that we were unable to query the database for table information.",
-//                c.moveToFirst());
-//
-//        // Build a HashSet of all of the column names we want to look for
-//        final HashSet<String> locationColumnHashSet = new HashSet<String>();
-//        locationColumnHashSet.add(MovieContract.LocationEntry._ID);
-//        locationColumnHashSet.add(MovieContract.LocationEntry.COLUMN_CITY_NAME);
-//        locationColumnHashSet.add(MovieContract.LocationEntry.COLUMN_COORD_LAT);
-//        locationColumnHashSet.add(MovieContract.LocationEntry.COLUMN_COORD_LONG);
-//        locationColumnHashSet.add(MovieContract.LocationEntry.COLUMN_LOCATION_SETTING);
-//
-//        int columnNameIndex = c.getColumnIndex("name");
-//        do {
-//            String columnName = c.getString(columnNameIndex);
-//            locationColumnHashSet.remove(columnName);
-//        } while(c.moveToNext());
-//
-//        // if this fails, it means that your database doesn't contain all of the required location
-//        // entry columns
-//        assertTrue("Error: The database doesn't contain all of the required location entry columns",
-//                locationColumnHashSet.isEmpty());
-//        db.close();
-//    }
+    public void testCreateDb() throws Throwable {
+        // build a HashSet of all of the table names we wish to look for
+        // Note that there will be another table in the DB that stores the
+        // Android metadata (db version information)
+        final HashSet<String> tableNameHashSet = new HashSet<String>();
+        tableNameHashSet.add(MovieContract.WatchlistEntry.TABLE_NAME);
+        tableNameHashSet.add(MovieContract.MovieEntry.TABLE_NAME);
+
+        mContext.deleteDatabase(MovieDbHelper.DATABASE_NAME);
+        SQLiteDatabase db = new MovieDbHelper(
+                this.mContext).getWritableDatabase();
+        assertEquals(true, db.isOpen());
+
+        // have we created the tables we want?
+        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+
+        assertTrue("Error: This means that the database has not been created correctly",
+                c.moveToFirst());
+
+        // verify that the tables have been created
+        do {
+            tableNameHashSet.remove(c.getString(0));
+        } while( c.moveToNext() );
+
+        // if this fails, it means that your database doesn't contain both the watchlist entry
+        // and movie entry tables
+        assertTrue("Error: Your database was created without both the location entry and movie entry tables",
+                tableNameHashSet.isEmpty());
+
+        // now, do our tables contain the correct columns?
+        c = db.rawQuery("PRAGMA table_info(" + MovieContract.WatchlistEntry.TABLE_NAME + ")",
+                null);
+
+        assertTrue("Error: This means that we were unable to query the database for table information.",
+                c.moveToFirst());
+
+        // Build a HashSet of all of the column names we want to look for
+        final HashSet<String> watchlistColumnHashSet = new HashSet<String>();
+        watchlistColumnHashSet.add(MovieContract.WatchlistEntry._ID);
+        watchlistColumnHashSet.add(MovieContract.WatchlistEntry.COLUMN_MOVIE_ID);
+        watchlistColumnHashSet.add(MovieContract.WatchlistEntry.COLUMN_TITLE);
+        watchlistColumnHashSet.add(MovieContract.WatchlistEntry.COLUMN_POSTER);
+        watchlistColumnHashSet.add(MovieContract.WatchlistEntry.COLUMN_PLOT);
+        watchlistColumnHashSet.add(MovieContract.WatchlistEntry.COLUMN_RATING);
+        watchlistColumnHashSet.add(MovieContract.WatchlistEntry.COLUMN_DATE);
+
+        int columnNameIndex = c.getColumnIndex("name");
+        do {
+            String columnName = c.getString(columnNameIndex);
+            watchlistColumnHashSet.remove(columnName);
+        } while(c.moveToNext());
+
+        // if this fails, it means that your database doesn't contain all of the required location
+        // entry columns
+        assertTrue("Error: The database doesn't contain all of the required location entry columns",
+                watchlistColumnHashSet.isEmpty());
+        db.close();
+    }
 
     /*
         Students:  Here is where you will build code to test that we can insert and query the
