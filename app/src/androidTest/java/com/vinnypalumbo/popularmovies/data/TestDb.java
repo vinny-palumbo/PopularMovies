@@ -171,39 +171,54 @@ public class TestDb extends AndroidTestCase {
         also make use of the validateCurrentRecord function from within TestUtilities.
      */
     public void testMovieTable() {
-        // First insert the location, and then use the locationRowId to insert
-        // the movie. Make sure to cover as many failure cases as you can.
-
-        // Instead of rewriting all of the code we've already written in testLocationTable
-        // we can move this code to insertLocation and then call insertLocation from both
-        // tests. Why move it? We need the code to return the ID of the inserted location
-        // and our testLocationTable can only return void because it's a test.
-
         // First step: Get reference to writable database
+        // If there's an error in those massive SQL table creation Strings,
+        // errors will be thrown here when you try to get a writable database.
+        MovieDbHelper dbHelper = new MovieDbHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // Create ContentValues of what you want to insert
-        // (you can use the createMovieValues TestUtilities function if you wish)
+        // Second Step: Create ContentValues of what you want to insert
+        // (you can use the createMovieValues if you wish)
+        ContentValues testValues = TestUtilities.createMovieValues();
 
-        // Insert ContentValues into database and get a row ID back
+        // Third Step: Insert ContentValues into database and get a row ID back
+        long movieRowId;
+        movieRowId = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, testValues);
 
-        // Query the database and receive a Cursor back
+        // Verify we got a row back.
+        assertTrue(movieRowId != -1);
 
-        // Move the cursor to a valid database row
+        // Data's inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
+        // the round trip.
 
-        // Validate data in resulting Cursor with the original ContentValues
+        // Fourth Step: Query the database and receive a Cursor back
+        // A cursor is your primary interface to the query results.
+        Cursor cursor = db.query(
+                MovieContract.MovieEntry.TABLE_NAME,  // Table to Query
+                null, // all columns
+                null, // Columns for the "where" clause
+                null, // Values for the "where" clause
+                null, // columns to group by
+                null, // columns to filter by row groups
+                null // sort order
+        );
+
+        // Move the cursor to a valid database row and check to see if we got any records back
+        // from the query
+        assertTrue( "Error: No Records returned from location query", cursor.moveToFirst() );
+
+        // Fifth Step: Validate data in resulting Cursor with the original ContentValues
         // (you can use the validateCurrentRecord function in TestUtilities to validate the
         // query if you like)
+        TestUtilities.validateCurrentRecord("Error: Location Query Validation Failed",
+                cursor, testValues);
 
-        // Finally, close the cursor and database
-    }
+        // Move the cursor to demonstrate that there is only one record in the database
+        assertFalse( "Error: More than one record returned from location query",
+                cursor.moveToNext() );
 
-
-    /*
-        Students: This is a helper method for the testMovieTable quiz. You can move your
-        code from testLocationTable to here so that you can call this code from both
-        testMovieTable and testLocationTable.
-     */
-    public long insertLocation() {
-        return -1L;
+        // Sixth Step: Close Cursor and Database
+        cursor.close();
+        db.close();
     }
 }
