@@ -128,6 +128,7 @@ public class MovieFragment extends Fragment {
 
             // These are the names of the JSON objects that need to be extracted.
             final String TMDB_RESULTS = "results";
+            final String TMDB_ID = "id";
             final String TMDB_TITLE = "original_title";
             final String TMDB_POSTER = "poster_path";
             final String TMDB_PLOT = "overview";
@@ -141,6 +142,7 @@ public class MovieFragment extends Fragment {
             Movie[] resultStrs = new Movie[numMovies];
 
             for(int i = 0; i < movieArray.length(); i++) {
+                int movieId;
                 String originalTitle;
                 String posterPath;
                 String overview;
@@ -149,6 +151,9 @@ public class MovieFragment extends Fragment {
 
                 // Get the JSON object representing the movie
                 JSONObject movie = movieArray.getJSONObject(i);
+
+                // the movie ID is in a Int associated to the key "id"
+                movieId = movie.getInt(TMDB_ID);
 
                 // the title is in a String associated to the key "original_title"
                 originalTitle = movie.getString(TMDB_TITLE);
@@ -167,7 +172,7 @@ public class MovieFragment extends Fragment {
 
                 voteAverage = formatVoteAverage(voteAverage);
                 releaseDate = formatReleaseDate(releaseDate);
-                resultStrs[i] = new Movie(originalTitle, posterPath, overview, voteAverage, releaseDate);
+                resultStrs[i] = new Movie(movieId, originalTitle, posterPath, overview, voteAverage, releaseDate);
             }
 
             return resultStrs;
