@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Vincent on 2015-11-19.
  */
 public class Movie implements Parcelable {
-
+    int movieId;
     String originalTitle;
     String posterPath;
     String overview;
@@ -15,8 +15,9 @@ public class Movie implements Parcelable {
     String releaseDate;
 
 
-    public Movie(String title, String poster, String plot, String rating, String date)
+    public Movie(int movieId, String title, String poster, String plot, String rating, String date)
     {
+        this.movieId = movieId;
         this.originalTitle = title;
         this.posterPath = poster;
         this.overview = plot;
@@ -25,6 +26,7 @@ public class Movie implements Parcelable {
     }
 
     private Movie(Parcel in){
+        movieId = in.readInt();
         originalTitle = in.readString();
         posterPath = in.readString();
         overview = in.readString();
@@ -37,10 +39,11 @@ public class Movie implements Parcelable {
         return 0;
     }
 
-    public String toString() { return originalTitle + " -- " + posterPath + " -- " + overview + " -- " + voteAverage + " -- " + releaseDate; }
+    public String toString() { return String.valueOf(movieId) + "--" + originalTitle + " -- " + posterPath + " -- " + overview + " -- " + voteAverage + " -- " + releaseDate; }
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(movieId);
         parcel.writeString(originalTitle);
         parcel.writeString(posterPath);
         parcel.writeString(overview);
