@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.test.AndroidTestCase;
 
 /*
@@ -167,67 +168,63 @@ public class TestProvider extends AndroidTestCase {
         read out the data.  Uncomment this test to see if the basic weather query functionality
         given in the ContentProvider is working correctly.
      */
-//    public void testBasicWeatherQuery() {
-//        // insert our test records into the database
-//        WeatherDbHelper dbHelper = new WeatherDbHelper(mContext);
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        ContentValues testValues = TestUtilities.createNorthPoleLocationValues();
-//        long locationRowId = TestUtilities.insertNorthPoleLocationValues(mContext);
-//
-//        // Fantastic.  Now that we have a location, add some weather!
-//        ContentValues weatherValues = TestUtilities.createWeatherValues(locationRowId);
-//
-//        long weatherRowId = db.insert(WeatherEntry.TABLE_NAME, null, weatherValues);
-//        assertTrue("Unable to Insert WeatherEntry into the Database", weatherRowId != -1);
-//
-//        db.close();
-//
-//        // Test the basic content provider query
-//        Cursor weatherCursor = mContext.getContentResolver().query(
-//                WeatherEntry.CONTENT_URI,
-//                null,
-//                null,
-//                null,
-//                null
-//        );
-//
-//        // Make sure we get the correct cursor out of the database
-//        TestUtilities.validateCursor("testBasicWeatherQuery", weatherCursor, weatherValues);
-//    }
+    public void testBasicMovieQuery() {
+        // insert our test records into the database
+        MovieDbHelper dbHelper = new MovieDbHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues movieValues = TestUtilities.createMovieValues();
+
+        long movieRowId = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, movieValues);
+        assertTrue("Unable to Insert MovieEntry into the Database", movieRowId != -1);
+
+        db.close();
+
+        // Test the basic content provider query
+        Cursor movieCursor = mContext.getContentResolver().query(
+                MovieContract.MovieEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        // Make sure we get the correct cursor out of the database
+        TestUtilities.validateCursor("testBasicMovieQuery", movieCursor, movieValues);
+    }
 
     /*
         This test uses the database directly to insert and then uses the ContentProvider to
-        read out the data.  Uncomment this test to see if your location queries are
+        read out the data.  Uncomment this test to see if your watchlist queries are
         performing correctly.
      */
-//    public void testBasicLocationQueries() {
-//        // insert our test records into the database
-//        WeatherDbHelper dbHelper = new WeatherDbHelper(mContext);
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        ContentValues testValues = TestUtilities.createNorthPoleLocationValues();
-//        long locationRowId = TestUtilities.insertNorthPoleLocationValues(mContext);
-//
-//        // Test the basic content provider query
-//        Cursor locationCursor = mContext.getContentResolver().query(
-//                LocationEntry.CONTENT_URI,
-//                null,
-//                null,
-//                null,
-//                null
-//        );
-//
-//        // Make sure we get the correct cursor out of the database
-//        TestUtilities.validateCursor("testBasicLocationQueries, location query", locationCursor, testValues);
-//
-//        // Has the NotificationUri been set correctly? --- we can only test this easily against API
-//        // level 19 or greater because getNotificationUri was added in API level 19.
-//        if ( Build.VERSION.SDK_INT >= 19 ) {
-//            assertEquals("Error: Location Query did not properly set NotificationUri",
-//                    locationCursor.getNotificationUri(), LocationEntry.CONTENT_URI);
-//        }
-//    }
+    public void testBasicWatchlistQueries() {
+        // insert our test records into the database
+        MovieDbHelper dbHelper = new MovieDbHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues testValues = TestUtilities.createWatchlistValues();
+        long movieRowId = TestUtilities.insertWatchlistValues(mContext);
+
+        // Test the basic content provider query
+        Cursor watchlistCursor = mContext.getContentResolver().query(
+                MovieContract.WatchlistEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        // Make sure we get the correct cursor out of the database
+        TestUtilities.validateCursor("testBasicWatchlistQueries, watchlist query", watchlistCursor, testValues);
+
+        // Has the NotificationUri been set correctly? --- we can only test this easily against API
+        // level 19 or greater because getNotificationUri was added in API level 19.
+        if ( Build.VERSION.SDK_INT >= 19 ) {
+            assertEquals("Error: Watchlist Query did not properly set NotificationUri",
+                    watchlistCursor.getNotificationUri(), MovieContract.WatchlistEntry.CONTENT_URI);
+        }
+    }
 
     /*
         This test uses the provider to insert and then update the data. Uncomment this test to

@@ -45,21 +45,24 @@ public class MovieProvider extends ContentProvider {
                 MovieContract.MovieEntry.TABLE_NAME);
     }
 
-//  ----- COMMENTED -------
-//  private Cursor getWeatherByLocationSettingAndDate(
-//            Uri uri, String[] projection, String sortOrder) {
-//        String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
-//        long date = WeatherContract.WeatherEntry.getDateFromUri(uri);
-//
-//        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
-//                projection,
-//                sLocationSettingAndDaySelection,
-//                new String[]{locationSetting, Long.toString(date)},
-//                null,
-//                null,
-//                sortOrder
-//        );
-//    }
+    //watchlist.movie_id = ?
+    private static final String sMovieIdSelection =
+            MovieContract.WatchlistEntry.TABLE_NAME +
+                    "." + MovieContract.WatchlistEntry.COLUMN_MOVIE_ID + " = ? ";
+
+    private Cursor getMovieByMovieId(
+            Uri uri, String[] projection, String sortOrder) {
+        int id = MovieContract.MovieEntry.getIdFromUri(uri);
+
+        return sMovieQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                sMovieIdSelection,
+                new String[]{Integer.toString(id)},
+                null,
+                null,
+                sortOrder
+        );
+    }
 
     /*
         Students: Here is where you need to create the UriMatcher. This UriMatcher will
@@ -124,14 +127,36 @@ public class MovieProvider extends ContentProvider {
         // and query the database accordingly.
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
-            // "weather"
-            case MOVIE: {
-                retCursor = null;
+            // "movie/#"
+            case MOVIE_WITH_ID:
+            {
+                retCursor = getMovieByMovieId(uri, projection, sortOrder);
                 break;
             }
-            // "location"
+            // "movie"
+            case MOVIE: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        MovieContract.MovieEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            // "watchlist"
             case WATCHLIST: {
-                retCursor = null;
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        MovieContract.WatchlistEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             }
 
