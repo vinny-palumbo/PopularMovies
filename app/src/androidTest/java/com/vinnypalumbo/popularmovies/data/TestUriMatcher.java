@@ -15,6 +15,7 @@
  */
 package com.vinnypalumbo.popularmovies.data;
 
+import android.content.UriMatcher;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
@@ -25,27 +26,27 @@ import android.test.AndroidTestCase;
     a nice compromise between data hiding and testability.
  */
 public class TestUriMatcher extends AndroidTestCase {
+    private static final String MOVIEID_QUERY = "140607";
 
     // content://com.vinnypalumbo.popularmovies/movie"
-    private static final Uri TEST_WEATHER_DIR = MovieContract.MovieEntry.CONTENT_URI;
+    private static final Uri TEST_MOVIE_DIR = MovieContract.MovieEntry.CONTENT_URI;
+    private static final Uri TEST_MOVIE_WITH_ID_DIR = MovieContract.MovieEntry.buildMovieId(MOVIEID_QUERY);
     // content://com.vinnypalumbo.popularmovies/watchlist"
-    private static final Uri TEST_LOCATION_DIR = MovieContract.WatchlistEntry.CONTENT_URI;
+    private static final Uri TEST_WATCHLIST_DIR = MovieContract.WatchlistEntry.CONTENT_URI;
 
     /*
         Students: This function tests that your UriMatcher returns the correct integer value
         for each of the Uri types that our ContentProvider can handle.  Uncomment this when you are
         ready to test your UriMatcher.
      */
-//    public void testUriMatcher() {
-//        UriMatcher testMatcher = MovieProvider.buildUriMatcher();
-//
-//        assertEquals("Error: The WEATHER URI was matched incorrectly.",
-//                testMatcher.match(TEST_WEATHER_DIR), MovieProvider.WEATHER);
-//        assertEquals("Error: The WEATHER WITH LOCATION URI was matched incorrectly.",
-//                testMatcher.match(TEST_WEATHER_WITH_LOCATION_DIR), MovieProvider.WEATHER_WITH_LOCATION);
-//        assertEquals("Error: The WEATHER WITH LOCATION AND DATE URI was matched incorrectly.",
-//                testMatcher.match(TEST_WEATHER_WITH_LOCATION_AND_DATE_DIR), MovieProvider.WEATHER_WITH_LOCATION_AND_DATE);
-//        assertEquals("Error: The LOCATION URI was matched incorrectly.",
-//                testMatcher.match(TEST_LOCATION_DIR), MovieProvider.LOCATION);
-//    }
+    public void testUriMatcher() {
+        UriMatcher testMatcher = MovieProvider.buildUriMatcher();
+
+        assertEquals("Error: The MOVIE URI was matched incorrectly.",
+                testMatcher.match(TEST_MOVIE_DIR), MovieProvider.MOVIE);
+        assertEquals("Error: The MOVIE WITH ID URI was matched incorrectly.",
+                testMatcher.match(TEST_MOVIE_WITH_ID_DIR), MovieProvider.MOVIE_WITH_ID);
+        assertEquals("Error: The WATCHLIST URI was matched incorrectly.",
+                testMatcher.match(TEST_WATCHLIST_DIR), MovieProvider.WATCHLIST);
+    }
 }
