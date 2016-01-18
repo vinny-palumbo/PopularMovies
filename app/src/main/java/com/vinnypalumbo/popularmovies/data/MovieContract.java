@@ -118,13 +118,13 @@ public class MovieContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-//        /*
-//            Student: Fill in this buildWeatherLocation function
-//         */
-//        public static Uri buildWeatherLocation(String locationSetting) {
-//            return null;
-//        }
-//
+        /*
+            Student: This is the buildMovieId function you filled in.
+         */
+        public static Uri buildMovieId(String movieId) {
+            return CONTENT_URI.buildUpon().appendPath(movieId).build();
+        }
+
 //        public static Uri buildWeatherLocationWithStartDate(
 //                String locationSetting, long startDate) {
 //            long normalizedDate = normalizeDate(startDate);

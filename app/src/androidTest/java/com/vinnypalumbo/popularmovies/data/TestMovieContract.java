@@ -15,6 +15,7 @@
  */
 package com.vinnypalumbo.popularmovies.data;
 
+import android.net.Uri;
 import android.test.AndroidTestCase;
 
 /*
@@ -24,21 +25,20 @@ import android.test.AndroidTestCase;
 public class TestMovieContract extends AndroidTestCase {
 
     // intentionally includes a slash to make sure Uri is getting quoted correctly
-    private static final String TEST_WEATHER_LOCATION = "/North Pole";
-    private static final long TEST_WEATHER_DATE = 1419033600L;  // December 20th, 2014
+    private static final String TEST_MOVIE_ID = "/140607";
 
     /*
-        Students: Uncomment this out to test your weather location function.
+        Students: Uncomment this out to test your buildMovieId function.
      */
-//    public void testBuildWeatherLocation() {
-//        Uri locationUri = WeatherContract.WeatherEntry.buildWeatherLocation(TEST_WEATHER_LOCATION);
-//        assertNotNull("Error: Null Uri returned.  You must fill-in buildWeatherLocation in " +
-//                        "WeatherContract.",
-//                locationUri);
-//        assertEquals("Error: Weather location not properly appended to the end of the Uri",
-//                TEST_WEATHER_LOCATION, locationUri.getLastPathSegment());
-//        assertEquals("Error: Weather location Uri doesn't match our expected result",
-//                locationUri.toString(),
-//                "content://com.example.android.sunshine.app/weather/%2FNorth%20Pole");
-//    }
+    public void TestBuildMovieId() {
+        Uri MovieUri = MovieContract.MovieEntry.buildMovieId(TEST_MOVIE_ID);
+        assertNotNull("Error: Null Uri returned.  You must fill-in buildMovieId in " +
+                        "MovieContract.",
+                MovieUri);
+        assertEquals("Error: Movie ID not properly appended to the end of the Uri",
+                TEST_MOVIE_ID, MovieUri.getLastPathSegment());
+        assertEquals("Error: Movie ID Uri doesn't match our expected result",
+                MovieUri.toString(),
+                "content://com.vinnypalumbo.popularmovies/movie/140607");
+    }
 }
