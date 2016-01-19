@@ -41,7 +41,7 @@ public class TestFetchMovieTask extends AndroidTestCase{
                 MovieContract.WatchlistEntry.COLUMN_MOVIE_ID + " = ?",
                 new String[]{String.valueOf(ADD_MOVIE_ID)});
 
-        FetchMovieTask fwt = new FetchMovieTask(getContext(), null);
+        FetchMovieTask fwt = new FetchMovieTask(getContext());
         long watchlistId = fwt.addToWatchlist(ADD_MOVIE_ID, ADD_TITLE, ADD_POSTER, ADD_PLOT,
                 ADD_RATING, ADD_DATE);
 

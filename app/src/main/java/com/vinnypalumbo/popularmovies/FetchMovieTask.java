@@ -19,7 +19,6 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -38,31 +37,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
 
-public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
+public class FetchMovieTask extends AsyncTask<String, Void, Void> {
 
     private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
 
-    private ImageAdapter mMovieAdapter;
     private final Context mContext;
 
-    public FetchMovieTask(Context context, ImageAdapter movieAdapter) {
+    public FetchMovieTask(Context context) {
         mContext = context;
-        mMovieAdapter = movieAdapter;
     }
 
     private boolean DEBUG = true;
-
-    /* The date/rating conversion code is going to be moved outside the asynctask later,
-     * so for convenience we're breaking it out into its own method now.
-     */
-    private String formatVoteAverage(double voteAverage){
-        return String.valueOf(voteAverage) + "/10";
-    }
-
-    private int formatReleaseDate(String releaseDate){
-        String year = releaseDate.substring(0,4);
-        return Integer.parseInt(year);
-    }
 
     /**
      * Helper method to handle insertion of a new movies in the watchlist database.
@@ -117,29 +102,6 @@ public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
         return watchlistId;
     }
 
-    /*
-        Students: This code will allow the FetchMovieTask to continue to return the strings that
-        the UX expects so that we can continue to test the application even once we begin using
-        the database.
-    */
-    Movie[] convertContentValuesToUXFormat(Vector<ContentValues> cvv) {
-        // return Movies to keep UI functional for now
-        Movie[] resultStrs = new Movie[cvv.size()];
-        for ( int i = 0; i < cvv.size(); i++ ) {
-            ContentValues movieValues = cvv.elementAt(i);
-            String voteAverage = formatVoteAverage(movieValues.getAsDouble(MovieContract.MovieEntry.COLUMN_RATING));
-            int releaseDate = formatReleaseDate(movieValues.getAsString(MovieContract.MovieEntry.COLUMN_DATE));
-            resultStrs[i] = new Movie(
-                    movieValues.getAsInteger(MovieContract.MovieEntry.COLUMN_MOVIE_ID),
-                    movieValues.getAsString(MovieContract.MovieEntry.COLUMN_TITLE),
-                    movieValues.getAsString(MovieContract.MovieEntry.COLUMN_POSTER),
-                    movieValues.getAsString(MovieContract.MovieEntry.COLUMN_PLOT),
-                    voteAverage,
-                    releaseDate
-            );
-        }
-        return resultStrs;
-    }
 
     /**
      * Take the String representing the movie results in JSON Format and
@@ -148,7 +110,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
-    private Movie[] getMovieDataFromJson(String movieJsonStr) throws JSONException {
+    private void getMovieDataFromJson(String movieJsonStr) throws JSONException {
 
         // The API gives us 20 movies
         final int numMovies = 20;
@@ -210,44 +172,24 @@ public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
                 cVVector.add(movieValues);
             }
 
+            int inserted = 0;
             // add to database
             if ( cVVector.size() > 0 ) {
                 // Student: call bulkInsert to add the movie entries to the movie database here
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
-                mContext.getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
+                inserted = mContext.getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
             }
 
-            //TODO:  Not sure if it's the right thing to do here
-            Uri movieUri= MovieContract.MovieEntry.CONTENT_URI;
-
-            // Students: Uncomment the next lines to display what you stored in the bulkInsert
-
-            Cursor cur = mContext.getContentResolver().query(movieUri,
-                    null, null, null, null);
-
-            cVVector = new Vector<ContentValues>(cur.getCount());
-            if ( cur.moveToFirst() ) {
-                do {
-                    ContentValues cv = new ContentValues();
-                    DatabaseUtils.cursorRowToContentValues(cur, cv);
-                    cVVector.add(cv);
-                } while (cur.moveToNext());
-            }
-
-            Log.d(LOG_TAG, "FetchMovieTask Complete. " + cVVector.size() + " Inserted");
-
-            Movie[] resultStrs = convertContentValuesToUXFormat(cVVector);
-            return resultStrs;
+            Log.d(LOG_TAG, "FetchMovieTask Complete. " + inserted + " Inserted");
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
-        return null;
     }
 
-    @Override protected Movie[] doInBackground(String... params) {
+    @Override protected Void doInBackground(String... params) {
         // If there's no sort_by value, there's nothing to look up.  Verify size of params.
         if (params.length == 0) {
             return null;
@@ -311,11 +253,14 @@ public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
                 return null;
             }
             movieJsonStr = buffer.toString();
+            getMovieDataFromJson(movieJsonStr);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the movie data, there's no point in attempting
             // to parse it.
-            return null;
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+            e.printStackTrace();
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -328,26 +273,6 @@ public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
                 }
             }
         }
-
-        try {
-            return getMovieDataFromJson(movieJsonStr);
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
-            e.printStackTrace();
-        }
-
-        // This will only happen if there was an error getting or parsing the movie.
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(Movie[] result) {
-        if (result != null && mMovieAdapter != null) {
-            mMovieAdapter.clear();
-            for (Movie movie : result) {
-                mMovieAdapter.add(movie);
-            }
-            // New data is back from the server.  Hooray!
-        }
     }
 }
