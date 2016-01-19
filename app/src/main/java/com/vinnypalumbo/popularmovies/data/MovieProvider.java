@@ -177,7 +177,7 @@ public class MovieProvider extends ContentProvider {
         Uri returnUri;
 
         switch (match) {
-            case WATCHLIST: {
+            case MOVIE: {
                 long _id = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
                     returnUri = MovieContract.MovieEntry.buildMovieUri(_id);
@@ -185,6 +185,13 @@ public class MovieProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
+            case WATCHLIST: {
+                long _id = db.insert(MovieContract.WatchlistEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = MovieContract.WatchlistEntry.buildWatchlistUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
