@@ -121,8 +121,8 @@ public class MovieContract {
         /*
             Student: This is the buildMovieId function you filled in.
          */
-        public static Uri buildMovieId(String movieId) {
-            return CONTENT_URI.buildUpon().appendPath(movieId).build();
+        public static Uri buildMovieId(int movieId) {
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(movieId)).build();
         }
 
 //        public static Uri buildWeatherLocationWithStartDate(

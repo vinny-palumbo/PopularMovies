@@ -22,7 +22,7 @@ public class MovieAdapter extends CursorAdapter {
         Movie.
      */
     private String convertCursorRowToUXFormat(Cursor cursor) {
-        return cursor.getString(MovieFragment.COL_MOVIE_POSTER);
+        return cursor.getString(MovieFragment.COL_MOVIE_TITLE);
     }
 
     /*

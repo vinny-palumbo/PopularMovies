@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 public class DetailActivityFragment extends Fragment {
 
     private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
+    private String mMovieStr;
 
     public DetailActivityFragment() {
     }
@@ -29,9 +30,11 @@ public class DetailActivityFragment extends Fragment {
 
         // The detail Activity called via intent.  Inspect the intent for movie data.
         Intent intent = getActivity().getIntent();
-        if (intent != null && intent.hasExtra("title") && intent.hasExtra("poster") && intent.hasExtra("plot")
-                && intent.hasExtra("rating") && intent.hasExtra("year")) {
+        if (intent != null) {
+            mMovieStr = intent.getDataString();
+        }
 
+        if (null != mMovieStr) {
             String titleStr = intent.getStringExtra("title");
             TextView titleTextView = (TextView) rootView.findViewById(R.id.detail_title);
             titleTextView.setText(titleStr);

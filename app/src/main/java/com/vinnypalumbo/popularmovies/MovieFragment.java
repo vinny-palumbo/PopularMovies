@@ -1,5 +1,6 @@
 package com.vinnypalumbo.popularmovies;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.vinnypalumbo.popularmovies.data.MovieContract;
@@ -60,6 +62,22 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
         // Get a reference to the ListView, and attach the Adapter to it
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
         gridView.setAdapter(mMovieAdapter);
+
+        // We'll call our MainActivity
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                // CursorAdapter returns a cursor at the correct position for getItem(), or null
+                // if it cannot seek to that position.
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                if (cursor != null) {
+                    Intent intent = new Intent(getActivity(), DetailActivityFragment.class)
+                                .setData(MovieContract.MovieEntry.buildMovieId(cursor.getInt(COL_MOVIE_ID)));
+                    startActivity(intent);
+                }
+            }
+        });
 
         return rootView;
     }
