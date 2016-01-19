@@ -19,6 +19,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -147,7 +148,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
-    private Movie[] getMovieDataFromJson(String movieJsonStr, String sortBySetting) throws JSONException {
+    private Movie[] getMovieDataFromJson(String movieJsonStr) throws JSONException {
 
         // The API gives us 20 movies
         final int numMovies = 20;
@@ -211,22 +212,28 @@ public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
 
             // add to database
             if ( cVVector.size() > 0 ) {
-                // Student: call bulkInsert to add the movieEntries to the database here
+                // Student: call bulkInsert to add the movie entries to the movie database here
+                ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                cVVector.toArray(cvArray);
+                mContext.getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
             }
 
-            // Students: Uncomment the next lines to display what what you stored in the bulkInsert
+            //TODO:  Not sure if it's the right thing to do here
+            Uri movieUri= MovieContract.MovieEntry.CONTENT_URI;
 
-//            Cursor cur = mContext.getContentResolver().query(weatherForLocationUri,
-//                    null, null, null, sortOrder);
-//
-//            cVVector = new Vector<ContentValues>(cur.getCount());
-//            if ( cur.moveToFirst() ) {
-//                do {
-//                    ContentValues cv = new ContentValues();
-//                    DatabaseUtils.cursorRowToContentValues(cur, cv);
-//                    cVVector.add(cv);
-//                } while (cur.moveToNext());
-//            }
+            // Students: Uncomment the next lines to display what you stored in the bulkInsert
+
+            Cursor cur = mContext.getContentResolver().query(movieUri,
+                    null, null, null, null);
+
+            cVVector = new Vector<ContentValues>(cur.getCount());
+            if ( cur.moveToFirst() ) {
+                do {
+                    ContentValues cv = new ContentValues();
+                    DatabaseUtils.cursorRowToContentValues(cur, cv);
+                    cVVector.add(cv);
+                } while (cur.moveToNext());
+            }
 
             Log.d(LOG_TAG, "FetchMovieTask Complete. " + cVVector.size() + " Inserted");
 
@@ -323,7 +330,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
         }
 
         try {
-            return getMovieDataFromJson(movieJsonStr, sortingQuery);
+            return getMovieDataFromJson(movieJsonStr);
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
