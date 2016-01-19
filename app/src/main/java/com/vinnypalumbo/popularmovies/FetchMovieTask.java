@@ -15,8 +15,10 @@
  */
 package com.vinnypalumbo.popularmovies;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -56,13 +58,14 @@ public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
         return String.valueOf(voteAverage) + "/10";
     }
 
-    private String formatReleaseDate(String releaseDate){
-        return releaseDate.substring(0,4);
+    private int formatReleaseDate(String releaseDate){
+        String year = releaseDate.substring(0,4);
+        return Integer.parseInt(year);
     }
 
     /**
      * Helper method to handle insertion of a new movies in the watchlist database.
-     *
+     * @param movie_id movie ID returned from the API
      * @param title A human-readable title, e.g "The Godfather"
      * @param poster the path of the movie's poster
      * @param plot the movie's plot synopsis
@@ -70,11 +73,47 @@ public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
      * @param date the movie's release date
      * @return the row ID of the added movie.
      */
-    long addToWatchlist(String title, String poster, String plot, String rating, int date) {
-        // Students: First, check if the movie with this title exists in the db
-        // If it exists, return the current ID
-        // Otherwise, insert it using the content resolver and the base URI
-        return -1;
+    long addToWatchlist(int movie_id, String title, String poster, String plot, double rating, int date) {
+        long watchlistId;
+
+        // First, check if the movie with this ID exists in the db
+        Cursor watchlistCursor = mContext.getContentResolver().query(
+                MovieContract.WatchlistEntry.CONTENT_URI,
+                new String[]{MovieContract.WatchlistEntry._ID},
+                MovieContract.WatchlistEntry.COLUMN_MOVIE_ID + " = ?",
+                new String[]{String.valueOf(movie_id)},
+                null);
+
+        if (watchlistCursor.moveToFirst()) {
+            int watchlistIdIndex = watchlistCursor.getColumnIndex(MovieContract.WatchlistEntry._ID);
+            watchlistId = watchlistCursor.getLong(watchlistIdIndex);
+        } else {
+            // Now that the content provider is set up, inserting rows of data is pretty simple.
+            // First create a ContentValues object to hold the data you want to insert.
+            ContentValues watchlistValues = new ContentValues();
+
+            // Then add the data, along with the corresponding name of the data type,
+            // so the content provider knows what kind of value is being inserted.
+            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_MOVIE_ID, movie_id);
+            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_TITLE, title);
+            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_POSTER, poster);
+            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_PLOT, plot);
+            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_RATING, rating);
+            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_DATE, date);
+
+            // Finally, insert movie data into the watchlist database.
+            Uri insertedUri = mContext.getContentResolver().insert(
+                    MovieContract.WatchlistEntry.CONTENT_URI,
+                    watchlistValues
+            );
+
+            // The resulting URI contains the ID for the row.  Extract the watchlistId from the Uri.
+            watchlistId = ContentUris.parseId(insertedUri);
+        }
+
+        watchlistCursor.close();
+        // Wait, that worked?  Yes!
+        return watchlistId;
     }
 
     /*
@@ -88,7 +127,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
         for ( int i = 0; i < cvv.size(); i++ ) {
             ContentValues movieValues = cvv.elementAt(i);
             String voteAverage = formatVoteAverage(movieValues.getAsDouble(MovieContract.MovieEntry.COLUMN_RATING));
-            String releaseDate = formatReleaseDate(movieValues.getAsString(MovieContract.MovieEntry.COLUMN_DATE));
+            int releaseDate = formatReleaseDate(movieValues.getAsString(MovieContract.MovieEntry.COLUMN_DATE));
             resultStrs[i] = new Movie(
                     movieValues.getAsInteger(MovieContract.MovieEntry.COLUMN_MOVIE_ID),
                     movieValues.getAsString(MovieContract.MovieEntry.COLUMN_TITLE),

@@ -45,7 +45,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 WatchlistEntry.COLUMN_POSTER + " TEXT NOT NULL, " +
                 WatchlistEntry.COLUMN_PLOT + " TEXT NOT NULL, " +
                 WatchlistEntry.COLUMN_RATING + " REAL NOT NULL, " +
-                WatchlistEntry.COLUMN_DATE + " TEXT NOT NULL " +
+                WatchlistEntry.COLUMN_DATE + " INTEGER NOT NULL " +
                 ");";
 
         final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + MovieEntry.TABLE_NAME + " (" +
@@ -55,7 +55,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 MovieEntry.COLUMN_POSTER + " TEXT NOT NULL, " +
                 MovieEntry.COLUMN_PLOT + " TEXT NOT NULL, " +
                 MovieEntry.COLUMN_RATING + " REAL NOT NULL, " +
-                MovieEntry.COLUMN_DATE + " TEXT NOT NULL " +
+                MovieEntry.COLUMN_DATE + " INTEGER NOT NULL " +
                 ");";
 
         sqLiteDatabase.execSQL(SQL_CREATE_WATCHLIST_TABLE);
