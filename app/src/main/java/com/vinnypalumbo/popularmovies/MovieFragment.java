@@ -20,6 +20,29 @@ import com.vinnypalumbo.popularmovies.data.MovieContract;
 public class MovieFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int MOVIE_LOADER = 0;
+
+    // For the movie view we're showing only a small subset of the stored data.
+    // Specify the columns we need.
+    private static final String[] MOVIE_COLUMNS = {
+            MovieContract.MovieEntry._ID,
+            MovieContract.MovieEntry.COLUMN_MOVIE_ID,
+            MovieContract.MovieEntry.COLUMN_TITLE,
+            MovieContract.MovieEntry.COLUMN_POSTER,
+            MovieContract.MovieEntry.COLUMN_PLOT,
+            MovieContract.MovieEntry.COLUMN_RATING,
+            MovieContract.MovieEntry.COLUMN_DATE
+    };
+
+    // These indices are tied to MOVIE_COLUMNS.  If MOVIE_COLUMNS changes, these
+    // must change.
+    static final int COL_ID = 0;
+    static final int COL_MOVIE_ID = 1;
+    static final int COL_MOVIE_TITLE = 2;
+    static final int COL_MOVIE_POSTER = 3;
+    static final int COL_MOVIE_PLOT = 4;
+    static final int COL_MOVIE_RATING = 5;
+    static final int COL_MOVIE_DATE = 6;
+
     private MovieAdapter mMovieAdapter;
 
     public MovieFragment() {
@@ -65,7 +88,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
         Uri movieUri = MovieContract.MovieEntry.CONTENT_URI;
         return new CursorLoader(getActivity(),
                 movieUri,
-                null,
+                MOVIE_COLUMNS,
                 null,
                 null,
                 null);

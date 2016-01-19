@@ -16,6 +16,8 @@ import com.squareup.picasso.Picasso;
  */
 public class DetailActivityFragment extends Fragment {
 
+    private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
+
     public DetailActivityFragment() {
     }
 

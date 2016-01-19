@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.vinnypalumbo.popularmovies.data.MovieContract;
-
 /**
  * {@link MovieAdapter} exposes a list of movies
  * from a {@link android.database.Cursor} to a {@link android.widget.GridView}.
@@ -24,19 +22,7 @@ public class MovieAdapter extends CursorAdapter {
         Movie.
      */
     private String convertCursorRowToUXFormat(Cursor cursor) {
-        // get row indices for our cursor
-        // int idx_movie_id = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_ID);
-        // int idx_title = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_TITLE);
-        int idx_poster = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_POSTER);
-        // int idx_plot = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_PLOT);
-        // int idx_rating = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_RATING);
-        // int idx_date = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_DATE);
-
-        // String rating = Utility.formatVoteAverage(cursor.getDouble(idx_rating));
-
-        // String year = Utility.formatReleaseDate(cursor.getInt(idx_date));
-
-        return cursor.getString(idx_poster);
+        return cursor.getString(MovieFragment.COL_MOVIE_POSTER);
     }
 
     /*
