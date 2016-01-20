@@ -150,7 +150,7 @@ public class TestProvider extends AndroidTestCase {
         assertEquals("Error: the MovieEntry CONTENT_URI should return MovieEntry.CONTENT_TYPE",
                 MovieContract.MovieEntry.CONTENT_TYPE, type);
 
-        String testMovieId = "140607";
+        int testMovieId = 140607;
         // content://com.vinnypalumbo.popularmovies/movie/140607
         type = mContext.getContentResolver().getType(
                 MovieContract.MovieEntry.buildMovieId(testMovieId));

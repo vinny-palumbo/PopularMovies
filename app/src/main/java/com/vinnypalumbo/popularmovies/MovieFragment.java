@@ -72,7 +72,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
                 // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (cursor != null) {
-                    Intent intent = new Intent(getActivity(), DetailActivityFragment.class)
+                    Intent intent = new Intent(getActivity(), DetailActivity.class)
                                 .setData(MovieContract.MovieEntry.buildMovieId(cursor.getInt(COL_MOVIE_ID)));
                     startActivity(intent);
                 }

@@ -25,7 +25,7 @@ import android.test.AndroidTestCase;
 public class TestMovieContract extends AndroidTestCase {
 
     // intentionally includes a slash to make sure Uri is getting quoted correctly
-    private static final String TEST_MOVIE_ID = "/140607";
+    private static final int TEST_MOVIE_ID = 140607;
 
     /*
         Students: Uncomment this out to test your buildMovieId function.

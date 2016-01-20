@@ -26,7 +26,7 @@ import android.test.AndroidTestCase;
     a nice compromise between data hiding and testability.
  */
 public class TestUriMatcher extends AndroidTestCase {
-    private static final String MOVIEID_QUERY = "140607";
+    private static final int MOVIEID_QUERY = 140607;
 
     // content://com.vinnypalumbo.popularmovies/movie"
     private static final Uri TEST_MOVIE_DIR = MovieContract.MovieEntry.CONTENT_URI;
