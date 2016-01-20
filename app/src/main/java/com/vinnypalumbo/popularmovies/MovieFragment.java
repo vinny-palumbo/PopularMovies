@@ -73,7 +73,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (cursor != null) {
                     Intent intent = new Intent(getActivity(), DetailActivity.class)
-                                .setData(MovieContract.MovieEntry.buildMovieId(cursor.getInt(COL_MOVIE_ID)));
+                            .setData(MovieContract.MovieEntry.buildMovieId(cursor.getInt(COL_MOVIE_ID)));
                     startActivity(intent);
                 }
             }
@@ -88,10 +88,10 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    // since we read the sort when we create the loader, all we need to do is restart things
+    void onSortChanged( ) {
         updateMovies();
+        getLoaderManager().restartLoader(MOVIE_LOADER, null, this);
     }
 
     private void updateMovies() {
