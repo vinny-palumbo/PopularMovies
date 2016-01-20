@@ -18,6 +18,9 @@
     <!-- Key name for sort preference in SharedPreferences [CHAR LIMIT=NONE] -->
     <string name="pref_sort_key" translatable="false">sort</string>
 
+    <!-- Default sort for sorting preference [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_default" translatable="false">popularity.desc</string>
+
     <!-- Value in SharedPreferences for popularity sort option [CHAR LIMIT=NONE] -->
     <string name="pref_sort_popularity" translatable="false">popularity.desc</string>
 

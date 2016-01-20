@@ -24,7 +24,7 @@ public class Utility {
     public static String getPreferredSorting(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(context.getString(R.string.pref_sort_key),
-                context.getString(R.string.pref_sort_popularity));
+                context.getString(R.string.pref_sort_default));
     }
 
     static String formatMovieId(int movieId){
