@@ -38,17 +38,20 @@ public class MovieProvider extends ContentProvider {
 
     static{
         sMovieQueryBuilder = new SQLiteQueryBuilder();
-        
-        //This is an inner join which looks like
-        //weather INNER JOIN location ON weather.location_id = location._id
+
         sMovieQueryBuilder.setTables(
                 MovieContract.MovieEntry.TABLE_NAME);
     }
 
     //watchlist.movie_id = ?
+//    private static final String sMovieIdSelection =
+//            MovieContract.WatchlistEntry.TABLE_NAME +
+//                    "." + MovieContract.WatchlistEntry.COLUMN_MOVIE_ID + " = ? ";
+
+    //movie.movie_id = ?
     private static final String sMovieIdSelection =
-            MovieContract.WatchlistEntry.TABLE_NAME +
-                    "." + MovieContract.WatchlistEntry.COLUMN_MOVIE_ID + " = ? ";
+            MovieContract.MovieEntry.TABLE_NAME +
+                    "." + MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ? ";
 
     private Cursor getMovieByMovieId(
             Uri uri, String[] projection, String sortOrder) {

@@ -27,6 +27,10 @@ public class Utility {
                 context.getString(R.string.pref_sort_popularity));
     }
 
+    static String formatMovieId(int movieId){
+        return String.valueOf(movieId);
+    }
+
     static String formatVoteAverage(double voteAverage){
         return String.valueOf(voteAverage) + "/10";
     }
