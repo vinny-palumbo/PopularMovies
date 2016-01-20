@@ -3,7 +3,6 @@ package com.vinnypalumbo.popularmovies;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,8 +18,6 @@ public class MainActivity extends AppCompatActivity {
         mSort = Utility.getPreferredSorting(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new MovieFragment(), MOVIEFRAGMENT_TAG)
