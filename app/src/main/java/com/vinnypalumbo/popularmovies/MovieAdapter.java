@@ -6,7 +6,9 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * {@link MovieAdapter} exposes a list of movies
@@ -15,14 +17,6 @@ import android.widget.TextView;
 public class MovieAdapter extends CursorAdapter {
     public MovieAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-    }
-
-    /*
-        This is ported from FetchMovieTask --- but now we go straight from the cursor to the
-        Movie.
-     */
-    private String convertCursorRowToUXFormat(Cursor cursor) {
-        return cursor.getString(MovieFragment.COL_MOVIE_TITLE);
     }
 
     /*
@@ -40,10 +34,12 @@ public class MovieAdapter extends CursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        // our view is pretty simple here --- just a text view
-        // we'll keep the UI functional with a simple (and slow!) binding.
+        final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500/";
 
-        TextView tv = (TextView)view;
-        tv.setText(convertCursorRowToUXFormat(cursor));
+        // Read poster path from cursor
+        String posterPath = cursor.getString(MovieFragment.COL_MOVIE_POSTER);
+
+        ImageView posterView = (ImageView) view.findViewById(R.id.grid_item_movie_imageview);
+        Picasso.with(context).load(IMAGE_BASE_URL + posterPath).into(posterView);
     }
 }
