@@ -21,9 +21,9 @@ import com.vinnypalumbo.popularmovies.data.MovieContract;
  * Created by Vincent on 2016-01-21.
  */
 
-public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
+    private static final String LOG_TAG = DetailFragment.class.getSimpleName();
 
     private static final int DETAIL_LOADER = 0;
 
@@ -53,7 +53,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private TextView mRatingView;
     private TextView mYearView;
 
-    public DetailActivityFragment() {
+    public DetailFragment() {
     }
 
     @Override
