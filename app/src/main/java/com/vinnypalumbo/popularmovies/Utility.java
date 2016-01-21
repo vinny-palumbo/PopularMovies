@@ -31,8 +31,8 @@ public class Utility {
         return String.valueOf(movieId);
     }
 
-    static String formatVoteAverage(double voteAverage){
-        return String.valueOf(voteAverage) + "/10";
+    static String formatVoteAverage(Context context, double voteAverage){
+        return context.getString(R.string.format_rating, voteAverage);
     }
 
     static String formatReleaseDate(int releaseDate){

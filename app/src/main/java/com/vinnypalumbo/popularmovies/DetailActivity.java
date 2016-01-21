@@ -136,7 +136,7 @@ public class DetailActivity extends AppCompatActivity {
 
             String plot = data.getString(COL_MOVIE_PLOT);
 
-            String rating = Utility.formatVoteAverage(
+            String rating = Utility.formatVoteAverage(getActivity(),
                     data.getDouble(COL_MOVIE_RATING));
 
             String year = Utility.formatReleaseDate(
