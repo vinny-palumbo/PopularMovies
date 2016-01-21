@@ -1,8 +1,11 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".MainActivity" tools:ignore="MergeRootFrame"
-    android:background="@color/black" >
-</FrameLayout>
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_movie"
+    android:name="com.vinnypalumbo.popularmovies.MovieFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.vinnypalumbo.popularmovies.MovieFragment"
+    tools:layout="@android:layout/list_content" />
+    <!--android:layout_marginLeft="16dp"-->
+    <!--android:layout_marginRight="16dp"-->
+
