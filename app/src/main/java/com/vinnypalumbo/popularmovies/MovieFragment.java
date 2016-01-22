@@ -19,6 +19,12 @@ import com.vinnypalumbo.popularmovies.data.MovieContract;
  * A placeholder fragment containing a simple view.
  */
 public class MovieFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private MovieAdapter mMovieAdapter;
+
+    private GridView mGridView;
+    private int mPosition = GridView.INVALID_POSITION;
+
+    private static final String SELECTED_KEY = "selected_position";
 
     private static final int MOVIE_LOADER = 0;
 
@@ -44,8 +50,6 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     static final int COL_MOVIE_RATING = 5;
     static final int COL_MOVIE_DATE = 6;
 
-    private MovieAdapter mMovieAdapter;
-
     /**
      * A callback interface that all activities containing this fragment must
      * implement. This mechanism allows activities to be notified of item
@@ -65,17 +69,18 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // The CursorAdapter will take data from our cursor and populate the GridView.
+        // The MovieAdapter will take data from a source and
+        // use it to populate the GridView it's attached to.
         mMovieAdapter = new MovieAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Get a reference to the ListView, and attach the Adapter to it
-        GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
-        gridView.setAdapter(mMovieAdapter);
+        mGridView = (GridView) rootView.findViewById(R.id.gridview_movie);
+        mGridView.setAdapter(mMovieAdapter);
 
         // We'll call our MainActivity
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -87,8 +92,20 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
                             .onItemSelected(MovieContract.MovieEntry.buildMovieId(
                                     cursor.getInt(COL_MOVIE_ID)));
                 }
+                mPosition = position;
             }
         });
+
+        // If there's instance state, mine it for useful information.
+        // The end-goal here is that the user never knows that turning their device sideways
+        // does crazy lifecycle related things.  It should feel like some stuff stretched out,
+        // or magically appeared to take advantage of room, but data or place in the app was never
+        // actually *lost*.
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
+            // The gridview probably hasn't even been populated yet.  Actually perform the
+            // swapout in onLoadFinished.
+            mPosition = savedInstanceState.getInt(SELECTED_KEY);
+        }
 
         return rootView;
     }
@@ -112,6 +129,17 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // When tablets rotate, the currently selected list item needs to be saved.
+        // When no item is selected, mPosition will be set to Listview.INVALID_POSITION,
+        // so check for that before storing.
+        if (mPosition != GridView.INVALID_POSITION) {
+            outState.putInt(SELECTED_KEY, mPosition);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
         Uri movieUri = MovieContract.MovieEntry.CONTENT_URI;
@@ -124,8 +152,13 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        mMovieAdapter.swapCursor(cursor);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mMovieAdapter.swapCursor(data);
+        if (mPosition != GridView.INVALID_POSITION) {
+            // If we don't need to restart the loader, and there's a desired position to restore
+            // to, do so now.
+            mGridView.smoothScrollToPosition(mPosition);
+        }
     }
 
     @Override
