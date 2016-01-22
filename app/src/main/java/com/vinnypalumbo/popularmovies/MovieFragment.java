@@ -1,6 +1,5 @@
 package com.vinnypalumbo.popularmovies;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,6 +46,18 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
 
     private MovieAdapter mMovieAdapter;
 
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(Uri movieIdUri);
+    }
+
     public MovieFragment() {
     }
 
@@ -72,9 +83,9 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
                 // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (cursor != null) {
-                    Intent intent = new Intent(getActivity(), DetailActivity.class)
-                            .setData(MovieContract.MovieEntry.buildMovieId(cursor.getInt(COL_MOVIE_ID)));
-                    startActivity(intent);
+                    ((Callback) getActivity())
+                            .onItemSelected(MovieContract.MovieEntry.buildMovieId(
+                                    cursor.getInt(COL_MOVIE_ID)));
                 }
             }
         });
