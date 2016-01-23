@@ -1,0 +1,9 @@
+<resources>
+    <!--
+    For more on layout aliases, see:
+    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+    -->
+
+    <!-- Replace fragment detail view with more narrow layout.-->
+    <item type="layout" name="fragment_detail">@layout/fragment_detail_narrow</item>
+</resources>
