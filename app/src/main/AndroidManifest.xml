@@ -40,6 +40,7 @@
         <provider
             android:authorities="com.vinnypalumbo.popularmovies"
             android:name=".data.MovieProvider" />
+        <service android:name=".service.PopularMoviesService"/>
     </application>
 
 </manifest>

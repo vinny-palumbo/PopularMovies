@@ -1,5 +1,6 @@
 package com.vinnypalumbo.popularmovies;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.vinnypalumbo.popularmovies.data.MovieContract;
+import com.vinnypalumbo.popularmovies.service.PopularMoviesService;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -123,9 +125,10 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     private void updateMovies() {
-        FetchMovieTask movieTask = new FetchMovieTask(getActivity());
-        String sorting = Utility.getPreferredSorting(getActivity());
-        movieTask.execute(sorting);
+        Intent intent = new Intent(getActivity(), PopularMoviesService.class);
+        intent.putExtra(PopularMoviesService.SORTING_QUERY_EXTRA,
+        Utility.getPreferredSorting(getActivity()));
+        getActivity().startService(intent);
     }
 
     @Override
