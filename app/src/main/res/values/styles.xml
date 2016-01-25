@@ -3,13 +3,17 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/sunshine_dark_grey</item>
-        <item name="colorPrimaryDark">@color/sunshine_black</item>
+        <item name="colorPrimary">@color/dark_grey</item>
+        <item name="colorPrimaryDark">@color/black</item>
     </style>
 
     <!-- Main activity theme. -->
     <style name="MovieTheme" parent="AppTheme">
         <item name="actionBarStyle">@style/ActionBar.Solid.PopularMovies.NoTitle</item>
+    </style>
+
+    <!-- Settings activity theme. -->
+    <style name="SettingsTheme" parent="AppTheme">
     </style>
 
     <!-- main activity action bar styles -->
