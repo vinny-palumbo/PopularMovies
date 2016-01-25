@@ -36,61 +36,75 @@
             android:paddingRight="16dp"
             android:paddingBottom="16dp">
 
-            <!-- poster -->
-            <ImageView
-                android:id="@+id/detail_poster"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
             <LinearLayout
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="16dp"
-                android:paddingStart="16dp"
-                android:paddingRight="16dp"
-                android:paddingEnd="16dp">
+                android:layout_width="0dp"
+                android:orientation="horizontal">
 
-                <!-- release year -->
-                <TextView
-                    android:fontFamily="sans-serif-light"
-                    android:id="@+id/detail_year"
+                <!-- poster -->
+                <ImageView
+                    android:layout_weight="1"
+                    android:id="@+id/detail_poster"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:textSize="30sp" />
+                    android:adjustViewBounds="true"/>
 
-                <!-- rating -->
-                <TextView
-                    android:id="@+id/detail_rating"
+                <LinearLayout
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:textColor="@android:color/secondary_text_light"
-                    android:textSize="20sp" />
-
-                <!-- favorite button -->
-                <Button
-                    android:fontFamily="sans-serif-light"
-                    android:id="@+id/detail_favorite"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:textSize="15dp"
-                    android:text="ADD TO\nWATCHLIST"
+                    android:layout_width="0dp"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical"
                     android:gravity="center"
-                    android:backgroundTint="@color/favoriteButton"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/favoriteText"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp" />
+                    android:paddingLeft="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingEnd="16dp">
 
+                    <!-- release year -->
+                    <TextView
+                        android:fontFamily="sans-serif-light"
+                        android:id="@+id/detail_year"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textSize="30sp" />
+
+                    <!-- rating -->
+                    <TextView
+                        android:id="@+id/detail_rating"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textColor="@android:color/secondary_text_light"
+                        android:textSize="20sp" />
+
+                    <!-- favorite button -->
+                    <Button
+                        android:fontFamily="sans-serif-light"
+                        android:id="@+id/detail_favorite"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textSize="15dp"
+                        android:text="ADD TO\nWATCHLIST"
+                        android:gravity="center"
+                        android:backgroundTint="@color/favoriteButton"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/favoriteText"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <!-- plot synopsis -->
             <TextView
+                android:layout_weight="1"
                 android:id="@+id/detail_plot"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:paddingTop="16dp" />
 
