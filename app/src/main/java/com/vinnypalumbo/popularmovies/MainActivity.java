@@ -1,6 +1,7 @@
 package com.vinnypalumbo.popularmovies;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,12 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // force landscape orientation on tablets
+        if(getResources().getBoolean(R.bool.landscape_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+
         mSort = Utility.getPreferredSorting(this);
         setContentView(R.layout.activity_main);
         if (findViewById(R.id.movie_detail_container) != null) {
