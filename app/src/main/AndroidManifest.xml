@@ -41,6 +41,7 @@
             android:authorities="com.vinnypalumbo.popularmovies"
             android:name=".data.MovieProvider" />
         <service android:name=".service.PopularMoviesService"/>
+        <receiver android:name=".service.PopularMoviesService$AlarmReceiver" android:enabled="true"/>
     </application>
 
 </manifest>

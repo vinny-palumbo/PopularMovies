@@ -1,8 +1,10 @@
 package com.vinnypalumbo.popularmovies.service;
 
 import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -196,7 +198,7 @@ public class PopularMoviesService extends IntentService {
                 this.getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
             }
 
-            Log.d(LOG_TAG, "FetchMovieTask Complete. " + inserted + " Inserted");
+            Log.d(LOG_TAG, "Fetch Movies Service Complete. " + inserted + " Inserted");
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
@@ -256,4 +258,14 @@ public class PopularMoviesService extends IntentService {
         // Wait, that worked?  Yes!
         return watchlistId;
     }
+
+    public static class AlarmReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Intent sendIntent = new Intent(context, PopularMoviesService.class);
+            sendIntent.putExtra(PopularMoviesService.SORTING_QUERY_EXTRA, intent.getStringExtra(PopularMoviesService.SORTING_QUERY_EXTRA));
+            context.startService(sendIntent);
+        }
+    }
+
 }
