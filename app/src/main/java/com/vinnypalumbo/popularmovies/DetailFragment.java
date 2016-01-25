@@ -103,7 +103,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w342/";
+        final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500/";
 
         if (data != null && data.moveToFirst()) {
             // Read movie ID from cursor
