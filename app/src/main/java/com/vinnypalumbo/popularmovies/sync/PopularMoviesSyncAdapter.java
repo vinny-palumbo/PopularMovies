@@ -1,17 +1,22 @@
-package com.vinnypalumbo.popularmovies.service;
+package com.vinnypalumbo.popularmovies.sync;
 
-import android.app.IntentService;
-import android.content.BroadcastReceiver;
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.AbstractThreadedSyncAdapter;
+import android.content.ContentProviderClient;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
+import android.content.SyncResult;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.vinnypalumbo.popularmovies.BuildConfig;
-import com.vinnypalumbo.popularmovies.MovieAdapter;
+import com.vinnypalumbo.popularmovies.R;
+import com.vinnypalumbo.popularmovies.Utility;
 import com.vinnypalumbo.popularmovies.data.MovieContract;
 
 import org.json.JSONArray;
@@ -27,19 +32,19 @@ import java.net.URL;
 import java.util.Vector;
 
 /**
- * Created by Vincent on 2016-01-25.
+ * Created by Vincent on 2016-01-26.
  */
-public class PopularMoviesService extends IntentService {
-    private MovieAdapter mMovieAdapter;
-    public static final String SORTING_QUERY_EXTRA = "sqe";
-    private final String LOG_TAG = PopularMoviesService.class.getSimpleName();
-    public PopularMoviesService() {
-        super("Popular Movies");
+public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
+    public final String LOG_TAG = PopularMoviesSyncAdapter.class.getSimpleName();
+
+    public PopularMoviesSyncAdapter(Context context, boolean autoInitialize) {
+        super(context, autoInitialize);
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        String sortingQuery = intent.getStringExtra(SORTING_QUERY_EXTRA);
+    public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
+        Log.d(LOG_TAG, "Starting sync");
+        String sortingQuery = Utility.getPreferredSorting(getContext());
 
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
@@ -195,7 +200,7 @@ public class PopularMoviesService extends IntentService {
                 // Student: call bulkInsert to add the movie entries to the movie database here
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
-                this.getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
+                getContext().getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
             }
 
             Log.d(LOG_TAG, "Fetch Movies Service Complete. " + inserted + " Inserted");
@@ -220,7 +225,7 @@ public class PopularMoviesService extends IntentService {
         long watchlistId;
 
         // First, check if the movie with this ID exists in the db
-        Cursor watchlistCursor = this.getContentResolver().query(
+        Cursor watchlistCursor = getContext().getContentResolver().query(
                 MovieContract.WatchlistEntry.CONTENT_URI,
                 new String[]{MovieContract.WatchlistEntry._ID},
                 MovieContract.WatchlistEntry.COLUMN_MOVIE_ID + " = ?",
@@ -245,7 +250,7 @@ public class PopularMoviesService extends IntentService {
             watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_DATE, date);
 
             // Finally, insert movie data into the watchlist database.
-            Uri insertedUri = this.getContentResolver().insert(
+            Uri insertedUri = getContext().getContentResolver().insert(
                     MovieContract.WatchlistEntry.CONTENT_URI,
                     watchlistValues
             );
@@ -259,13 +264,53 @@ public class PopularMoviesService extends IntentService {
         return watchlistId;
     }
 
-    public static class AlarmReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Intent sendIntent = new Intent(context, PopularMoviesService.class);
-            sendIntent.putExtra(PopularMoviesService.SORTING_QUERY_EXTRA, intent.getStringExtra(PopularMoviesService.SORTING_QUERY_EXTRA));
-            context.startService(sendIntent);
-        }
+    /**
+     * Helper method to have the sync adapter sync immediately
+     * @param context The context used to access the account service
+     */
+    public static void syncImmediately(Context context) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        ContentResolver.requestSync(getSyncAccount(context),
+                context.getString(R.string.content_authority), bundle);
     }
 
+    /**
+     * Helper method to get the fake account to be used with SyncAdapter, or make a new one
+     * if the fake account doesn't exist yet.  If we make a new account, we call the
+     * onAccountCreated method so we can initialize things.
+     *
+     * @param context The context used to access the account service
+     * @return a fake account.
+     */
+    public static Account getSyncAccount(Context context) {
+        // Get an instance of the Android account manager
+        AccountManager accountManager =
+                (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
+
+        // Create the account type and default account
+        Account newAccount = new Account(
+                context.getString(R.string.app_name), context.getString(R.string.sync_account_type));
+
+        // If the password doesn't exist, the account doesn't exist
+        if ( null == accountManager.getPassword(newAccount) ) {
+
+        /*
+         * Add the account and account type, no password or user data
+         * If successful, return the Account object, otherwise report an error.
+         */
+            if (!accountManager.addAccountExplicitly(newAccount, "", null)) {
+                return null;
+            }
+            /*
+             * If you don't set android:syncable="true" in
+             * in your <provider> element in the manifest,
+             * then call ContentResolver.setIsSyncable(account, AUTHORITY, 1)
+             * here.
+             */
+
+        }
+        return newAccount;
+    }
 }
