@@ -1,26 +1,26 @@
-package com.example.android.sunshine.app.data;
+package com.vinnypalumbo.popularmovies.data;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.test.AndroidTestCase;
 
-import com.example.android.sunshine.app.utils.PollingCheck;
+import com.vinnypalumbo.popularmovies.utils.PollingCheck;
 
 import java.util.Map;
 import java.util.Set;
 
 /*
     Students: These are functions and some test data to make it easier to test your database and
-    Content Provider.  Note that you'll want your WeatherContract class to exactly match the one
+    Content Provider.  Note that you'll want your MovieContract class to exactly match the one
     in our solution to use these as-given.
  */
 public class TestUtilities extends AndroidTestCase {
-    static final String TEST_LOCATION = "99705";
-    static final long TEST_DATE = 1419033600L;  // December 20th, 2014
 
     static void validateCursor(String error, Cursor valueCursor, ContentValues expectedValues) {
         assertTrue("Empty cursor returned. " + error, valueCursor.moveToFirst());
@@ -42,57 +42,55 @@ public class TestUtilities extends AndroidTestCase {
     }
 
     /*
-        Students: Use this to create some default weather values for your database tests.
+        Students: Use this to create some default movie values for your database tests.
      */
-    static ContentValues createWeatherValues(long locationRowId) {
-        ContentValues weatherValues = new ContentValues();
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_LOC_KEY, locationRowId);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, TEST_DATE);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, 1.1);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, 1.2);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, 1.3);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, 75);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, 65);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC, "Asteroids");
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, 5.5);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, 321);
+    static ContentValues createMovieValues() {
+        ContentValues movieValues = new ContentValues();
+        movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, 140607);
+        movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, "Star Wars: The Force Awakens");
+        movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER, "\\/fYzpM9GmpBlIC893fNjoWCwE24H.jpg");
+        movieValues.put(MovieContract.MovieEntry.COLUMN_PLOT, "Thirty years after defeating the Galactic Empire, Han Solo and his allies face a new threat from the evil Kylo Ren and his army of Stormtroopers.");
+        movieValues.put(MovieContract.MovieEntry.COLUMN_RATING, 7.93);
+        movieValues.put(MovieContract.MovieEntry.COLUMN_DATE, "2015-09-11");
 
-        return weatherValues;
+        return movieValues;
     }
 
     /*
         Students: You can uncomment this helper function once you have finished creating the
-        LocationEntry part of the WeatherContract.
+        WatchlistEntry part of the MovieContract.
      */
-//    static ContentValues createNorthPoleLocationValues() {
-//        // Create a new map of values, where column names are the keys
-//        ContentValues testValues = new ContentValues();
-//        testValues.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, TEST_LOCATION);
-//        testValues.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, "North Pole");
-//        testValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, 64.7488);
-//        testValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, -147.353);
-//
-//        return testValues;
-//    }
+    static ContentValues createWatchlistValues() {
+        // Create a new map of values, where column names are the keys
+        ContentValues watchlistValues = new ContentValues();
+        watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_MOVIE_ID, 140607);
+        watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_TITLE, "Star Wars: The Force Awakens");
+        watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_POSTER, "\\/fYzpM9GmpBlIC893fNjoWCwE24H.jpg");
+        watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_PLOT, "Thirty years after defeating the Galactic Empire, Han Solo and his allies face a new threat from the evil Kylo Ren and his army of Stormtroopers.");
+        watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_RATING, 7.93);
+        watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_DATE, "2015-09-11");
+
+        return watchlistValues;
+    }
 
     /*
         Students: You can uncomment this function once you have finished creating the
-        LocationEntry part of the WeatherContract as well as the WeatherDbHelper.
+        WatchlistEntry part of the MovieContract as well as the MovieDbHelper.
      */
-//    static long insertNorthPoleLocationValues(Context context) {
-//        // insert our test records into the database
-//        WeatherDbHelper dbHelper = new WeatherDbHelper(context);
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//        ContentValues testValues = TestUtilities.createNorthPoleLocationValues();
-//
-//        long locationRowId;
-//        locationRowId = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null, testValues);
-//
-//        // Verify we got a row back.
-//        assertTrue("Error: Failure to insert North Pole Location Values", locationRowId != -1);
-//
-//        return locationRowId;
-//    }
+    static long insertWatchlistValues(Context context) {
+        // insert our test records into the database
+        MovieDbHelper dbHelper = new MovieDbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues testValues = TestUtilities.createWatchlistValues();
+
+        long watchlistRowId;
+        watchlistRowId = db.insert(MovieContract.WatchlistEntry.TABLE_NAME, null, testValues);
+
+        // Verify we got a row back.
+        assertTrue("Error: Failure to insert North Pole Location Values", watchlistRowId != -1);
+
+        return watchlistRowId;
+    }
 
     /*
         Students: The functions we provide inside of TestProvider use this utility class to test

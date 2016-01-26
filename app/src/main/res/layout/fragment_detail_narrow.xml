@@ -17,7 +17,7 @@
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         android:background="@color/purple"
-        android:minHeight="80dp"
+        android:minHeight="120dp"
         android:textSize="35sp"
         android:gravity="center_vertical"/>
 
@@ -26,21 +26,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Main content: poster, release year, rating -->
         <LinearLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingTop="8dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="16dp">
 
-
+            <!-- Main content: poster, release year, rating -->
             <LinearLayout
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
                 android:orientation="horizontal">
 
                 <!-- poster -->
@@ -49,11 +47,11 @@
                     android:id="@+id/detail_poster"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"/>
+                    android:adjustViewBounds="true" />
 
                 <LinearLayout
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:orientation="vertical"
                     android:layout_gravity="center_vertical"
@@ -91,8 +89,8 @@
                         android:backgroundTint="@color/favoriteButton"
                         android:layout_marginTop="10dp"
                         android:textColor="@color/favoriteText"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp" />
 
@@ -101,10 +99,9 @@
 
             <!-- plot synopsis -->
             <TextView
-                android:layout_weight="1"
                 android:id="@+id/detail_plot"
                 android:layout_height="wrap_content"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:paddingTop="16dp" />
 

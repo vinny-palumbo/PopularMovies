@@ -7,16 +7,17 @@ import android.os.Parcelable;
  * Created by Vincent on 2015-11-19.
  */
 public class Movie implements Parcelable {
-
+    int movieId;
     String originalTitle;
     String posterPath;
     String overview;
     String voteAverage;
-    String releaseDate;
+    int releaseDate;
 
 
-    public Movie(String title, String poster, String plot, String rating, String date)
+    public Movie(int movieId, String title, String poster, String plot, String rating, int date)
     {
+        this.movieId = movieId;
         this.originalTitle = title;
         this.posterPath = poster;
         this.overview = plot;
@@ -25,11 +26,12 @@ public class Movie implements Parcelable {
     }
 
     private Movie(Parcel in){
+        movieId = in.readInt();
         originalTitle = in.readString();
         posterPath = in.readString();
         overview = in.readString();
         voteAverage = in.readString();
-        releaseDate = in.readString();
+        releaseDate = in.readInt();
     }
 
     @Override
@@ -37,15 +39,16 @@ public class Movie implements Parcelable {
         return 0;
     }
 
-    public String toString() { return originalTitle + " -- " + posterPath + " -- " + overview + " -- " + voteAverage + " -- " + releaseDate; }
+    public String toString() { return String.valueOf(movieId) + "--" + originalTitle + " -- " + posterPath + " -- " + overview + " -- " + voteAverage + " -- " + releaseDate; }
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(movieId);
         parcel.writeString(originalTitle);
         parcel.writeString(posterPath);
         parcel.writeString(overview);
         parcel.writeString(voteAverage);
-        parcel.writeString(releaseDate);
+        parcel.writeInt(releaseDate);
     }
 
     public final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {

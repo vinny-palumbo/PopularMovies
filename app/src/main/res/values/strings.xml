@@ -1,4 +1,5 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <string name="app_name">Popular Movies</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_detail">Details</string>
@@ -18,9 +19,24 @@
     <!-- Key name for sort preference in SharedPreferences [CHAR LIMIT=NONE] -->
     <string name="pref_sort_key" translatable="false">sort</string>
 
+    <!-- Default sort for sorting preference [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_default" translatable="false">popularity.desc</string>
+
     <!-- Value in SharedPreferences for popularity sort option [CHAR LIMIT=NONE] -->
     <string name="pref_sort_popularity" translatable="false">popularity.desc</string>
 
     <!-- Value in SharedPreferences for rating sort option [CHAR LIMIT=NONE] -->
     <string name="pref_sort_rating" translatable="false">vote_average.desc</string>
+
+
+
+
+
+    <!-- Strings for formatting movie-related data -->
+    <!-- Rating format [CHAR LIMIT=5 -->
+    <string name="format_rating"><xliff:g id="rating">%1.1f</xliff:g>"/10"</string>
+
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">popularmovies.vinnypalumbo.com</string>
+    <string name="content_authority">com.vinnypalumbo.popularmovies</string>
 </resources>
