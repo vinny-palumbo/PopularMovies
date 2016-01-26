@@ -204,13 +204,15 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
             int inserted = 0;
             // add to database
             if ( cVVector.size() > 0 ) {
+                // delete old data so we don't build up an endless history
+                getContext().getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, null, null);
                 // Student: call bulkInsert to add the movie entries to the movie database here
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
                 getContext().getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
             }
 
-            Log.d(LOG_TAG, "Fetch Movies Service Complete. " + inserted + " Inserted");
+            Log.d(LOG_TAG, "Sync Complete. " + inserted + " Inserted");
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
