@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.vinnypalumbo.popularmovies.sync.PopularMoviesSyncAdapter;
+
 public class MainActivity extends AppCompatActivity implements MovieFragment.Callback {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
             mTwoPane = false;
             getSupportActionBar().setElevation(0f);
         }
+
+        PopularMoviesSyncAdapter.initializeSyncAdapter(this);
     }
 
     @Override

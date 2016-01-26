@@ -46,7 +46,7 @@
                 android:value="com.vinnypalumbo.popularmovies.MainActivity" />
         </activity>
         <provider
-            android:authorities="com.vinnypalumbo.popularmovies"
+            android:authorities="@string/content_authority"
             android:name=".data.MovieProvider"
             android:exported="false"
             android:syncable="true" />
