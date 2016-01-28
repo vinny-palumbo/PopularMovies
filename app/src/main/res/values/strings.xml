@@ -9,27 +9,23 @@
 
     <!-- Label for the sort preference [CHAR LIMIT=30] -->
     <string name="pref_sort_label">Sort by</string>
-
     <!-- Label for popularity option in sort preference [CHAR LIMIT=25] -->
     <string name="pref_sort_label_popularity">Most Popular</string>
-
     <!-- Label for rating option in sort preference [CHAR LIMIT=25] -->
     <string name="pref_sort_label_rating">Highest Rated</string>
-
     <!-- Key name for sort preference in SharedPreferences [CHAR LIMIT=NONE] -->
     <string name="pref_sort_key" translatable="false">sort</string>
-
     <!-- Default sort for sorting preference [CHAR LIMIT=NONE] -->
     <string name="pref_sort_default" translatable="false">popularity.desc</string>
-
     <!-- Value in SharedPreferences for popularity sort option [CHAR LIMIT=NONE] -->
     <string name="pref_sort_popularity" translatable="false">popularity.desc</string>
-
     <!-- Value in SharedPreferences for rating sort option [CHAR LIMIT=NONE] -->
     <string name="pref_sort_rating" translatable="false">vote_average.desc</string>
 
 
-
+    <!-- Strings for the Toggle button  -->
+    <string name="button_text_on">ADDED TO\nWATCHLIST</string>
+    <string name="button_text_off">ADD TO\nWATCHLIST</string>
 
 
     <!-- Strings for formatting movie-related data -->
