@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
@@ -95,8 +96,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     addToWatchlist(movieId, title, poster, plot, rating, year);
+                    Toast.makeText(getContext(), R.string.button_on_toast, Toast.LENGTH_SHORT).show();
                 } else {
                     // The toggle is disabled, delete from watchlist
+                    Toast.makeText(getContext(), R.string.button_off_toast, Toast.LENGTH_SHORT).show();
                 }
             }
         });
