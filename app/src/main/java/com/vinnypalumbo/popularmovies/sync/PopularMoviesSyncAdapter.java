@@ -5,12 +5,10 @@ import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -218,59 +216,6 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Helper method to handle insertion of a new movies in the watchlist database.
-     * @param movie_id movie ID returned from the API
-     * @param title A human-readable title, e.g "The Godfather"
-     * @param poster the path of the movie's poster
-     * @param plot the movie's plot synopsis
-     * @param rating the movie's average vote
-     * @param date the movie's release date
-     * @return the row ID of the added movie.
-     */
-    long addToWatchlist(int movie_id, String title, String poster, String plot, double rating, int date) {
-        long watchlistId;
-
-        // First, check if the movie with this ID exists in the db
-        Cursor watchlistCursor = getContext().getContentResolver().query(
-                MovieContract.WatchlistEntry.CONTENT_URI,
-                new String[]{MovieContract.WatchlistEntry._ID},
-                MovieContract.WatchlistEntry.COLUMN_MOVIE_ID + " = ?",
-                new String[]{String.valueOf(movie_id)},
-                null);
-
-        if (watchlistCursor.moveToFirst()) {
-            int watchlistIdIndex = watchlistCursor.getColumnIndex(MovieContract.WatchlistEntry._ID);
-            watchlistId = watchlistCursor.getLong(watchlistIdIndex);
-        } else {
-            // Now that the content provider is set up, inserting rows of data is pretty simple.
-            // First create a ContentValues object to hold the data you want to insert.
-            ContentValues watchlistValues = new ContentValues();
-
-            // Then add the data, along with the corresponding name of the data type,
-            // so the content provider knows what kind of value is being inserted.
-            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_MOVIE_ID, movie_id);
-            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_TITLE, title);
-            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_POSTER, poster);
-            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_PLOT, plot);
-            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_RATING, rating);
-            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_DATE, date);
-
-            // Finally, insert movie data into the watchlist database.
-            Uri insertedUri = getContext().getContentResolver().insert(
-                    MovieContract.WatchlistEntry.CONTENT_URI,
-                    watchlistValues
-            );
-
-            // The resulting URI contains the ID for the row.  Extract the watchlistId from the Uri.
-            watchlistId = ContentUris.parseId(insertedUri);
-        }
-
-        watchlistCursor.close();
-        // Wait, that worked?  Yes!
-        return watchlistId;
     }
 
     /**
