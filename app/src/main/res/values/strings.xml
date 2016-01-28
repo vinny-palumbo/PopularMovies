@@ -13,6 +13,8 @@
     <string name="pref_sort_label_popularity">Most Popular</string>
     <!-- Label for rating option in sort preference [CHAR LIMIT=25] -->
     <string name="pref_sort_label_rating">Highest Rated</string>
+    <!-- Label for watchlist option in sort preference [CHAR LIMIT=25] -->
+    <string name="pref_sort_label_watchlist">My Watchlist</string>
     <!-- Key name for sort preference in SharedPreferences [CHAR LIMIT=NONE] -->
     <string name="pref_sort_key" translatable="false">sort</string>
     <!-- Default sort for sorting preference [CHAR LIMIT=NONE] -->
@@ -21,6 +23,8 @@
     <string name="pref_sort_popularity" translatable="false">popularity.desc</string>
     <!-- Value in SharedPreferences for rating sort option [CHAR LIMIT=NONE] -->
     <string name="pref_sort_rating" translatable="false">vote_average.desc</string>
+    <!-- Value in SharedPreferences for watchlist sort option [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_watchlist" translatable="false">watchlist</string>
 
 
     <!-- Strings for the Toggle button  -->
