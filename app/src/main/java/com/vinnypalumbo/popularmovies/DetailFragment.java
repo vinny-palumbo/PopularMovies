@@ -93,7 +93,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         // add or delete movie from watchlist when toggle button changed
         mToggleButton = (ToggleButton) rootView.findViewById(R.id.detail_favorite);
-
         mToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -101,6 +100,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     Toast.makeText(getContext(), R.string.button_on_toast, Toast.LENGTH_SHORT).show();
                 } else {
                     // The toggle is disabled, delete from watchlist
+                    removeFromWatchlist(movieId);
                     Toast.makeText(getContext(), R.string.button_off_toast, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -179,6 +179,17 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         watchlistCursor.close();
         // Wait, that worked?  Yes!
         return watchlistId;
+    }
+
+    void removeFromWatchlist(int movieId){
+        Log.d("vinny-debug", "DetailFragment - removeFromWatchlist");
+
+        // Finally, insert movie data into the watchlist database.
+        getContext().getContentResolver().delete(
+                MovieContract.WatchlistEntry.CONTENT_URI,
+                MovieContract.WatchlistEntry.COLUMN_MOVIE_ID + " = ? ",
+                new String[]{Integer.toString(movieId)}
+        );
     }
 
     @Override
