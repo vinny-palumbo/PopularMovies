@@ -21,6 +21,8 @@ import com.vinnypalumbo.popularmovies.sync.PopularMoviesSyncAdapter;
  * A placeholder fragment containing a simple view.
  */
 public class MovieFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    public static boolean isWatchlistSelected;
+
     private MovieAdapter mMovieAdapter;
 
     private GridView mGridView;
@@ -30,27 +32,36 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
 
     private static final int MOVIE_LOADER = 0;
 
-    // For the movie view we're showing only a small subset of the stored data.
+
+    // For the movie gridview we're showing only a small subset of the stored data.
     // Specify the columns we need.
     private static final String[] MOVIE_COLUMNS = {
             MovieContract.MovieEntry._ID,
             MovieContract.MovieEntry.COLUMN_MOVIE_ID,
             MovieContract.MovieEntry.COLUMN_TITLE,
             MovieContract.MovieEntry.COLUMN_POSTER,
-            MovieContract.MovieEntry.COLUMN_PLOT,
-            MovieContract.MovieEntry.COLUMN_RATING,
-            MovieContract.MovieEntry.COLUMN_DATE
+    };
+
+    // For the watchlist gridview we're showing only a small subset of the stored data.
+    // Specify the columns we need.
+    private static final String[] WATCHLIST_COLUMNS = {
+            MovieContract.WatchlistEntry._ID,
+            MovieContract.WatchlistEntry.COLUMN_MOVIE_ID,
+            MovieContract.WatchlistEntry.COLUMN_TITLE,
+            MovieContract.WatchlistEntry.COLUMN_POSTER,
     };
 
     // These indices are tied to MOVIE_COLUMNS.  If MOVIE_COLUMNS changes, these
     // must change.
-    static final int COL_ID = 0;
     static final int COL_MOVIE_ID = 1;
-    static final int COL_MOVIE_TITLE = 2;
+//    static final int COL_MOVIE_TITLE = 2;
     static final int COL_MOVIE_POSTER = 3;
-    static final int COL_MOVIE_PLOT = 4;
-    static final int COL_MOVIE_RATING = 5;
-    static final int COL_MOVIE_DATE = 6;
+
+    // These indices are tied to WATCHLIST_COLUMNS.  If WATCHLIST_COLUMNS changes, these
+    // must change.
+    static final int COL_WATCHLIST_ID = 1;
+//    static final int COL_WATCHLIST_TITLE = 2;
+    static final int COL_WATCHLIST_POSTER = 3;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -72,7 +83,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
                              Bundle savedInstanceState) {
         Log.d("vinny-debug", "MovieFragment - onCreateView");
 
-        // The MovieAdapter will take data from a source and
+        // The COL_MOVIE_POSTER will take data from a source and
         // use it to populate the GridView it's attached to.
         mMovieAdapter = new MovieAdapter(getActivity(), null, 0);
 
@@ -90,10 +101,15 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
                 // CursorAdapter returns a cursor at the correct position for getItem(), or null
                 // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                Uri movieIdUri;
+                if(isWatchlistSelected){
+                    movieIdUri = MovieContract.WatchlistEntry.buildMovieId(cursor.getInt(COL_WATCHLIST_ID));
+                }else{
+                    movieIdUri = MovieContract.MovieEntry.buildMovieId(cursor.getInt(COL_MOVIE_ID));
+                }
+
                 if (cursor != null) {
-                    ((Callback) getActivity())
-                            .onItemSelected(MovieContract.MovieEntry.buildMovieId(
-                                    cursor.getInt(COL_MOVIE_ID)));
+                    ((Callback) getActivity()).onItemSelected(movieIdUri);
                 }
                 mPosition = position;
             }
@@ -115,15 +131,17 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(MOVIE_LOADER, null, this);
         Log.d("vinny-debug", "MovieFragment - onActivityCreated");
+        getLoaderManager().initLoader(MOVIE_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
     // since we read the sort when we create the loader, all we need to do is restart things
     void onSortChanged( ) {
-        updateMovies();
         Log.d("vinny-debug", "MovieFragment - onSortChanged:" + isWatchlistSelected);
+        if(!isWatchlistSelected){
+            updateMovies();
+        }
         getLoaderManager().restartLoader(MOVIE_LOADER, null, this);
     }
 
@@ -146,15 +164,24 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-
-        Uri movieUri = MovieContract.MovieEntry.CONTENT_URI;
-        return new CursorLoader(getActivity(),
-                movieUri,
-                MOVIE_COLUMNS,
-                null,
-                null,
-                null);
         Log.d("vinny-debug", "MovieFragment - onCreateLoader");
+        if(isWatchlistSelected){
+            Uri watchlistUri = MovieContract.WatchlistEntry.CONTENT_URI;
+            return new CursorLoader(getActivity(),
+                    watchlistUri,
+                    WATCHLIST_COLUMNS,
+                    null,
+                    null,
+                    null);
+        }else {
+            Uri movieUri = MovieContract.MovieEntry.CONTENT_URI;
+            return new CursorLoader(getActivity(),
+                    movieUri,
+                    MOVIE_COLUMNS,
+                    null,
+                    null,
+                    null);
+        }
     }
 
     @Override

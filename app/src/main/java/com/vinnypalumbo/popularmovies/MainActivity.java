@@ -29,7 +29,14 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
 
+        // show watchlist movies if watchlist sort option selected
         mSort = Utility.getPreferredSorting(this);
+        if(mSort.equals(getResources().getString(R.string.pref_sort_watchlist))){
+            MovieFragment.isWatchlistSelected = true;
+        }else{
+            MovieFragment.isWatchlistSelected = false;
+        }
+
         setContentView(R.layout.activity_main);
         if (findViewById(R.id.movie_detail_container) != null) {
             // The detail container view will be present only in the large-screen layouts
@@ -49,7 +56,10 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
             getSupportActionBar().setElevation(0f);
         }
 
-        PopularMoviesSyncAdapter.initializeSyncAdapter(this);
+        Log.d("vinny-debug", "MainActivity - onCreate: isWatchlistSelected:" + MovieFragment.isWatchlistSelected);
+        if(!MovieFragment.isWatchlistSelected){
+            PopularMoviesSyncAdapter.initializeSyncAdapter(this);
+        }
     }
 
     @Override
@@ -81,7 +91,15 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
     protected void onResume() {
         Log.d("vinny-debug", "MainActivity - onResume");
         super.onResume();
+
+        // show watchlist movies if watchlist sort option selected
         String sort = Utility.getPreferredSorting(this);
+        if(sort.equals(getResources().getString(R.string.pref_sort_watchlist))){
+            MovieFragment.isWatchlistSelected = true;
+        }else{
+            MovieFragment.isWatchlistSelected = false;
+        }
+
         // update the sorting in our second pane using the fragment manager
         if (sort != null && !sort.equals(mSort)) {
             MovieFragment mf = (MovieFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_movie);

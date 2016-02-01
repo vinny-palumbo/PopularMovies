@@ -81,6 +81,10 @@ public class MovieContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
+        public static Uri buildMovieId(int movieId) {
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(movieId)).build();
+        }
+
     }
 
     /* Inner class that defines the contents of the movie table */
