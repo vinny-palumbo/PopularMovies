@@ -85,6 +85,11 @@ public class MovieContract {
             return CONTENT_URI.buildUpon().appendPath(String.valueOf(movieId)).build();
         }
 
+        public static int getIdFromUri(Uri uri) {
+            Log.d("vinny-debug", "MovieContract - getIdFromUri");
+            return Integer.parseInt(uri.getPathSegments().get(1));
+        }
+
     }
 
     /* Inner class that defines the contents of the movie table */
@@ -123,26 +128,10 @@ public class MovieContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-        /*
-            Student: This is the buildMovieId function you filled in.
-         */
         public static Uri buildMovieId(int movieId) {
             Log.d("vinny-debug", "MovieContract - buildMovieId");
             return CONTENT_URI.buildUpon().appendPath(String.valueOf(movieId)).build();
         }
-
-//        public static Uri buildWeatherLocationWithStartDate(
-//                String locationSetting, long startDate) {
-//            long normalizedDate = normalizeDate(startDate);
-//            return CONTENT_URI.buildUpon().appendPath(locationSetting)
-//                    .appendQueryParameter(COLUMN_DATE, Long.toString(normalizedDate)).build();
-//        }
-//
-//        public static Uri buildWeatherLocationWithDate(String locationSetting, long date) {
-//            return CONTENT_URI.buildUpon().appendPath(locationSetting)
-//                    .appendPath(Long.toString(normalizeDate(date))).build();
-//        }
-//
 
         public static int getIdFromUri(Uri uri) {
             Log.d("vinny-debug", "MovieContract - getIdFromUri");

@@ -25,6 +25,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 
+import com.vinnypalumbo.popularmovies.MovieFragment;
+
 public class MovieProvider extends ContentProvider {
 
     // The URI Matcher used by this content provider.
@@ -34,39 +36,57 @@ public class MovieProvider extends ContentProvider {
     static final int MOVIE = 100;
     static final int MOVIE_WITH_ID = 101;
     static final int WATCHLIST = 300;
+    static final int WATCHLIST_WITH_ID = 301;
 
     private static final SQLiteQueryBuilder sMovieQueryBuilder;
+    private static final SQLiteQueryBuilder sWatchlistQueryBuilder;
 
     static{
         sMovieQueryBuilder = new SQLiteQueryBuilder();
+        sWatchlistQueryBuilder = new SQLiteQueryBuilder();
 
         sMovieQueryBuilder.setTables(
                 MovieContract.MovieEntry.TABLE_NAME);
+        sWatchlistQueryBuilder.setTables(
+                MovieContract.WatchlistEntry.TABLE_NAME);
     }
-
-    //watchlist.movie_id = ?
-//    private static final String sMovieIdSelection =
-//            MovieContract.WatchlistEntry.TABLE_NAME +
-//                    "." + MovieContract.WatchlistEntry.COLUMN_MOVIE_ID + " = ? ";
 
     //movie.movie_id = ?
     private static final String sMovieIdSelection =
             MovieContract.MovieEntry.TABLE_NAME +
                     "." + MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ? ";
 
+    //watchlist.movie_id = ?
+    private static final String sWatchlistIdSelection =
+            MovieContract.WatchlistEntry.TABLE_NAME +
+                    "." + MovieContract.WatchlistEntry.COLUMN_MOVIE_ID + " = ? ";
+
     private Cursor getMovieByMovieId(
             Uri uri, String[] projection, String sortOrder) {
         Log.d("vinny-debug", "MovieProvider - getMovieByMovieId");
-        int id = MovieContract.MovieEntry.getIdFromUri(uri);
+        int id;
 
-        return sMovieQueryBuilder.query(mOpenHelper.getReadableDatabase(),
-                projection,
-                sMovieIdSelection,
-                new String[]{Integer.toString(id)},
-                null,
-                null,
-                sortOrder
-        );
+        if(MovieFragment.isWatchlistSelected){
+            id = MovieContract.WatchlistEntry.getIdFromUri(uri);
+            return sWatchlistQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                    projection,
+                    sWatchlistIdSelection,
+                    new String[]{Integer.toString(id)},
+                    null,
+                    null,
+                    sortOrder
+            );
+        }else{
+            id = MovieContract.MovieEntry.getIdFromUri(uri);
+            return sMovieQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                    projection,
+                    sMovieIdSelection,
+                    new String[]{Integer.toString(id)},
+                    null,
+                    null,
+                    sortOrder
+            );
+        }
     }
 
     /*
@@ -90,6 +110,7 @@ public class MovieProvider extends ContentProvider {
         matcher.addURI(authority, MovieContract.PATH_MOVIE + "/#", MOVIE_WITH_ID);
 
         matcher.addURI(authority, MovieContract.PATH_WATCHLIST, WATCHLIST);
+        matcher.addURI(authority, MovieContract.PATH_WATCHLIST + "/#", WATCHLIST_WITH_ID);
         return matcher;
     }
 
@@ -120,6 +141,8 @@ public class MovieProvider extends ContentProvider {
                 return MovieContract.MovieEntry.CONTENT_ITEM_TYPE;
             case MOVIE:
                 return MovieContract.MovieEntry.CONTENT_TYPE;
+            case WATCHLIST_WITH_ID:
+                return MovieContract.WatchlistEntry.CONTENT_ITEM_TYPE;
             case WATCHLIST:
                 return MovieContract.WatchlistEntry.CONTENT_TYPE;
             default:
@@ -152,6 +175,12 @@ public class MovieProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
+                break;
+            }
+            // "watchlist/#"
+            case WATCHLIST_WITH_ID:
+            {
+                retCursor = getMovieByMovieId(uri, projection, sortOrder);
                 break;
             }
             // "watchlist"
