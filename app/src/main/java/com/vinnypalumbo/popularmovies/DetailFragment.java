@@ -109,6 +109,24 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return rootView;
     }
 
+    boolean isInWatchlist(int movieId){
+        Log.d("vinny-debug", "DetailFragment - isInWatchlist");
+        boolean isInWatchlist = false;
+        // check if the movie with this ID exists in the db
+        Cursor watchlistCursor = getContext().getContentResolver().query(
+                MovieContract.WatchlistEntry.CONTENT_URI,
+                new String[]{MovieContract.WatchlistEntry._ID},
+                MovieContract.WatchlistEntry.COLUMN_MOVIE_ID + " = ?",
+                new String[]{String.valueOf(movieId)},
+                null);
+
+        if (watchlistCursor.moveToFirst()) {
+            isInWatchlist = true;
+        }
+
+        return isInWatchlist ;
+    }
+
     /**
      * Helper method to handle insertion of a new movies in the watchlist database.
      * @param movie_id movie ID returned from the API
@@ -197,6 +215,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         if (data != null && data.moveToFirst()) {
             // Read movie ID from cursor
             movieId = data.getInt(COL_MOVIE_ID);
+            // change the state of the toggle button depending if movie is in watchlist or not
+            mToggleButton.setChecked(isInWatchlist(movieId));
 
             // Read title from cursor and update view
             title = data.getString(COL_MOVIE_TITLE);
