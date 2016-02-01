@@ -3,6 +3,6 @@
     <color name="dark_grey">#131313</color>
     <color name="black">#000000</color>
     <color name="purple">#7f19e6</color>
-    <color name="favoriteButton">#43d3c2</color>
+    <color name="favoriteButtonNotPressed">#43d3c2</color>
     <color name="favoriteText">#575656</color>
 </resources>

@@ -19,23 +19,28 @@ package com.vinnypalumbo.popularmovies;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class Utility {
     public static String getPreferredSorting(Context context) {
+        Log.d("vinny-debug", "Utility - getPreferredSorting");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(context.getString(R.string.pref_sort_key),
                 context.getString(R.string.pref_sort_default));
     }
 
     static String formatMovieId(int movieId){
+        Log.d("vinny-debug", "Utility - formatMovieId");
         return String.valueOf(movieId);
     }
 
     static String formatVoteAverage(Context context, double voteAverage){
+        Log.d("vinny-debug", "Utility - formatVoteAverage");
         return context.getString(R.string.format_rating, voteAverage);
     }
 
     static String formatReleaseDate(int releaseDate){
+        Log.d("vinny-debug", "Utility - formatReleaseDate");
         return String.valueOf(releaseDate);
     }
 }

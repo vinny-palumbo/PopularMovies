@@ -80,17 +80,18 @@
                         android:textSize="20sp" />
 
                     <!-- favorite button -->
-                    <Button
+                    <ToggleButton
                         android:fontFamily="sans-serif-light"
                         android:id="@+id/detail_favorite"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:textSize="15dp"
-                        android:text="ADD TO\nWATCHLIST"
+                        android:textOn="@string/button_text_on"
+                        android:textOff="@string/button_text_off"
                         android:gravity="center"
-                        android:backgroundTint="@color/favoriteButton"
+                        android:background="@drawable/button_background_color"
                         android:layout_marginTop="10dp"
-                        android:textColor="@color/favoriteText"
+                        android:textColor="@drawable/button_text_color"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:paddingTop="10dp"
