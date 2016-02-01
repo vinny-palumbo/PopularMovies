@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("vinny-debug", "MainActivity - onCreate");
         super.onCreate(savedInstanceState);
 
         // force landscape orientation on tablets
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d("vinny-debug", "MainActivity - onCreateOptionsMenu");
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("vinny-debug", "MainActivity - onOptionsItemSelected");
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -75,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
 
     @Override
     protected void onResume() {
+        Log.d("vinny-debug", "MainActivity - onResume");
         super.onResume();
         String sort = Utility.getPreferredSorting(this);
         // update the sorting in our second pane using the fragment manager
@@ -89,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
 
     @Override
     public void onItemSelected(Uri contentUri) {
+        Log.d("vinny-debug", "MainActivity - onItemSelected");
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a

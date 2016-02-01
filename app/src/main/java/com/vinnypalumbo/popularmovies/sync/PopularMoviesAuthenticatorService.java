@@ -3,6 +3,7 @@ package com.vinnypalumbo.popularmovies.sync;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 /**
  * Created by Vincent on 2016-01-26.
@@ -13,6 +14,7 @@ public class PopularMoviesAuthenticatorService extends Service {
 
     @Override
     public void onCreate() {
+        Log.d("vinny-debug", "PopularMoviesAuthenticatorService - onCreate");
         // Create a new authenticator object
         mAuthenticator = new PopularMoviesAuthenticator(this);
     }
@@ -23,6 +25,7 @@ public class PopularMoviesAuthenticatorService extends Service {
      */
     @Override
     public IBinder onBind(Intent intent) {
+        Log.d("vinny-debug", "PopularMoviesAuthenticatorService - onBind");
         return mAuthenticator.getIBinder();
     }
 }

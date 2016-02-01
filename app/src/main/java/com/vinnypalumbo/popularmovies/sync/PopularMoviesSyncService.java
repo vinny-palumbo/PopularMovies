@@ -15,6 +15,7 @@ public class PopularMoviesSyncService extends Service {
 
     @Override
     public void onCreate() {
+        Log.d("vinny-debug", "PopularMoviesSyncService - onCreate");
         Log.d("PopularMoviesSyncAdapte", "onCreate-PopularMoviesSyncService");
         synchronized (sSyncAdapterLock) {
             if (sPopularMoviesSyncAdapter == null) {
@@ -25,6 +26,7 @@ public class PopularMoviesSyncService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.d("vinny-debug", "PopularMoviesSyncService - onBind");
         return sPopularMoviesSyncAdapter.getSyncAdapterBinder();
     }
 }

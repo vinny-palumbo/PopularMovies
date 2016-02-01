@@ -48,6 +48,7 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
+        Log.d("vinny-debug", "PopularMoviesSyncAdapter - onPerformSync");
         Log.d(LOG_TAG, "Starting sync");
         String sortingQuery = Utility.getPreferredSorting(getContext());
 
@@ -138,6 +139,7 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
      * into an Object hierarchy for us.
      */
     private void getMovieDataFromJson(String movieJsonStr) throws JSONException {
+        Log.d("vinny-debug", "PopularMoviesSyncAdapter - getMovieDataFromJson");
 
         // The API gives us 20 movies
         final int numMovies = 20;
@@ -222,6 +224,7 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
      * Helper method to schedule the sync adapter periodic execution
      */
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
+        Log.d("vinny-debug", "PopularMoviesSyncAdapter - configurePeriodicSync");
         Account account = getSyncAccount(context);
         String authority = context.getString(R.string.content_authority);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -242,6 +245,7 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
+        Log.d("vinny-debug", "PopularMoviesSyncAdapter - syncImmediately");
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
@@ -258,6 +262,7 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
      * @return a fake account.
      */
     public static Account getSyncAccount(Context context) {
+        Log.d("vinny-debug", "PopularMoviesSyncAdapter - getSyncAccount");
         // Get an instance of the Android account manager
         AccountManager accountManager =
                 (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
@@ -289,6 +294,7 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private static void onAccountCreated(Account newAccount, Context context) {
+        Log.d("vinny-debug", "PopularMoviesSyncAdapter - onAccountCreated");
         /*
          * Since we've created an account
          */
@@ -306,6 +312,7 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     public static void initializeSyncAdapter(Context context) {
+        Log.d("vinny-debug", "PopularMoviesSyncAdapter - initializeSyncAdapter");
         getSyncAccount(context);
     }
 }

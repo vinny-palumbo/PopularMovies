@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +76,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("vinny-debug", "DetailFragment - onCreateView");
 
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -118,6 +120,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
      * @return the row ID of the added movie.
      */
     long addToWatchlist(int movie_id, String title, String poster, String plot, double rating, int date) {
+        Log.d("vinny-debug", "DetailFragment - addToWatchlist");
         long watchlistId;
 
         // First, check if the movie with this ID exists in the db
@@ -162,12 +165,14 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        Log.d("vinny-debug", "DetailFragment - onActivityCreated");
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.d("vinny-debug", "DetailFragment - onCreateLoader");
         if (null != mUri) {
             // Now create and return a CursorLoader that will take care of
             // creating a Cursor for the data being displayed.
@@ -185,6 +190,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d("vinny-debug", "DetailFragment - onLoadFinished");
 
         final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500/";
 
