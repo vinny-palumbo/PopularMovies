@@ -117,12 +117,20 @@
             </LinearLayout>
 
             <!-- horizontal line divider -->
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="3dip"
-                    android:background="@color/light_grey"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="3dip"
+                android:background="@color/light_grey"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- trailer listview -->
+            <ListView
+                style="@style/ForecastListStyle"
+                android:id="@+id/listview_trailer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null" />
 
         </LinearLayout>
 
