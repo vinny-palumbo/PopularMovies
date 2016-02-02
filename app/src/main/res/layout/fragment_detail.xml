@@ -26,88 +26,103 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Main content: poster, release year, rating -->
+        <!-- Main content + trailers + reviews -->
         <LinearLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingTop="8dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="16dp">
 
-
+            <!-- Main content: poster, release year, rating -->
             <LinearLayout
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
                 android:orientation="horizontal">
-
-                <!-- poster -->
-                <ImageView
-                    android:layout_weight="1"
-                    android:id="@+id/detail_poster"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"/>
 
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:paddingLeft="16dp"
-                    android:paddingStart="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingEnd="16dp">
+                    android:orientation="horizontal">
 
-                    <!-- release year -->
-                    <TextView
-                        android:fontFamily="sans-serif-light"
-                        android:id="@+id/detail_year"
+                    <!-- poster -->
+                    <ImageView
+                        android:layout_weight="1"
+                        android:id="@+id/detail_poster"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:textSize="30sp" />
+                        android:adjustViewBounds="true"/>
 
-                    <!-- rating -->
-                    <TextView
-                        android:id="@+id/detail_rating"
+                    <LinearLayout
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:textColor="@android:color/secondary_text_light"
-                        android:textSize="20sp" />
-
-                    <!-- favorite button -->
-                    <ToggleButton
-                        android:fontFamily="sans-serif-light"
-                        android:id="@+id/detail_favorite"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:textSize="15dp"
-                        android:textOn="@string/button_text_on"
-                        android:textOff="@string/button_text_off"
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_vertical"
                         android:gravity="center"
-                        android:background="@drawable/button_background_color"
-                        android:layout_marginTop="10dp"
-                        android:textColor="@drawable/button_text_color"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp" />
+                        android:paddingLeft="16dp"
+                        android:paddingStart="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingEnd="16dp">
 
+                        <!-- release year -->
+                        <TextView
+                            android:fontFamily="sans-serif-light"
+                            android:id="@+id/detail_year"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:textSize="30sp" />
+
+                        <!-- rating -->
+                        <TextView
+                            android:id="@+id/detail_rating"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:textColor="@android:color/secondary_text_light"
+                            android:textSize="20sp" />
+
+                        <!-- favorite button -->
+                        <ToggleButton
+                            android:fontFamily="sans-serif-light"
+                            android:id="@+id/detail_favorite"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:textSize="15dp"
+                            android:textOn="@string/button_text_on"
+                            android:textOff="@string/button_text_off"
+                            android:gravity="center"
+                            android:background="@drawable/button_background_color"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@drawable/button_text_color"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp" />
+
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
 
-            <!-- plot synopsis -->
-            <TextView
-                android:layout_weight="1"
-                android:id="@+id/detail_plot"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:paddingTop="16dp" />
+                <!-- plot synopsis -->
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/detail_plot"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:paddingTop="16dp" />
+
+                <!-- horizontal line divider -->
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dip"
+                    android:background="@color/light_grey"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
