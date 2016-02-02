@@ -89,7 +89,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        // Get a reference to the ListView, and attach the Adapter to it
+        // Get a reference to the GridView, and attach the Adapter to it
         mGridView = (GridView) rootView.findViewById(R.id.gridview_movie);
         mGridView.setAdapter(mMovieAdapter);
 

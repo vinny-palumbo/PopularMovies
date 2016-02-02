@@ -14,7 +14,6 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/list_item_icon"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +26,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:textSize="20sp"
-        android:text="The Revenant Official Trailer 1 2015 HD"/>
+        android:textSize="20sp" />
 
 </LinearLayout>
