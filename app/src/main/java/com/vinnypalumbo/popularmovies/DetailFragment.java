@@ -32,8 +32,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
 
-    private TrailerAdapter mTrailerAdapter;
-    private ListView mListView;
     private Uri mUri;
     private ToggleButton mToggleButton;
 
@@ -86,13 +84,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mUri = arguments.getParcelable(DetailFragment.DETAIL_URI);
         }
 
-        mTrailerAdapter = new TrailerAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        // Get a reference to the ListView, and attach the Adapter to it
-        mListView = (ListView) rootView.findViewById(R.id.listview_trailer);
-        mListView.setAdapter(mTrailerAdapter);
 
         mTitleView = (TextView) rootView.findViewById(R.id.detail_title);
         mPosterView = (ImageView) rootView.findViewById(R.id.detail_poster);
@@ -229,7 +223,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Log.d("vinny-debug", "DetailFragment - onLoadFinished");
-        mTrailerAdapter.swapCursor(data);
 
         final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500/";
 
@@ -260,13 +253,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             year = data.getInt(COL_MOVIE_DATE);
             String formattedYear = Utility.formatReleaseDate(year);
             mYearView.setText(formattedYear);
-
-
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mTrailerAdapter.swapCursor(null);
-    }
+    public void onLoaderReset(Loader<Cursor> loader) {}
 }
