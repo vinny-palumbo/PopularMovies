@@ -11,16 +11,17 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.android.views.ExpandedListView;
 import com.squareup.picasso.Picasso;
 import com.vinnypalumbo.popularmovies.data.MovieContract;
 
@@ -35,7 +36,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
 
-    private ListView mTrailerListView;
     private Uri mUri;
     private ToggleButton mToggleButton;
     private ArrayAdapter<String> mTrailerAdapter;
@@ -99,7 +99,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
-        ListView trailerListView = (ListView) rootView.findViewById(R.id.listview_trailer);
+        ExpandedListView trailerListView = (ExpandedListView) rootView.findViewById(R.id.listview_trailer);
+        trailerListView.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                return (event.getAction() == MotionEvent.ACTION_MOVE);
+            }
+        });
         trailerListView.setAdapter(mTrailerAdapter);
 
         mTitleView = (TextView) rootView.findViewById(R.id.detail_title);
@@ -107,7 +113,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mPlotView = (TextView) rootView.findViewById(R.id.detail_plot);
         mRatingView = (TextView) rootView.findViewById(R.id.detail_rating);
         mYearView = (TextView) rootView.findViewById(R.id.detail_year);
-        mTrailerListView = (ListView) rootView.findViewById(R.id.listview_trailer);
 
         // add or delete movie from watchlist when toggle button changed
         mToggleButton = (ToggleButton) rootView.findViewById(R.id.detail_favorite);

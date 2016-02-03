@@ -125,12 +125,13 @@
                 android:layout_marginBottom="16dp" />
 
             <!-- trailer listview -->
-            <ListView
-                style="@style/ForecastListStyle"
+            <com.example.android.views.ExpandedListView
                 android:id="@+id/listview_trailer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@null" />
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:padding="0px"
+                />
 
         </LinearLayout>
 
