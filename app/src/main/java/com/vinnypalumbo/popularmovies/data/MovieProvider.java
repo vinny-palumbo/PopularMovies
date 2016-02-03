@@ -264,15 +264,6 @@ public class MovieProvider extends ContentProvider {
         return rowsDeleted;
     }
 
-//  ---------- COMMENTED -----------
-//  private void normalizeDate(ContentValues values) {
-//        // normalize the date value
-//        if (values.containsKey(WeatherContract.WeatherEntry.COLUMN_DATE)) {
-//            long dateValue = values.getAsLong(WeatherContract.WeatherEntry.COLUMN_DATE);
-//            values.put(WeatherContract.WeatherEntry.COLUMN_DATE, WeatherContract.normalizeDate(dateValue));
-//        }
-//    }
-
     @Override
     public int update(
             Uri uri, ContentValues values, String selection, String[] selectionArgs) {

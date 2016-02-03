@@ -11,16 +11,21 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.android.views.ExpandedListView;
 import com.squareup.picasso.Picasso;
 import com.vinnypalumbo.popularmovies.data.MovieContract;
+
+import java.util.ArrayList;
 
 /**
  * Created by Vincent on 2016-01-21.
@@ -33,6 +38,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private Uri mUri;
     private ToggleButton mToggleButton;
+    private ArrayAdapter<String> mTrailerAdapter;
 
     private int movieId;
     private String title;
@@ -83,7 +89,24 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mUri = arguments.getParcelable(DetailFragment.DETAIL_URI);
         }
 
+        mTrailerAdapter =
+                new ArrayAdapter<String>(
+                        getActivity(), // The current context (this activity)
+                        R.layout.list_item_trailer, // The name of the layout ID.
+                        R.id.list_item_trailer_title, // The ID of the textview to populate.
+                        new ArrayList<String>());
+
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        // Get a reference to the ListView, and attach this adapter to it.
+        ExpandedListView trailerListView = (ExpandedListView) rootView.findViewById(R.id.listview_trailer);
+        trailerListView.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                return (event.getAction() == MotionEvent.ACTION_MOVE);
+            }
+        });
+        trailerListView.setAdapter(mTrailerAdapter);
 
         mTitleView = (TextView) rootView.findViewById(R.id.detail_title);
         mPosterView = (ImageView) rootView.findViewById(R.id.detail_poster);
@@ -227,6 +250,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             movieId = data.getInt(COL_MOVIE_ID);
             // change the state of the toggle button depending if movie is in watchlist or not
             mToggleButton.setChecked(isInWatchlist(movieId));
+            // Execute FetchTrailersTask with movieId as a param
+            FetchTrailersTask fetchTrailersTask= new FetchTrailersTask(getActivity(), mTrailerAdapter);
+            fetchTrailersTask.execute(String.valueOf(movieId));
 
             // Read title from cursor and update view
             title = data.getString(COL_MOVIE_TITLE);
@@ -253,5 +279,5 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) { }
+    public void onLoaderReset(Loader<Cursor> loader) {}
 }

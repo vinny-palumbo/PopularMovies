@@ -4,5 +4,6 @@
     <color name="black">#000000</color>
     <color name="purple">#7f19e6</color>
     <color name="favoriteButtonNotPressed">#43d3c2</color>
-    <color name="favoriteText">#575656</color>
+    <color name="grey">#575656</color>
+    <color name="light_grey">#cacaca</color>
 </resources>
