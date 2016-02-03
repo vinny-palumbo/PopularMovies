@@ -256,6 +256,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500/";
 
         if (data != null && data.moveToFirst()) {
+
             // Read movie ID from cursor
             movieId = data.getInt(COL_MOVIE_ID);
             // change the state of the toggle button depending if movie is in watchlist or not
@@ -263,6 +264,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             // Execute FetchTrailersTask with movieId as a param
             FetchTrailersTask fetchTrailersTask= new FetchTrailersTask(getActivity(), mTrailerAdapter);
             fetchTrailersTask.execute(String.valueOf(movieId));
+            // Execute FetchReviewsTask with movieId as a param
+            FetchReviewsTask fetchReviewsTask= new FetchReviewsTask(getActivity(), mReviewAdapter);
+            fetchReviewsTask.execute(String.valueOf(movieId));
 
             // Read title from cursor and update view
             title = data.getString(COL_MOVIE_TITLE);
