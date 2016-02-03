@@ -246,6 +246,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             movieId = data.getInt(COL_MOVIE_ID);
             // change the state of the toggle button depending if movie is in watchlist or not
             mToggleButton.setChecked(isInWatchlist(movieId));
+            // Execute FetchTrailersTask with movieId as a param
+            FetchTrailersTask fetchTrailersTask= new FetchTrailersTask(getActivity(), mTrailerAdapter);
+            fetchTrailersTask.execute(String.valueOf(movieId));
 
             // Read title from cursor and update view
             title = data.getString(COL_MOVIE_TITLE);
