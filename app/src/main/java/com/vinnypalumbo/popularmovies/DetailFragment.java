@@ -39,6 +39,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private Uri mUri;
     private ToggleButton mToggleButton;
     private ArrayAdapter<String> mTrailerAdapter;
+    private ReviewAdapter mReviewAdapter;
 
     private int movieId;
     private String title;
@@ -95,6 +96,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                         R.layout.list_item_trailer, // The name of the layout ID.
                         R.id.list_item_trailer_title, // The ID of the textview to populate.
                         new ArrayList<String>());
+
+        mReviewAdapter =
+                new ReviewAdapter(
+                        getActivity(), // The current context (this activity)
+                        new ArrayList<Review>());
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
