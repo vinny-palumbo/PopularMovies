@@ -141,9 +141,6 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
     private void getMovieDataFromJson(String movieJsonStr) throws JSONException {
         Log.d("vinny-debug", "PopularMoviesSyncAdapter - getMovieDataFromJson");
 
-        // The API gives us 20 movies
-        final int numMovies = 20;
-
         // These are the names of the JSON objects that need to be extracted.
         final String TMDB_RESULTS = "results";
         final String TMDB_ID = "id";
