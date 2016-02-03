@@ -35,6 +35,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
 
+    private ListView mTrailerListView;
     private Uri mUri;
     private ToggleButton mToggleButton;
     private ArrayAdapter<String> mTrailerAdapter;
@@ -97,12 +98,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
+        // Get a reference to the ListView, and attach this adapter to it.
+        ListView trailerListView = (ListView) rootView.findViewById(R.id.listview_trailer);
+        trailerListView.setAdapter(mTrailerAdapter);
 
         mTitleView = (TextView) rootView.findViewById(R.id.detail_title);
         mPosterView = (ImageView) rootView.findViewById(R.id.detail_poster);
         mPlotView = (TextView) rootView.findViewById(R.id.detail_plot);
         mRatingView = (TextView) rootView.findViewById(R.id.detail_rating);
         mYearView = (TextView) rootView.findViewById(R.id.detail_year);
+        mTrailerListView = (ListView) rootView.findViewById(R.id.listview_trailer);
 
         // add or delete movie from watchlist when toggle button changed
         mToggleButton = (ToggleButton) rootView.findViewById(R.id.detail_favorite);
