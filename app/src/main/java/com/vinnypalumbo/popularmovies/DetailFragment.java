@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -22,6 +23,8 @@ import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
 import com.vinnypalumbo.popularmovies.data.MovieContract;
+
+import java.util.ArrayList;
 
 /**
  * Created by Vincent on 2016-01-21.
@@ -34,6 +37,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private Uri mUri;
     private ToggleButton mToggleButton;
+    private ArrayAdapter<String> mTrailerAdapter;
 
     private int movieId;
     private String title;
@@ -84,6 +88,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mUri = arguments.getParcelable(DetailFragment.DETAIL_URI);
         }
 
+        mTrailerAdapter =
+                new ArrayAdapter<String>(
+                        getActivity(), // The current context (this activity)
+                        R.layout.list_item_trailer, // The name of the layout ID.
+                        R.id.list_item_trailer_title, // The ID of the textview to populate.
+                        new ArrayList<String>());
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
