@@ -104,15 +104,19 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        // Get a reference to the ListView, and attach this adapter to it.
+        // Get a reference to the Trailers ListView, and attach this adapter to it.
         ExpandedListView trailerListView = (ExpandedListView) rootView.findViewById(R.id.listview_trailer);
+        trailerListView.setAdapter(mTrailerAdapter);
         trailerListView.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View v, MotionEvent event) {
                 return (event.getAction() == MotionEvent.ACTION_MOVE);
             }
         });
-        trailerListView.setAdapter(mTrailerAdapter);
+
+        // Get a reference to the Reviews ListView, and attach this adapter to it.
+        ExpandedListView reviewListView = (ExpandedListView) rootView.findViewById(R.id.listview_reviews);
+        reviewListView.setAdapter(mReviewAdapter);
 
         mTitleView = (TextView) rootView.findViewById(R.id.detail_title);
         mPosterView = (ImageView) rootView.findViewById(R.id.detail_poster);
