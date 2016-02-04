@@ -39,6 +39,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private Uri mUri;
     private ToggleButton mToggleButton;
     private ArrayAdapter<String> mTrailerAdapter;
+    private ReviewAdapter mReviewAdapter;
 
     private int movieId;
     private String title;
@@ -96,17 +97,26 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                         R.id.list_item_trailer_title, // The ID of the textview to populate.
                         new ArrayList<String>());
 
+        mReviewAdapter =
+                new ReviewAdapter(
+                        getActivity(), // The current context (this activity)
+                        new ArrayList<Review>());
+
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        // Get a reference to the ListView, and attach this adapter to it.
+        // Get a reference to the Trailers ListView, and attach this adapter to it.
         ExpandedListView trailerListView = (ExpandedListView) rootView.findViewById(R.id.listview_trailer);
+        trailerListView.setAdapter(mTrailerAdapter);
         trailerListView.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View v, MotionEvent event) {
                 return (event.getAction() == MotionEvent.ACTION_MOVE);
             }
         });
-        trailerListView.setAdapter(mTrailerAdapter);
+
+        // Get a reference to the Reviews ListView, and attach this adapter to it.
+        ExpandedListView reviewListView = (ExpandedListView) rootView.findViewById(R.id.listview_reviews);
+        reviewListView.setAdapter(mReviewAdapter);
 
         mTitleView = (TextView) rootView.findViewById(R.id.detail_title);
         mPosterView = (ImageView) rootView.findViewById(R.id.detail_poster);
@@ -246,6 +256,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500/";
 
         if (data != null && data.moveToFirst()) {
+
             // Read movie ID from cursor
             movieId = data.getInt(COL_MOVIE_ID);
             // change the state of the toggle button depending if movie is in watchlist or not
@@ -253,6 +264,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             // Execute FetchTrailersTask with movieId as a param
             FetchTrailersTask fetchTrailersTask= new FetchTrailersTask(getActivity(), mTrailerAdapter);
             fetchTrailersTask.execute(String.valueOf(movieId));
+            // Execute FetchReviewsTask with movieId as a param
+            FetchReviewsTask fetchReviewsTask= new FetchReviewsTask(getActivity(), mReviewAdapter);
+            fetchReviewsTask.execute(String.valueOf(movieId));
 
             // Read title from cursor and update view
             title = data.getString(COL_MOVIE_TITLE);
