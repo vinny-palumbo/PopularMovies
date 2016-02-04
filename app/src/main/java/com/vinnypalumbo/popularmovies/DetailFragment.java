@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,7 +37,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private Uri mUri;
     private ToggleButton mToggleButton;
-    private ArrayAdapter<Trailer> mTrailerAdapter;
+    private TrailerAdapter mTrailerAdapter;
     private ReviewAdapter mReviewAdapter;
 
     private int movieId;
@@ -91,10 +90,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
         mTrailerAdapter =
-                new ArrayAdapter<Trailer>(
+                new TrailerAdapter(
                         getActivity(), // The current context (this activity)
-                        R.layout.list_item_trailer, // The name of the layout ID.
-                        R.id.list_item_trailer_title, // The ID of the textview to populate.
                         new ArrayList<Trailer>());
 
         mReviewAdapter =
