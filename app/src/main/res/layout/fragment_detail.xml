@@ -16,7 +16,7 @@
         android:textColor="@android:color/white"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:background="@color/purple"
+        android:background="@color/theme_secondary"
         android:minHeight="80dp"
         android:textSize="35sp"
         android:gravity="center_vertical"/>
@@ -90,13 +90,13 @@
                             android:id="@+id/detail_favorite"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:textSize="15dp"
+                            android:textSize="16dp"
                             android:textOn="@string/button_text_on"
                             android:textOff="@string/button_text_off"
                             android:gravity="center"
                             android:background="@drawable/button_background_color"
                             android:layout_marginTop="10dp"
-                            android:textColor="@drawable/button_text_color"
+                            android:textColor="@android:color/white"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
                             android:paddingTop="10dp"
@@ -121,8 +121,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="3dip"
                 android:background="@color/light_grey"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginTop="16dp"/>
 
             <!-- trailer listview -->
             <com.example.android.views.ExpandedListView
@@ -137,8 +136,7 @@
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="3dip"
-                android:background="@color/light_grey"
-                android:layout_marginTop="16dp"/>
+                android:background="@color/light_grey"/>
 
             <!-- reviews listview -->
             <com.example.android.views.ExpandedListView
