@@ -138,8 +138,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="3dip"
                 android:background="@color/light_grey"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginTop="16dp"/>
 
             <!-- reviews listview -->
             <com.example.android.views.ExpandedListView
