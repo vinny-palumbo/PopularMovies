@@ -34,14 +34,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FetchTrailersTask extends AsyncTask<String, Void, List<String>> {
+public class FetchTrailersTask extends AsyncTask<String, Void, List<Trailer>> {
 
     private final String LOG_TAG = FetchTrailersTask.class.getSimpleName();
 
-    private ArrayAdapter<String> mTrailerAdapter;
+    private ArrayAdapter<Trailer> mTrailerAdapter;
     private final Context mContext;
 
-    public FetchTrailersTask(Context context, ArrayAdapter<String> trailerAdapter) {
+    public FetchTrailersTask(Context context, ArrayAdapter<Trailer> trailerAdapter) {
         mContext = context;
         mTrailerAdapter = trailerAdapter;
     }
@@ -49,7 +49,7 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<String>> {
     private boolean DEBUG = true;
 
     @Override
-    protected List<String> doInBackground(String... params) {
+    protected List<Trailer> doInBackground(String... params) {
         Log.d("vinny-debug", "FetchTrailersTask - doInBackground");
 
         // If there's no movieId, there's nothing to look up.  Verify size of params.
@@ -145,33 +145,37 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<String>> {
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
-    private List<String> getTrailerDataFromJson(String trailerJsonStr) throws JSONException {
+    private List<Trailer> getTrailerDataFromJson(String trailerJsonStr) throws JSONException {
         Log.d("vinny-debug", "FetchTrailersTask - getTrailerDataFromJson");
 
         // These are the names of the JSON objects that need to be extracted.
         final String TMDB_RESULTS = "results";
         final String TMDB_NAME = "name";
+        final String TMDB_KEY = "key";
 
         try {
             JSONObject trailerJson = new JSONObject(trailerJsonStr);
             JSONArray trailerArray = trailerJson.getJSONArray(TMDB_RESULTS);
 
-            // Insert the trailer names into an ArrayList
-            List<String> trailerNames = new ArrayList<String>();
+            // Insert the trailer infos into an ArrayList
+            List<Trailer> trailers = new ArrayList<Trailer>();
 
             for (int i = 0; i < trailerArray.length(); i++) {
-                String trailerTitle;
+                String trailerName;
+                String trailerKey;
 
                 // Get the JSON object representing the trailer
                 JSONObject trailer = trailerArray.getJSONObject(i);
-                // the trailer title is in a String associated to the key "name"
-                trailerTitle = trailer.getString(TMDB_NAME);
+                // the trailer name is in a String associated to the key "name"
+                trailerName = trailer.getString(TMDB_NAME);
+                // the trailer key is in a String associated to the key "key"
+                trailerKey = trailer.getString(TMDB_KEY);
 
-                trailerNames.add(trailerTitle);
+                trailers.add(new Trailer(trailerName, trailerKey));
             }
             Log.d(LOG_TAG, "Fetch Trailers Completed");
 
-            return trailerNames;
+            return trailers;
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
@@ -181,11 +185,11 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<String>> {
     }
 
     @Override
-    protected void onPostExecute(List<String> result) {
+    protected void onPostExecute(List<Trailer> result) {
         if (result != null && mTrailerAdapter != null) {
             mTrailerAdapter.clear();
-            for(String trailerName : result) {
-                mTrailerAdapter.add(trailerName);
+            for(Trailer trailer : result) {
+                mTrailerAdapter.add(trailer);
             }
             // New data is back from the server.  Hooray!
         }

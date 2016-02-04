@@ -38,7 +38,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private Uri mUri;
     private ToggleButton mToggleButton;
-    private ArrayAdapter<String> mTrailerAdapter;
+    private ArrayAdapter<Trailer> mTrailerAdapter;
     private ReviewAdapter mReviewAdapter;
 
     private int movieId;
@@ -91,11 +91,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
         mTrailerAdapter =
-                new ArrayAdapter<String>(
+                new ArrayAdapter<Trailer>(
                         getActivity(), // The current context (this activity)
                         R.layout.list_item_trailer, // The name of the layout ID.
                         R.id.list_item_trailer_title, // The ID of the textview to populate.
-                        new ArrayList<String>());
+                        new ArrayList<Trailer>());
 
         mReviewAdapter =
                 new ReviewAdapter(
