@@ -2,6 +2,7 @@ package com.vinnypalumbo.popularmovies;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,10 +12,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,7 +38,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private Uri mUri;
     private ToggleButton mToggleButton;
-    private ArrayAdapter<String> mTrailerAdapter;
+    private TrailerAdapter mTrailerAdapter;
     private ReviewAdapter mReviewAdapter;
 
     private int movieId;
@@ -91,11 +91,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
         mTrailerAdapter =
-                new ArrayAdapter<String>(
+                new TrailerAdapter(
                         getActivity(), // The current context (this activity)
-                        R.layout.list_item_trailer, // The name of the layout ID.
-                        R.id.list_item_trailer_title, // The ID of the textview to populate.
-                        new ArrayList<String>());
+                        new ArrayList<Trailer>());
 
         mReviewAdapter =
                 new ReviewAdapter(
@@ -107,10 +105,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // Get a reference to the Trailers ListView, and attach this adapter to it.
         ExpandedListView trailerListView = (ExpandedListView) rootView.findViewById(R.id.listview_trailer);
         trailerListView.setAdapter(mTrailerAdapter);
-        trailerListView.setOnTouchListener(new View.OnTouchListener() {
-
-            public boolean onTouch(View v, MotionEvent event) {
-                return (event.getAction() == MotionEvent.ACTION_MOVE);
+        // when you click on a trailer item, launch youtube with an intent and pass the key to the video
+        trailerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Trailer trailer = mTrailerAdapter.getItem(position);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://youtu.be/" + trailer.key));
+                startActivity(intent);
             }
         });
 
