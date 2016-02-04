@@ -24,7 +24,8 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         View rootView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_review, parent, false);
 
         TextView authorView = (TextView) rootView.findViewById(R.id.list_item_review_author);
-        authorView.setText(review.author);
+        String formattedAuthor = String.format(getContext().getString(R.string.format_author),review.author);
+        authorView.setText(formattedAuthor);
 
         TextView contentView = (TextView) rootView.findViewById(R.id.list_item_review_content);
         contentView.setText(review.content);
