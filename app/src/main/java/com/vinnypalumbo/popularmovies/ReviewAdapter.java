@@ -19,6 +19,11 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
     }
 
     @Override
+    public boolean isEnabled(int position) {
+        return false;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent){
         Review review = getItem(position);
         View rootView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_review, parent, false);
