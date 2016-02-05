@@ -39,6 +39,8 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<Trailer>> {
     private final String LOG_TAG = FetchTrailersTask.class.getSimpleName();
 
     private ArrayAdapter<Trailer> mTrailerAdapter;
+    public String firstTrailerKey;
+    public String firstTrailerName;  // for debugging purposes
     private final Context mContext;
 
     public FetchTrailersTask(Context context, ArrayAdapter<Trailer> trailerAdapter) {
@@ -185,13 +187,34 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<Trailer>> {
     }
 
     @Override
-    protected void onPostExecute(List<Trailer> result) {
-        if (result != null && mTrailerAdapter != null) {
+    protected void onPostExecute(List<Trailer> trailers) {
+        Log.d("vinny-debug", "FetchTrailersTask - onPostExecute");
+
+        final String TRAILER_STRING = "Trailer";
+        final String YOUTUBE_BASE_URL = "https://youtu.be/";
+
+        if (trailers != null && mTrailerAdapter != null) {
             mTrailerAdapter.clear();
-            for(Trailer trailer : result) {
+            for(int i = 0; i < trailers.size(); i++) {
+                Trailer trailer = trailers.get(i);
+
+                // add trailer to the Trailer Adapter
                 mTrailerAdapter.add(trailer);
+
+                // capture first trailer key for share intent text
+                if(i == 0){
+                    firstTrailerKey = trailer.key;
+                    firstTrailerName = trailer.name;  // for debugging purposes
+                    // We still need this for the trailer share intent text
+                    Log.d("vinny-debug", "FetchTrailersTask - onPostExecute: firstTrailerKey: " + firstTrailerKey + "-" + firstTrailerName);
+                    DetailFragment.mTrailerShareText = String.format("%s - %s %s: %s%s ", DetailFragment.title, DetailFragment.year, TRAILER_STRING, YOUTUBE_BASE_URL, firstTrailerKey);
+
+                    // If onCreateOptionsMenu has already happened, we need to update the share intent now.
+                    if (DetailFragment.mShareActionProvider != null) {
+                        DetailFragment.mShareActionProvider.setShareIntent(DetailFragment.createShareTrailerIntent());
+                    }
+                }
             }
-            // New data is back from the server.  Hooray!
         }
     }
 }

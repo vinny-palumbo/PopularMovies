@@ -10,8 +10,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,17 +41,22 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
 
+    private static final String TRAILER_SHARE_HASHTAG = " #PopularMoviesApp";
+
+    public static String mTrailerShareText;
+    public static ShareActionProvider mShareActionProvider;
+
     private Uri mUri;
     private ToggleButton mToggleButton;
     private TrailerAdapter mTrailerAdapter;
     private ReviewAdapter mReviewAdapter;
 
     private int movieId;
-    private String title;
+    public static String title; // needed for action share text in FetchTrailersTask's onPostExecute()
     private String poster;
     private String plot;
     private double rating;
-    private int year;
+    public static int year; // needed for action share text in FetchTrailersTask's onPostExecute()
 
 
     private static final int DETAIL_LOADER = 0;
@@ -78,6 +88,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private TextView mYearView;
 
     public DetailFragment() {
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -140,6 +151,32 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.detail_fragment, menu);
+
+        // Retrieve the share menu item
+        MenuItem menuItem = menu.findItem(R.id.action_share_trailer);
+
+        // Get the provider and hold onto it to set/change the share intent.
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+        // If onLoadFinished happens before this, we can go ahead and set the share intent now.
+        if (mTrailerShareText != null) {
+            mShareActionProvider.setShareIntent(createShareTrailerIntent());
+        }
+    }
+
+    public static Intent createShareTrailerIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mTrailerShareText + TRAILER_SHARE_HASHTAG);
+        return shareIntent;
     }
 
     boolean isInWatchlist(int movieId){
@@ -258,7 +295,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         if (data != null && data.moveToFirst()) {
 
-            // Read movie ID from cursor
+            // Read movie ID from cursor to execute FetchTrailersTask and FetchReviewsTask
             movieId = data.getInt(COL_MOVIE_ID);
             // change the state of the toggle button depending if movie is in watchlist or not
             mToggleButton.setChecked(isInWatchlist(movieId));
@@ -283,7 +320,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
             // Read rating from cursor and update view
             rating = data.getDouble(COL_MOVIE_RATING);
-            String formattedRating = Utility.formatVoteAverage(getActivity(),rating);
+            String formattedRating = Utility.formatVoteAverage(getActivity(), rating);
             mRatingView.setText(formattedRating);
 
             // Read release date from cursor and update view
