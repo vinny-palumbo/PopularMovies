@@ -149,6 +149,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 }
             }
         });
+        /* Without this single line of code, the app crashes when detail view
+         * displays a movie that has been added to watchlist and user rotates device
+         * It took me 4-5 hours to find the solution
+         */
+        mToggleButton.setSaveEnabled(false);
 
         return rootView;
     }
@@ -193,6 +198,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         if (watchlistCursor.moveToFirst()) {
             isInWatchlist = true;
         }
+        watchlistCursor.close();
 
         return isInWatchlist ;
     }
