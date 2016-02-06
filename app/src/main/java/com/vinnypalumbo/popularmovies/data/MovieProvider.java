@@ -33,28 +33,39 @@ public class MovieProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private MovieDbHelper mOpenHelper;
 
-    static final int MOVIE = 100;
-    static final int MOVIE_WITH_ID = 101;
+    static final int POPULARITY = 100;
+    static final int POPULARITY_WITH_ID = 101;
+    static final int RATING = 200;
+    static final int RATING_WITH_ID = 201;
     static final int WATCHLIST = 300;
     static final int WATCHLIST_WITH_ID = 301;
 
-    private static final SQLiteQueryBuilder sMovieQueryBuilder;
+    private static final SQLiteQueryBuilder sPopularityQueryBuilder;
+    private static final SQLiteQueryBuilder sRatingQueryBuilder;
     private static final SQLiteQueryBuilder sWatchlistQueryBuilder;
 
     static{
-        sMovieQueryBuilder = new SQLiteQueryBuilder();
+        sPopularityQueryBuilder = new SQLiteQueryBuilder();
+        sRatingQueryBuilder = new SQLiteQueryBuilder();
         sWatchlistQueryBuilder = new SQLiteQueryBuilder();
 
-        sMovieQueryBuilder.setTables(
-                MovieContract.MovieEntry.TABLE_NAME);
+        sPopularityQueryBuilder.setTables(
+                MovieContract.PopularityEntry.TABLE_NAME);
+        sRatingQueryBuilder.setTables(
+                MovieContract.RatingEntry.TABLE_NAME);
         sWatchlistQueryBuilder.setTables(
                 MovieContract.WatchlistEntry.TABLE_NAME);
     }
 
-    //movie.movie_id = ?
-    private static final String sMovieIdSelection =
-            MovieContract.MovieEntry.TABLE_NAME +
-                    "." + MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ? ";
+    //popularity.movie_id = ?
+    private static final String sPopularityIdSelection =
+            MovieContract.PopularityEntry.TABLE_NAME +
+                    "." + MovieContract.PopularityEntry.COLUMN_MOVIE_ID + " = ? ";
+
+    //rating.movie_id = ?
+    private static final String sRatingIdSelection =
+            MovieContract.RatingEntry.TABLE_NAME +
+                    "." + MovieContract.RatingEntry.COLUMN_MOVIE_ID + " = ? ";
 
     //watchlist.movie_id = ?
     private static final String sWatchlistIdSelection =
@@ -76,11 +87,21 @@ public class MovieProvider extends ContentProvider {
                     null,
                     sortOrder
             );
-        }else{
-            id = MovieContract.MovieEntry.getIdFromUri(uri);
-            return sMovieQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+        }else if(MovieFragment.isRatingSelected){
+            id = MovieContract.RatingEntry.getIdFromUri(uri);
+            return sRatingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                     projection,
-                    sMovieIdSelection,
+                    sRatingIdSelection,
+                    new String[]{Integer.toString(id)},
+                    null,
+                    null,
+                    sortOrder
+            );
+        }else{
+            id = MovieContract.PopularityEntry.getIdFromUri(uri);
+            return sPopularityQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                    projection,
+                    sPopularityIdSelection,
                     new String[]{Integer.toString(id)},
                     null,
                     null,
@@ -91,7 +112,7 @@ public class MovieProvider extends ContentProvider {
 
     /*
         Students: Here is where you need to create the UriMatcher. This UriMatcher will
-        match each URI to the MOVIE integer constants defined above.  You can test this by uncommenting the
+        match each URI to the POPULARITY integer constants defined above.  You can test this by uncommenting the
         testUriMatcher test within TestUriMatcher.
      */
     static UriMatcher buildUriMatcher() {
@@ -106,8 +127,11 @@ public class MovieProvider extends ContentProvider {
         final String authority = MovieContract.CONTENT_AUTHORITY;
 
         // For each type of URI you want to add, create a corresponding code.
-        matcher.addURI(authority, MovieContract.PATH_MOVIE, MOVIE);
-        matcher.addURI(authority, MovieContract.PATH_MOVIE + "/#", MOVIE_WITH_ID);
+        matcher.addURI(authority, MovieContract.PATH_POPULARITY, POPULARITY);
+        matcher.addURI(authority, MovieContract.PATH_POPULARITY + "/#", POPULARITY_WITH_ID);
+
+        matcher.addURI(authority, MovieContract.PATH_RATING, RATING);
+        matcher.addURI(authority, MovieContract.PATH_RATING + "/#", RATING_WITH_ID);
 
         matcher.addURI(authority, MovieContract.PATH_WATCHLIST, WATCHLIST);
         matcher.addURI(authority, MovieContract.PATH_WATCHLIST + "/#", WATCHLIST_WITH_ID);
@@ -137,10 +161,14 @@ public class MovieProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
 
         switch (match) {
-            case MOVIE_WITH_ID:
-                return MovieContract.MovieEntry.CONTENT_ITEM_TYPE;
-            case MOVIE:
-                return MovieContract.MovieEntry.CONTENT_TYPE;
+            case POPULARITY_WITH_ID:
+                return MovieContract.PopularityEntry.CONTENT_ITEM_TYPE;
+            case POPULARITY:
+                return MovieContract.PopularityEntry.CONTENT_TYPE;
+            case RATING_WITH_ID:
+                return MovieContract.RatingEntry.CONTENT_ITEM_TYPE;
+            case RATING:
+                return MovieContract.RatingEntry.CONTENT_TYPE;
             case WATCHLIST_WITH_ID:
                 return MovieContract.WatchlistEntry.CONTENT_ITEM_TYPE;
             case WATCHLIST:
@@ -158,16 +186,35 @@ public class MovieProvider extends ContentProvider {
         // and query the database accordingly.
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
-            // "movie/#"
-            case MOVIE_WITH_ID:
+            // "popularity/#"
+            case POPULARITY_WITH_ID:
             {
                 retCursor = getMovieByMovieId(uri, projection, sortOrder);
                 break;
             }
-            // "movie"
-            case MOVIE: {
+            // "popularity"
+            case POPULARITY: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        MovieContract.MovieEntry.TABLE_NAME,
+                        MovieContract.PopularityEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            // "rating/#"
+            case RATING_WITH_ID:
+            {
+                retCursor = getMovieByMovieId(uri, projection, sortOrder);
+                break;
+            }
+            // "rating"
+            case RATING: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        MovieContract.RatingEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -215,10 +262,18 @@ public class MovieProvider extends ContentProvider {
         Uri returnUri;
 
         switch (match) {
-            case MOVIE: {
-                long _id = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, values);
+            case POPULARITY: {
+                long _id = db.insert(MovieContract.PopularityEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
-                    returnUri = MovieContract.MovieEntry.buildMovieUri(_id);
+                    returnUri = MovieContract.PopularityEntry.buildMovieUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case RATING: {
+                long _id = db.insert(MovieContract.RatingEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = MovieContract.RatingEntry.buildMovieUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -246,9 +301,13 @@ public class MovieProvider extends ContentProvider {
         // this makes delete all rows return the number of rows deleted
         if ( null == selection ) selection = "1";
         switch (match) {
-            case MOVIE:
+            case POPULARITY:
                 rowsDeleted = db.delete(
-                        MovieContract.MovieEntry.TABLE_NAME, selection, selectionArgs);
+                        MovieContract.PopularityEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case RATING:
+                rowsDeleted = db.delete(
+                        MovieContract.RatingEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case WATCHLIST:
                 rowsDeleted = db.delete(
@@ -273,8 +332,12 @@ public class MovieProvider extends ContentProvider {
         int rowsUpdated;
 
         switch (match) {
-            case MOVIE:
-                rowsUpdated = db.update(MovieContract.MovieEntry.TABLE_NAME, values, selection,
+            case POPULARITY:
+                rowsUpdated = db.update(MovieContract.PopularityEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
+            case RATING:
+                rowsUpdated = db.update(MovieContract.RatingEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             case WATCHLIST:
@@ -295,13 +358,28 @@ public class MovieProvider extends ContentProvider {
         Log.d("vinny-debug", "MovieProvider - bulkInsert");
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
+        int returnCount = 0;
         switch (match) {
-            case MOVIE:
+            case POPULARITY:
                 db.beginTransaction();
-                int returnCount = 0;
                 try {
                     for (ContentValues value : values) {
-                        long _id = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, value);
+                        long _id = db.insert(MovieContract.PopularityEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            case RATING:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(MovieContract.RatingEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }

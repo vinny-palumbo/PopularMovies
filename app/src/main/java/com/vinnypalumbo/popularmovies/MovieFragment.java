@@ -15,13 +15,15 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.vinnypalumbo.popularmovies.data.MovieContract;
-import com.vinnypalumbo.popularmovies.sync.PopularMoviesSyncAdapter;
+import com.vinnypalumbo.popularmovies.sync.MovieSyncAdapter;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MovieFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    public static boolean isWatchlistSelected;
+    public static boolean isPopularitySelected = false;
+    public static boolean isRatingSelected = false;
+    public static boolean isWatchlistSelected = false;
 
     private MovieAdapter mMovieAdapter;
 
@@ -33,13 +35,22 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     private static final int MOVIE_LOADER = 0;
 
 
-    // For the movie gridview we're showing only a small subset of the stored data.
+    // For the popularity gridview we're showing only a small subset of the stored data.
     // Specify the columns we need.
-    private static final String[] MOVIE_COLUMNS = {
-            MovieContract.MovieEntry._ID,
-            MovieContract.MovieEntry.COLUMN_MOVIE_ID,
-            MovieContract.MovieEntry.COLUMN_TITLE,
-            MovieContract.MovieEntry.COLUMN_POSTER,
+    private static final String[] POPULARITY_COLUMNS = {
+            MovieContract.PopularityEntry._ID,
+            MovieContract.PopularityEntry.COLUMN_MOVIE_ID,
+            MovieContract.PopularityEntry.COLUMN_TITLE,
+            MovieContract.PopularityEntry.COLUMN_POSTER,
+    };
+
+    // For the rating gridview we're showing only a small subset of the stored data.
+    // Specify the columns we need.
+    private static final String[] RATING_COLUMNS = {
+            MovieContract.RatingEntry._ID,
+            MovieContract.RatingEntry.COLUMN_MOVIE_ID,
+            MovieContract.RatingEntry.COLUMN_TITLE,
+            MovieContract.RatingEntry.COLUMN_POSTER,
     };
 
     // For the watchlist gridview we're showing only a small subset of the stored data.
@@ -51,11 +62,17 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
             MovieContract.WatchlistEntry.COLUMN_POSTER,
     };
 
-    // These indices are tied to MOVIE_COLUMNS.  If MOVIE_COLUMNS changes, these
+    // These indices are tied to POPULARITY_COLUMNS.  If POPULARITY_COLUMNS changes, these
     // must change.
-    static final int COL_MOVIE_ID = 1;
-//    static final int COL_MOVIE_TITLE = 2;
-    static final int COL_MOVIE_POSTER = 3;
+    static final int COL_POPULARITY_ID = 1;
+//    static final int COL_POPULARITY_TITLE = 2;
+    static final int COL_POPULARITY_POSTER = 3;
+
+    // These indices are tied to RATING_COLUMNS.  If RATING_COLUMNS changes, these
+    // must change.
+    static final int COL_RATING_ID = 1;
+//    static final int COL_RATING_TITLE = 2;
+    static final int COL_RATING_POSTER = 3;
 
     // These indices are tied to WATCHLIST_COLUMNS.  If WATCHLIST_COLUMNS changes, these
     // must change.
@@ -83,7 +100,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
                              Bundle savedInstanceState) {
         Log.d("vinny-debug", "MovieFragment - onCreateView");
 
-        // The COL_MOVIE_POSTER will take data from a source and
+        // The COL_POPULARITY_POSTER or COL_RATING_POSTER will take data from a source and
         // use it to populate the GridView it's attached to.
         mMovieAdapter = new MovieAdapter(getActivity(), null, 0);
 
@@ -104,8 +121,10 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
                 Uri movieIdUri;
                 if(isWatchlistSelected){
                     movieIdUri = MovieContract.WatchlistEntry.buildMovieId(cursor.getInt(COL_WATCHLIST_ID));
+                }else if(isRatingSelected) {
+                    movieIdUri = MovieContract.RatingEntry.buildMovieId(cursor.getInt(COL_RATING_ID));
                 }else{
-                    movieIdUri = MovieContract.MovieEntry.buildMovieId(cursor.getInt(COL_MOVIE_ID));
+                    movieIdUri = MovieContract.PopularityEntry.buildMovieId(cursor.getInt(COL_POPULARITY_ID));
                 }
 
                 if (cursor != null) {
@@ -147,7 +166,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
 
     private void updateMovies() {
         Log.d("vinny-debug", "MovieFragment - updateMovies");
-        PopularMoviesSyncAdapter.syncImmediately(getActivity());
+        MovieSyncAdapter.syncImmediately(getActivity());
     }
 
     @Override
@@ -173,11 +192,19 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
                     null,
                     null,
                     null);
-        }else {
-            Uri movieUri = MovieContract.MovieEntry.CONTENT_URI;
+        }else if(isRatingSelected){
+            Uri ratingUri = MovieContract.RatingEntry.CONTENT_URI;
             return new CursorLoader(getActivity(),
-                    movieUri,
-                    MOVIE_COLUMNS,
+                    ratingUri,
+                    RATING_COLUMNS,
+                    null,
+                    null,
+                    null);
+        }else{
+            Uri popularityUri = MovieContract.PopularityEntry.CONTENT_URI;
+            return new CursorLoader(getActivity(),
+                    popularityUri,
+                    POPULARITY_COLUMNS,
                     null,
                     null,
                     null);

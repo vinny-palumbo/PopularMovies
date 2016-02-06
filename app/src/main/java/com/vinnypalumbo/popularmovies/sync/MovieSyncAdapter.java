@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.vinnypalumbo.popularmovies.BuildConfig;
+import com.vinnypalumbo.popularmovies.MovieFragment;
 import com.vinnypalumbo.popularmovies.R;
 import com.vinnypalumbo.popularmovies.Utility;
 import com.vinnypalumbo.popularmovies.data.MovieContract;
@@ -34,23 +35,23 @@ import java.util.Vector;
 /**
  * Created by Vincent on 2016-01-26.
  */
-public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
-    public final String LOG_TAG = PopularMoviesSyncAdapter.class.getSimpleName();
+public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
+    public final String LOG_TAG = MovieSyncAdapter.class.getSimpleName();
 
     // Interval at which to sync with the movies, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
     public static final int SYNC_INTERVAL = 60 * 180;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
 
-    public PopularMoviesSyncAdapter(Context context, boolean autoInitialize) {
+    public MovieSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        Log.d("vinny-debug", "PopularMoviesSyncAdapter - onPerformSync");
+        Log.d("vinny-debug", "MovieSyncAdapter - onPerformSync");
         Log.d(LOG_TAG, "Starting sync");
-        String sortingQuery = Utility.getPreferredSorting(getContext());
+        String sortingQuery = Utility.getSortSetting(getContext());
 
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
@@ -139,7 +140,7 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
      * into an Object hierarchy for us.
      */
     private void getMovieDataFromJson(String movieJsonStr) throws JSONException {
-        Log.d("vinny-debug", "PopularMoviesSyncAdapter - getMovieDataFromJson");
+        Log.d("vinny-debug", "MovieSyncAdapter - getMovieDataFromJson");
 
         // These are the names of the JSON objects that need to be extracted.
         final String TMDB_RESULTS = "results";
@@ -188,12 +189,21 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 ContentValues movieValues = new ContentValues();
 
-                movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movieId);
-                movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, originalTitle);
-                movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER, posterPath);
-                movieValues.put(MovieContract.MovieEntry.COLUMN_PLOT, overview);
-                movieValues.put(MovieContract.MovieEntry.COLUMN_RATING, voteAverage);
-                movieValues.put(MovieContract.MovieEntry.COLUMN_DATE, releaseDate);
+                if(MovieFragment.isRatingSelected){
+                    movieValues.put(MovieContract.RatingEntry.COLUMN_MOVIE_ID, movieId);
+                    movieValues.put(MovieContract.RatingEntry.COLUMN_TITLE, originalTitle);
+                    movieValues.put(MovieContract.RatingEntry.COLUMN_POSTER, posterPath);
+                    movieValues.put(MovieContract.RatingEntry.COLUMN_PLOT, overview);
+                    movieValues.put(MovieContract.RatingEntry.COLUMN_RATING, voteAverage);
+                    movieValues.put(MovieContract.RatingEntry.COLUMN_DATE, releaseDate);
+                }else{
+                    movieValues.put(MovieContract.PopularityEntry.COLUMN_MOVIE_ID, movieId);
+                    movieValues.put(MovieContract.PopularityEntry.COLUMN_TITLE, originalTitle);
+                    movieValues.put(MovieContract.PopularityEntry.COLUMN_POSTER, posterPath);
+                    movieValues.put(MovieContract.PopularityEntry.COLUMN_PLOT, overview);
+                    movieValues.put(MovieContract.PopularityEntry.COLUMN_RATING, voteAverage);
+                    movieValues.put(MovieContract.PopularityEntry.COLUMN_DATE, releaseDate);
+                }
 
                 cVVector.add(movieValues);
             }
@@ -201,12 +211,21 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
             int inserted = 0;
             // add to database
             if ( cVVector.size() > 0 ) {
-                // delete old data so we don't build up an endless history
-                getContext().getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, null, null);
-                // Student: call bulkInsert to add the movie entries to the movie database here
-                ContentValues[] cvArray = new ContentValues[cVVector.size()];
-                cVVector.toArray(cvArray);
-                getContext().getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
+                if(MovieFragment.isRatingSelected){
+                    // delete old data so we don't build up an endless history
+                    getContext().getContentResolver().delete(MovieContract.RatingEntry.CONTENT_URI, null, null);
+                    // Student: call bulkInsert to add the movie entries to the rating database here
+                    ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                    cVVector.toArray(cvArray);
+                    getContext().getContentResolver().bulkInsert(MovieContract.RatingEntry.CONTENT_URI, cvArray);
+                }else{
+                    // delete old data so we don't build up an endless history
+                    getContext().getContentResolver().delete(MovieContract.PopularityEntry.CONTENT_URI, null, null);
+                    // Student: call bulkInsert to add the movie entries to the popularity database here
+                    ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                    cVVector.toArray(cvArray);
+                    getContext().getContentResolver().bulkInsert(MovieContract.PopularityEntry.CONTENT_URI, cvArray);
+                }
             }
 
             Log.d(LOG_TAG, "Sync Complete. " + inserted + " Inserted");
@@ -221,7 +240,7 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
      * Helper method to schedule the sync adapter periodic execution
      */
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
-        Log.d("vinny-debug", "PopularMoviesSyncAdapter - configurePeriodicSync");
+        Log.d("vinny-debug", "MovieSyncAdapter - configurePeriodicSync");
         Account account = getSyncAccount(context);
         String authority = context.getString(R.string.content_authority);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -242,7 +261,7 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
-        Log.d("vinny-debug", "PopularMoviesSyncAdapter - syncImmediately");
+        Log.d("vinny-debug", "MovieSyncAdapter - syncImmediately");
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
@@ -259,7 +278,7 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
      * @return a fake account.
      */
     public static Account getSyncAccount(Context context) {
-        Log.d("vinny-debug", "PopularMoviesSyncAdapter - getSyncAccount");
+        Log.d("vinny-debug", "MovieSyncAdapter - getSyncAccount");
         // Get an instance of the Android account manager
         AccountManager accountManager =
                 (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
@@ -291,11 +310,11 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private static void onAccountCreated(Account newAccount, Context context) {
-        Log.d("vinny-debug", "PopularMoviesSyncAdapter - onAccountCreated");
+        Log.d("vinny-debug", "MovieSyncAdapter - onAccountCreated");
         /*
          * Since we've created an account
          */
-        PopularMoviesSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
+        MovieSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
 
         /*
          * Without calling setSyncAutomatically, our periodic sync will not be enabled.
@@ -309,7 +328,7 @@ public class PopularMoviesSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     public static void initializeSyncAdapter(Context context) {
-        Log.d("vinny-debug", "PopularMoviesSyncAdapter - initializeSyncAdapter");
+        Log.d("vinny-debug", "MovieSyncAdapter - initializeSyncAdapter");
         getSyncAccount(context);
     }
 }

@@ -46,8 +46,10 @@ public class MovieAdapter extends CursorAdapter {
         // If "My Watchlist" sort option selected, read from watchlist table
         if(MovieFragment.isWatchlistSelected){
             posterPath= cursor.getString(MovieFragment.COL_WATCHLIST_POSTER);
+        }else if(MovieFragment.isRatingSelected) {
+            posterPath= cursor.getString(MovieFragment.COL_RATING_POSTER);
         }else{
-            posterPath= cursor.getString(MovieFragment.COL_MOVIE_POSTER);
+            posterPath= cursor.getString(MovieFragment.COL_POPULARITY_POSTER);
         }
 
         ImageView posterView = (ImageView) view.findViewById(R.id.grid_item_movie_imageview);

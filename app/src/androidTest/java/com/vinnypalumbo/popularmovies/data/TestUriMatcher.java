@@ -29,8 +29,8 @@ public class TestUriMatcher extends AndroidTestCase {
     private static final int MOVIEID_QUERY = 140607;
 
     // content://com.vinnypalumbo.popularmovies/movie"
-    private static final Uri TEST_MOVIE_DIR = MovieContract.MovieEntry.CONTENT_URI;
-    private static final Uri TEST_MOVIE_WITH_ID_DIR = MovieContract.MovieEntry.buildMovieId(MOVIEID_QUERY);
+    private static final Uri TEST_MOVIE_DIR = MovieContract.PopularityEntry.CONTENT_URI;
+    private static final Uri TEST_MOVIE_WITH_ID_DIR = MovieContract.PopularityEntry.buildMovieId(MOVIEID_QUERY);
     // content://com.vinnypalumbo.popularmovies/watchlist"
     private static final Uri TEST_WATCHLIST_DIR = MovieContract.WatchlistEntry.CONTENT_URI;
 
@@ -42,10 +42,10 @@ public class TestUriMatcher extends AndroidTestCase {
     public void testUriMatcher() {
         UriMatcher testMatcher = MovieProvider.buildUriMatcher();
 
-        assertEquals("Error: The MOVIE URI was matched incorrectly.",
-                testMatcher.match(TEST_MOVIE_DIR), MovieProvider.MOVIE);
-        assertEquals("Error: The MOVIE WITH ID URI was matched incorrectly.",
-                testMatcher.match(TEST_MOVIE_WITH_ID_DIR), MovieProvider.MOVIE_WITH_ID);
+        assertEquals("Error: The POPULARITY URI was matched incorrectly.",
+                testMatcher.match(TEST_MOVIE_DIR), MovieProvider.POPULARITY);
+        assertEquals("Error: The POPULARITY WITH ID URI was matched incorrectly.",
+                testMatcher.match(TEST_MOVIE_WITH_ID_DIR), MovieProvider.POPULARITY_WITH_ID);
         assertEquals("Error: The WATCHLIST URI was matched incorrectly.",
                 testMatcher.match(TEST_WATCHLIST_DIR), MovieProvider.WATCHLIST);
     }

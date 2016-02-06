@@ -41,7 +41,8 @@ public class MovieContract {
     // looking at movie data. content://com.vinnypalumbo.popularmovies/givemeroot/ will fail,
     // as the ContentProvider hasn't been given any information on what to do with "givemeroot".
     // At least, let's hope not.  Don't be that dev, reader.  Don't be that dev.
-    public static final String PATH_MOVIE = "movie";
+    public static final String PATH_POPULARITY = "popularity";
+    public static final String PATH_RATING = "rating";
     public static final String PATH_WATCHLIST = "watchlist";
 
     /*
@@ -92,19 +93,19 @@ public class MovieContract {
 
     }
 
-    /* Inner class that defines the contents of the movie table */
-    public static final class MovieEntry implements BaseColumns {
+    /* Inner class that defines the contents of the popular movie table */
+    public static final class PopularityEntry implements BaseColumns {
 
         public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE).build();
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_POPULARITY).build();
 
         public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE;
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_POPULARITY;
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE;
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_POPULARITY;
 
 
-        public static final String TABLE_NAME = "movie";
+        public static final String TABLE_NAME = "popularity";
 
         // Movie id as returned by API. Stored as int.
         public static final String COLUMN_MOVIE_ID = "movie_id";
@@ -139,4 +140,54 @@ public class MovieContract {
         }
 
     }
+
+    /* Inner class that defines the contents of the highest rated movies table */
+    public static final class RatingEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_RATING).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RATING;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RATING;
+
+
+        public static final String TABLE_NAME = "rating";
+
+        // Movie id as returned by API. Stored as int.
+        public static final String COLUMN_MOVIE_ID = "movie_id";
+
+        // Title of the movie. Stored as a string.
+        public static final String COLUMN_TITLE = "title";
+
+        // Movie Poster. Stored as string.
+        public static final String COLUMN_POSTER = "poster";
+
+        // Movie synopsis. Stored as a string.
+        public static final String COLUMN_PLOT = "plot";
+
+        // Movie vote average. Stored a float.
+        public static final String COLUMN_RATING = "rating";
+
+        // Movie Release Date. Stored as a string.
+        public static final String COLUMN_DATE = "date";
+
+        public static Uri buildMovieUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildMovieId(int movieId) {
+            Log.d("vinny-debug", "MovieContract - buildMovieId");
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(movieId)).build();
+        }
+
+        public static int getIdFromUri(Uri uri) {
+            Log.d("vinny-debug", "MovieContract - getIdFromUri");
+            return Integer.parseInt(uri.getPathSegments().get(1));
+        }
+
+    }
+
+
 }

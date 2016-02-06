@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.vinnypalumbo.popularmovies.sync.PopularMoviesSyncAdapter;
+import com.vinnypalumbo.popularmovies.sync.MovieSyncAdapter;
 
 public class MainActivity extends AppCompatActivity implements MovieFragment.Callback {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -30,11 +30,19 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
         }
 
         // show watchlist movies if watchlist sort option selected
-        mSort = Utility.getPreferredSorting(this);
+        mSort = Utility.getSortSetting(this);
         if(mSort.equals(getResources().getString(R.string.pref_sort_watchlist))){
             MovieFragment.isWatchlistSelected = true;
-        }else{
+            MovieFragment.isRatingSelected = false;
+            MovieFragment.isPopularitySelected = false;
+        }else if(mSort.equals(getResources().getString(R.string.pref_sort_rating))){
+            MovieFragment.isRatingSelected = true;
             MovieFragment.isWatchlistSelected = false;
+            MovieFragment.isPopularitySelected = false;
+        }else{
+            MovieFragment.isPopularitySelected = true;
+            MovieFragment.isWatchlistSelected = false;
+            MovieFragment.isRatingSelected = false;
         }
 
         setContentView(R.layout.activity_main);
@@ -56,9 +64,8 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
             getSupportActionBar().setElevation(0f);
         }
 
-        Log.d("vinny-debug", "MainActivity - onCreate: isWatchlistSelected:" + MovieFragment.isWatchlistSelected);
-        if(!MovieFragment.isWatchlistSelected){
-            PopularMoviesSyncAdapter.initializeSyncAdapter(this);
+        if(!MovieFragment.isWatchlistSelected) {
+            MovieSyncAdapter.initializeSyncAdapter(this);
         }
     }
 
@@ -92,12 +99,20 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
         Log.d("vinny-debug", "MainActivity - onResume");
         super.onResume();
 
-        // show watchlist movies if watchlist sort option selected
-        String sort = Utility.getPreferredSorting(this);
+        // show watchlist , popularity or rating movies depending on selected sort option
+        String sort = Utility.getSortSetting(this);
         if(sort.equals(getResources().getString(R.string.pref_sort_watchlist))){
             MovieFragment.isWatchlistSelected = true;
-        }else{
+            MovieFragment.isRatingSelected = false;
+            MovieFragment.isPopularitySelected = false;
+        }else if(sort.equals(getResources().getString(R.string.pref_sort_rating))){
+            MovieFragment.isRatingSelected = true;
             MovieFragment.isWatchlistSelected = false;
+            MovieFragment.isPopularitySelected = false;
+        }else if(sort.equals(getResources().getString(R.string.pref_sort_popularity))){
+            MovieFragment.isPopularitySelected = true;
+            MovieFragment.isWatchlistSelected = false;
+            MovieFragment.isRatingSelected = false;
         }
 
         // update the sorting in our second pane using the fragment manager

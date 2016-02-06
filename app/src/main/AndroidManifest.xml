@@ -63,7 +63,7 @@
 
         <!-- The SyncAdapter service -->
         <service
-            android:name=".sync.PopularMoviesSyncService"
+            android:name=".sync.MovieSyncService"
             android:exported="true"
             >
             <intent-filter>

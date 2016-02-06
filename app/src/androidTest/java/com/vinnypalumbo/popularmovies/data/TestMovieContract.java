@@ -31,7 +31,7 @@ public class TestMovieContract extends AndroidTestCase {
         Students: Uncomment this out to test your buildMovieId function.
      */
     public void TestBuildMovieId() {
-        Uri MovieUri = MovieContract.MovieEntry.buildMovieId(TEST_MOVIE_ID);
+        Uri MovieUri = MovieContract.PopularityEntry.buildMovieId(TEST_MOVIE_ID);
         assertNotNull("Error: Null Uri returned.  You must fill-in buildMovieId in " +
                         "MovieContract.",
                 MovieUri);

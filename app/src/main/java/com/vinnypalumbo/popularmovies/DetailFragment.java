@@ -61,14 +61,34 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private static final int DETAIL_LOADER = 0;
 
-    private static final String[] DETAIL_COLUMNS = {
-            MovieContract.MovieEntry._ID,
-            MovieContract.MovieEntry.COLUMN_MOVIE_ID,
-            MovieContract.MovieEntry.COLUMN_TITLE,
-            MovieContract.MovieEntry.COLUMN_POSTER,
-            MovieContract.MovieEntry.COLUMN_PLOT,
-            MovieContract.MovieEntry.COLUMN_RATING,
-            MovieContract.MovieEntry.COLUMN_DATE
+    private static final String[] POPULARITY_DETAIL_COLUMNS = {
+            MovieContract.PopularityEntry._ID,
+            MovieContract.PopularityEntry.COLUMN_MOVIE_ID,
+            MovieContract.PopularityEntry.COLUMN_TITLE,
+            MovieContract.PopularityEntry.COLUMN_POSTER,
+            MovieContract.PopularityEntry.COLUMN_PLOT,
+            MovieContract.PopularityEntry.COLUMN_RATING,
+            MovieContract.PopularityEntry.COLUMN_DATE
+    };
+
+    private static final String[] RATING_DETAIL_COLUMNS = {
+            MovieContract.RatingEntry._ID,
+            MovieContract.RatingEntry.COLUMN_MOVIE_ID,
+            MovieContract.RatingEntry.COLUMN_TITLE,
+            MovieContract.RatingEntry.COLUMN_POSTER,
+            MovieContract.RatingEntry.COLUMN_PLOT,
+            MovieContract.RatingEntry.COLUMN_RATING,
+            MovieContract.RatingEntry.COLUMN_DATE
+    };
+
+    private static final String[] WATCHLIST_DETAIL_COLUMNS = {
+            MovieContract.WatchlistEntry._ID,
+            MovieContract.WatchlistEntry.COLUMN_MOVIE_ID,
+            MovieContract.WatchlistEntry.COLUMN_TITLE,
+            MovieContract.WatchlistEntry.COLUMN_POSTER,
+            MovieContract.WatchlistEntry.COLUMN_PLOT,
+            MovieContract.WatchlistEntry.COLUMN_RATING,
+            MovieContract.WatchlistEntry.COLUMN_DATE
     };
 
     // these constants correspond to the projection defined above, and must change if the
@@ -278,13 +298,35 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d("vinny-debug", "DetailFragment - onCreateLoader");
-        if (null != mUri) {
+        if (null != mUri && MovieFragment.isWatchlistSelected) {
             // Now create and return a CursorLoader that will take care of
             // creating a Cursor for the data being displayed.
             return new CursorLoader(
                     getActivity(),
                     mUri,
-                    DETAIL_COLUMNS,
+                    WATCHLIST_DETAIL_COLUMNS,
+                    null,
+                    null,
+                    null
+            );
+        }else if (null != mUri && MovieFragment.isRatingSelected) {
+            // Now create and return a CursorLoader that will take care of
+            // creating a Cursor for the data being displayed.
+            return new CursorLoader(
+                    getActivity(),
+                    mUri,
+                    RATING_DETAIL_COLUMNS,
+                    null,
+                    null,
+                    null
+            );
+        }else if(null != mUri && MovieFragment.isPopularitySelected){
+            // Now create and return a CursorLoader that will take care of
+            // creating a Cursor for the data being displayed.
+            return new CursorLoader(
+                    getActivity(),
+                    mUri,
+                    POPULARITY_DETAIL_COLUMNS,
                     null,
                     null,
                     null

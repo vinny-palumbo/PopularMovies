@@ -52,7 +52,7 @@ public class TestDb extends AndroidTestCase {
         // Android metadata (db version information)
         final HashSet<String> tableNameHashSet = new HashSet<String>();
         tableNameHashSet.add(MovieContract.WatchlistEntry.TABLE_NAME);
-        tableNameHashSet.add(MovieContract.MovieEntry.TABLE_NAME);
+        tableNameHashSet.add(MovieContract.PopularityEntry.TABLE_NAME);
 
         mContext.deleteDatabase(MovieDbHelper.DATABASE_NAME);
         SQLiteDatabase db = new MovieDbHelper(
@@ -183,7 +183,7 @@ public class TestDb extends AndroidTestCase {
 
         // Third Step: Insert ContentValues into database and get a row ID back
         long movieRowId;
-        movieRowId = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, testValues);
+        movieRowId = db.insert(MovieContract.PopularityEntry.TABLE_NAME, null, testValues);
 
         // Verify we got a row back.
         assertTrue(movieRowId != -1);
@@ -194,7 +194,7 @@ public class TestDb extends AndroidTestCase {
         // Fourth Step: Query the database and receive a Cursor back
         // A cursor is your primary interface to the query results.
         Cursor cursor = db.query(
-                MovieContract.MovieEntry.TABLE_NAME,  // Table to Query
+                MovieContract.PopularityEntry.TABLE_NAME,  // Table to Query
                 null, // all columns
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause

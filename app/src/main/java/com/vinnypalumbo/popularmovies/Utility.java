@@ -22,7 +22,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class Utility {
-    public static String getPreferredSorting(Context context) {
+    public static String getSortSetting(Context context) {
         Log.d("vinny-debug", "Utility - getPreferredSorting");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(context.getString(R.string.pref_sort_key),

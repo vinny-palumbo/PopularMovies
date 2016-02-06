@@ -46,12 +46,12 @@ public class TestUtilities extends AndroidTestCase {
      */
     static ContentValues createMovieValues() {
         ContentValues movieValues = new ContentValues();
-        movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, 140607);
-        movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, "Star Wars: The Force Awakens");
-        movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER, "\\/fYzpM9GmpBlIC893fNjoWCwE24H.jpg");
-        movieValues.put(MovieContract.MovieEntry.COLUMN_PLOT, "Thirty years after defeating the Galactic Empire, Han Solo and his allies face a new threat from the evil Kylo Ren and his army of Stormtroopers.");
-        movieValues.put(MovieContract.MovieEntry.COLUMN_RATING, 7.93);
-        movieValues.put(MovieContract.MovieEntry.COLUMN_DATE, "2015-09-11");
+        movieValues.put(MovieContract.PopularityEntry.COLUMN_MOVIE_ID, 140607);
+        movieValues.put(MovieContract.PopularityEntry.COLUMN_TITLE, "Star Wars: The Force Awakens");
+        movieValues.put(MovieContract.PopularityEntry.COLUMN_POSTER, "\\/fYzpM9GmpBlIC893fNjoWCwE24H.jpg");
+        movieValues.put(MovieContract.PopularityEntry.COLUMN_PLOT, "Thirty years after defeating the Galactic Empire, Han Solo and his allies face a new threat from the evil Kylo Ren and his army of Stormtroopers.");
+        movieValues.put(MovieContract.PopularityEntry.COLUMN_RATING, 7.93);
+        movieValues.put(MovieContract.PopularityEntry.COLUMN_DATE, "2015-09-11");
 
         return movieValues;
     }
