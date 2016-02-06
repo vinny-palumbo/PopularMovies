@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_sort) {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
