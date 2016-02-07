@@ -162,6 +162,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     addToWatchlist(movieId, title, poster, plot, rating, year);
+                }else if(!isChecked && MovieFragment.isWatchlistSelected){
+                    // The toggle is disabled, delete from watchlist
+                    removeFromWatchlist(movieId);
+                    Toast.makeText(getContext(), R.string.button_off_toast, Toast.LENGTH_SHORT).show();
+                    // return to watchlist grid
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
                 } else {
                     // The toggle is disabled, delete from watchlist
                     removeFromWatchlist(movieId);
