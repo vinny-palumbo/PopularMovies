@@ -6,6 +6,7 @@
     android:background="@color/black">
 
     <GridView
+        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnWidth="150dp"
