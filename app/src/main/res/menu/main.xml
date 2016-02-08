@@ -7,7 +7,7 @@
         android:id="@+id/action_sort"
         app:showAsAction="always"
         android:icon="@android:drawable/ic_menu_sort_by_size"
-        android:defaultValue="@string/pref_sort_popularity">
+        android:defaultValue="@string/pref_sort_type_popularity">
         <menu>
             <item
                 android:id="@+id/menuSortPopularity"

@@ -23,11 +23,18 @@ import android.util.Log;
 
 public class Utility {
 
-    public static String getSortSetting(Context context) {
-        Log.d("vinny-debug", "Utility - getPreferredSorting");
+    public static String getSortTypeSetting(Context context) {
+        Log.d("vinny-debug", "Utility - getSortTypeSetting");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(context.getString(R.string.pref_sort_key),
-                context.getString(R.string.pref_sort_default));
+        return prefs.getString(context.getString(R.string.pref_sort_type_key),
+                context.getString(R.string.pref_sort_type_default));
+    }
+
+    public static String getSortTimeSetting(Context context) {
+        Log.d("vinny-debug", "Utility - getSortTimeSetting");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(context.getString(R.string.pref_sort_time_key),
+                context.getString(R.string.pref_sort_time_default));
     }
 
     static String formatMovieId(int movieId){

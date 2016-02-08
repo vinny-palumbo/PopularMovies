@@ -4,10 +4,17 @@
     android:layout_height="match_parent">
 
     <ListPreference
-        android:title="@string/pref_sort_label"
-        android:key="@string/pref_sort_key"
-        android:defaultValue="@string/pref_sort_popularity"
-        android:entryValues="@array/pref_sort_values"
-        android:entries="@array/pref_sort_options" />
+        android:title="@string/pref_sort_type_label"
+        android:key="@string/pref_sort_type_key"
+        android:defaultValue="@string/pref_sort_type_default"
+        android:entryValues="@array/pref_sort_type_values"
+        android:entries="@array/pref_sort_type_options" />
+
+    <ListPreference
+        android:title="@string/pref_sort_time_label"
+        android:key="@string/pref_sort_time_key"
+        android:defaultValue="@string/pref_sort_time_default"
+        android:entryValues="@array/pref_sort_time_values"
+        android:entries="@array/pref_sort_time_options" />
 
 </PreferenceScreen>

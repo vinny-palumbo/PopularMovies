@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="pref_sort_options">
+    <!--labels and values for the sort type list preference-->
+    <string-array name="pref_sort_type_options">
         <item>@string/pref_sort_label_popularity</item>
         <item>@string/pref_sort_label_rating</item>
         <item>@string/pref_sort_label_watchlist</item>
     </string-array>
 
-    <string-array name="pref_sort_values">
-        <item>@string/pref_sort_popularity</item>
-        <item>@string/pref_sort_rating</item>
-        <item>@string/pref_sort_watchlist</item>
+    <string-array name="pref_sort_type_values">
+        <item>@string/pref_sort_type_popularity</item>
+        <item>@string/pref_sort_type_rating</item>
+        <item>@string/pref_sort_type_watchlist</item>
     </string-array>
+
+
+
+    <!--labels and values for the sort time list preference-->
+    <string-array name="pref_sort_time_options">
+        <item>@string/pref_sort_label_month</item>
+        <item>@string/pref_sort_label_3months</item>
+        <item>@string/pref_sort_label_6months</item>
+        <item>@string/pref_sort_label_year</item>
+        <item>@string/pref_sort_label_allTime</item>
+    </string-array>
+
+    <string-array name="pref_sort_time_values">
+        <item>@string/pref_sort_time_month</item>
+        <item>@string/pref_sort_time_3months</item>
+        <item>@string/pref_sort_time_6months</item>
+        <item>@string/pref_sort_time_year</item>
+        <item>@string/pref_sort_time_allTime</item>
+    </string-array>
+
 </resources>

@@ -12,24 +12,52 @@
     <string name="title_activity_settings">Settings</string>
 
 
-    <!-- Label for the sort preference [CHAR LIMIT=30] -->
-    <string name="pref_sort_label">Sort by</string>
-    <!-- Label for popularity option in sort preference [CHAR LIMIT=25] -->
+    <!-- Label for the sort type preference [CHAR LIMIT=30] -->
+    <string name="pref_sort_type_label">Sort by</string>
+    <!-- Label for popularity option in sort type preference [CHAR LIMIT=25] -->
     <string name="pref_sort_label_popularity">New Movies</string>
-    <!-- Label for rating option in sort preference [CHAR LIMIT=25] -->
+    <!-- Label for rating option in sort type preference [CHAR LIMIT=25] -->
     <string name="pref_sort_label_rating">Highest Rated</string>
-    <!-- Label for watchlist option in sort preference [CHAR LIMIT=25] -->
+    <!-- Label for watchlist option in sort type preference [CHAR LIMIT=25] -->
     <string name="pref_sort_label_watchlist">My Watchlist</string>
     <!-- Key name for sort preference in SharedPreferences [CHAR LIMIT=NONE] -->
-    <string name="pref_sort_key" translatable="false">sort</string>
+    <string name="pref_sort_type_key" translatable="false">type</string>
     <!-- Default sort for sorting preference [CHAR LIMIT=NONE] -->
-    <string name="pref_sort_default" translatable="false">popularity.desc</string>
+    <string name="pref_sort_type_default" translatable="false">popularity.desc</string>
     <!-- Value in SharedPreferences for popularity sort option [CHAR LIMIT=NONE] -->
-    <string name="pref_sort_popularity" translatable="false">popularity.desc</string>
+    <string name="pref_sort_type_popularity" translatable="false">popularity.desc</string>
     <!-- Value in SharedPreferences for rating sort option [CHAR LIMIT=NONE] -->
-    <string name="pref_sort_rating" translatable="false">vote_average.desc</string>
+    <string name="pref_sort_type_rating" translatable="false">vote_average.desc</string>
     <!-- Value in SharedPreferences for watchlist sort option [CHAR LIMIT=NONE] -->
-    <string name="pref_sort_watchlist" translatable="false">watchlist</string>
+    <string name="pref_sort_type_watchlist" translatable="false">watchlist</string>
+
+
+    <!-- Label for the sort time preference [CHAR LIMIT=30] -->
+    <string name="pref_sort_time_label">Released in the Last</string>
+    <!-- Label for 1 month in sort time preference [CHAR LIMIT=25] -->
+    <string name="pref_sort_label_month">Month</string>
+    <!-- Label for 3 months in sort time preference [CHAR LIMIT=25] -->
+    <string name="pref_sort_label_3months">3 Months</string>
+    <!-- Label for 6 months in sort time preference [CHAR LIMIT=25] -->
+    <string name="pref_sort_label_6months">6 Months</string>
+    <!-- Label for  a year in sort time preference [CHAR LIMIT=25] -->
+    <string name="pref_sort_label_year">Year</string>
+    <!-- Label for all time in sort time preference [CHAR LIMIT=25] -->
+    <string name="pref_sort_label_allTime">All Time</string>
+    <!-- Key name for sort time preference in SharedPreferences [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_time_key" translatable="false">time</string>
+    <!-- Default sort for sorting preference [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_time_default" translatable="false">3</string>
+    <!-- Value in SharedPreferences for month sort time option [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_time_month" translatable="false">1</string>
+    <!-- Value in SharedPreferences for 3 months sort time option [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_time_3months" translatable="false">3</string>
+    <!-- Value in SharedPreferences for 6 months sort time option [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_time_6months" translatable="false">6</string>
+    <!-- Value in SharedPreferences for year sort time option [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_time_year" translatable="false">12</string>
+    <!-- Value in SharedPreferences for all time sort time option [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_time_allTime" translatable="false">1200</string>
 
 
     <!-- Strings for the Toggle button  -->

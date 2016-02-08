@@ -52,10 +52,11 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d("vinny-debug", "MovieSyncAdapter - onPerformSync");
         Log.d(LOG_TAG, "Starting sync");
-        String sortingQuery = Utility.getSortSetting(getContext());
+        String sortingTypeQuery = Utility.getSortTypeSetting(getContext());
+        String sortingTimeQuery = Utility.getSortTimeSetting(getContext());
+
         String dateToday;
-        String dateOneMonthAgo;
-        String dateSixMonthsAgo;
+        String dateReleasedSince;
 
         // Since this data is also sent in-order and the first day is always the
         // current day, we're going to take advantage of that to get a nice
@@ -64,12 +65,10 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         dayTime.setToNow();
         // get the julian date of today, 1 month ago and 6 months ago
         int julianDateToday = Time.getJulianDay(System.currentTimeMillis(), dayTime.gmtoff);
-        int julianDateOneMonthAgo = julianDateToday - 31;
-        int julianDateSixMonthAgo = julianDateToday - (31 * 6);
+        int julianDateReleasedSince = julianDateToday - (31 * Integer.valueOf(sortingTimeQuery));
         // convert Julian dates to the API date format: YYYY-MM-DD
         dateToday = Utility.julianDateToAPIFormatConversion(julianDateToday);
-        dateOneMonthAgo = Utility.julianDateToAPIFormatConversion(julianDateOneMonthAgo);
-        dateSixMonthsAgo = Utility.julianDateToAPIFormatConversion(julianDateSixMonthAgo);
+        dateReleasedSince = Utility.julianDateToAPIFormatConversion(julianDateReleasedSince);
 
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
@@ -99,22 +98,22 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             final String APIKEY_PARAM = "api_key";
 
             Uri builtUri;
-            if(sortingQuery == getContext().getResources().getString(R.string.pref_sort_rating)){
+            if(sortingTypeQuery == getContext().getResources().getString(R.string.pref_sort_type_rating)){
                 builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                        .appendQueryParameter(SORT_PARAM, sortingQuery)
+                        .appendQueryParameter(SORT_PARAM, sortingTypeQuery)
                         .appendQueryParameter(LANGUAGE_PARAM, LANGUAGE_VALUE)        // only english language
                         .appendQueryParameter(COUNT_MIN_PARAM, COUNT_MIN_VALUE)      // minimum vote count of 250
                         .appendQueryParameter(RATING_MIN_PARAM, RATING_MIN_VALUE)    // minimum rating of 6/10
-                        .appendQueryParameter(DATE_MIN_PARAM, dateSixMonthsAgo)      // released in the last 6 months
+                        .appendQueryParameter(DATE_MIN_PARAM, dateReleasedSince)     // released in the last X months, according to sort time setting
                         .appendQueryParameter(DATE_MAX_PARAM, dateToday)             // make sure the movie is released
                         .appendQueryParameter(APIKEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                         .build();
             }else{
-                // if (sortingQuery == getContext().getResources().getString(R.string.pref_sort_popularity))
+                // if (sortingTypeQuery == getContext().getResources().getString(R.string.pref_sort_popularity))
                 builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                        .appendQueryParameter(SORT_PARAM, sortingQuery)
+                        .appendQueryParameter(SORT_PARAM, sortingTypeQuery)
                         .appendQueryParameter(LANGUAGE_PARAM, LANGUAGE_VALUE)        // only english language
-                        .appendQueryParameter(DATE_MIN_PARAM, dateOneMonthAgo)       // released in the last month
+                        .appendQueryParameter(DATE_MIN_PARAM, dateReleasedSince)      // released in the last X months, according to sort time setting
                         .appendQueryParameter(DATE_MAX_PARAM, dateToday)             // make sure the movie is released
                         .appendQueryParameter(APIKEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                         .build();

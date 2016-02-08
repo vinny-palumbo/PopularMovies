@@ -16,7 +16,8 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
     private boolean mTwoPane;
-    private String mSort;
+    private String mSortType;
+    private String mSortTime;
 
 
     @Override
@@ -29,13 +30,13 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
 
-        // show watchlist movies if watchlist sort option selected
-        mSort = Utility.getSortSetting(this);
-        if(mSort.equals(getResources().getString(R.string.pref_sort_watchlist))){
+        // get selected sort type setting
+        mSortType = Utility.getSortTypeSetting(this);
+        if(mSortType.equals(getResources().getString(R.string.pref_sort_type_watchlist))){
             MovieFragment.isWatchlistSelected = true;
             MovieFragment.isRatingSelected = false;
             MovieFragment.isPopularitySelected = false;
-        }else if(mSort.equals(getResources().getString(R.string.pref_sort_rating))){
+        }else if(mSortType.equals(getResources().getString(R.string.pref_sort_type_rating))){
             MovieFragment.isRatingSelected = true;
             MovieFragment.isWatchlistSelected = false;
             MovieFragment.isPopularitySelected = false;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
             MovieFragment.isWatchlistSelected = false;
             MovieFragment.isRatingSelected = false;
         }
+        // get selected sort time setting
+        mSortTime = Utility.getSortTimeSetting(this);
 
         setContentView(R.layout.activity_main);
         if (findViewById(R.id.movie_detail_container) != null) {
@@ -99,29 +102,32 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
         Log.d("vinny-debug", "MainActivity - onResume");
         super.onResume();
 
-        // show watchlist , popularity or rating movies depending on selected sort option
-        String sort = Utility.getSortSetting(this);
-        if(sort.equals(getResources().getString(R.string.pref_sort_watchlist))){
+        // show watchlist , popularity or rating movies depending on selected sort type option
+        String sortType = Utility.getSortTypeSetting(this);
+        if(sortType.equals(getResources().getString(R.string.pref_sort_type_watchlist))){
             MovieFragment.isWatchlistSelected = true;
             MovieFragment.isRatingSelected = false;
             MovieFragment.isPopularitySelected = false;
-        }else if(sort.equals(getResources().getString(R.string.pref_sort_rating))){
+        }else if(sortType.equals(getResources().getString(R.string.pref_sort_type_rating))){
             MovieFragment.isRatingSelected = true;
             MovieFragment.isWatchlistSelected = false;
             MovieFragment.isPopularitySelected = false;
-        }else if(sort.equals(getResources().getString(R.string.pref_sort_popularity))){
+        }else if(sortType.equals(getResources().getString(R.string.pref_sort_type_popularity))){
             MovieFragment.isPopularitySelected = true;
             MovieFragment.isWatchlistSelected = false;
             MovieFragment.isRatingSelected = false;
         }
+        // show movies released in the last month, 3 months, 6 months, year or all time depending on the selected sort time option
+        String sortTime = Utility.getSortTimeSetting(this);
 
         // update the sorting in our second pane using the fragment manager
-        if (sort != null && !sort.equals(mSort)) {
+        if (sortType != null && sortTime != null && (!sortType.equals(mSortType) || !sortTime.equals(mSortTime))) {
             MovieFragment mf = (MovieFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_movie);
             if (null != mf) {
                 mf.onSortChanged();
             }
-            mSort = sort;
+            mSortType = sortType;
+            mSortTime = sortTime;
         }
     }
 
