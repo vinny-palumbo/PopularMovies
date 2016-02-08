@@ -181,7 +181,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         // These are the names of the JSON objects that need to be extracted.
         final String TMDB_RESULTS = "results";
         final String TMDB_ID = "id";
-        final String TMDB_TITLE = "original_title";
+        final String TMDB_TITLE = "title";
         final String TMDB_POSTER = "poster_path";
         final String TMDB_PLOT = "overview";
         final String TMDB_RATING = "vote_average";
