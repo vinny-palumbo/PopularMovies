@@ -12,6 +12,7 @@ import android.content.SyncResult;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
 
 import com.vinnypalumbo.popularmovies.BuildConfig;
@@ -52,7 +53,23 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         Log.d("vinny-debug", "MovieSyncAdapter - onPerformSync");
         Log.d(LOG_TAG, "Starting sync");
         String sortingQuery = Utility.getSortSetting(getContext());
-        String presentDate = "2016-02-08";
+        String dateToday;
+        String dateOneMonthAgo;
+        String dateSixMonthsAgo;
+
+        // Since this data is also sent in-order and the first day is always the
+        // current day, we're going to take advantage of that to get a nice
+        // normalized UTC date for all of our weather.
+        Time dayTime = new Time();
+        dayTime.setToNow();
+        // get the julian date of today, 1 month ago and 6 months ago
+        int julianDateToday = Time.getJulianDay(System.currentTimeMillis(), dayTime.gmtoff);
+        int julianDateOneMonthAgo = julianDateToday - 31;
+        int julianDateSixMonthAgo = julianDateToday - (31 * 6);
+        // convert Julian dates to the API date format: YYYY-MM-DD
+        dateToday = Utility.julianDateToAPIFormatConversion(julianDateToday);
+        dateOneMonthAgo = Utility.julianDateToAPIFormatConversion(julianDateOneMonthAgo);
+        dateSixMonthsAgo = Utility.julianDateToAPIFormatConversion(julianDateSixMonthAgo);
 
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
@@ -85,16 +102,16 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                         .appendQueryParameter(SORT_PARAM, sortingQuery)
                         .appendQueryParameter(COUNT_MIN_PARAM, COUNT_MIN_VALUE)      // minimum vote count of 250
                         .appendQueryParameter(RATING_MIN_PARAM, RATING_MIN_VALUE)    // minimum rating of 6/10
-                        .appendQueryParameter(DATE_MIN_PARAM, "2015-08-07")          // presentDate - 6 months
-                        .appendQueryParameter(DATE_MAX_PARAM, presentDate)           // make sure the movie is released
+                        .appendQueryParameter(DATE_MIN_PARAM, dateSixMonthsAgo)      // released in the last 6 months
+                        .appendQueryParameter(DATE_MAX_PARAM, dateToday)           // make sure the movie is released
                         .appendQueryParameter(APIKEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                         .build();
             }else{
                 // if (sortingQuery == getContext().getResources().getString(R.string.pref_sort_popularity))
                 builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                         .appendQueryParameter(SORT_PARAM, sortingQuery)
-                        .appendQueryParameter(DATE_MIN_PARAM, "2016-01-07")          // presentDate - 1 month
-                        .appendQueryParameter(DATE_MAX_PARAM, presentDate)           // make sure the movie is released
+                        .appendQueryParameter(DATE_MIN_PARAM, dateOneMonthAgo)       // released in the last month
+                        .appendQueryParameter(DATE_MAX_PARAM, dateToday)           // make sure the movie is released
                         .appendQueryParameter(APIKEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                         .build();
             }
