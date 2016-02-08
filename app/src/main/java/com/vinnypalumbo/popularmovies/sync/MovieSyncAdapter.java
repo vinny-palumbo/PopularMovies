@@ -88,6 +88,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
             final String FORECAST_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
             final String SORT_PARAM = "sort_by";
+            final String LANGUAGE_PARAM = "language";
+            final String LANGUAGE_VALUE = "en";
             final String COUNT_MIN_PARAM = "vote_count.gte";
             final String COUNT_MIN_VALUE = "250";
             final String RATING_MIN_PARAM = "vote_average.gte";
@@ -100,18 +102,20 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             if(sortingQuery == getContext().getResources().getString(R.string.pref_sort_rating)){
                 builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                         .appendQueryParameter(SORT_PARAM, sortingQuery)
+                        .appendQueryParameter(LANGUAGE_PARAM, LANGUAGE_VALUE)        // only english language
                         .appendQueryParameter(COUNT_MIN_PARAM, COUNT_MIN_VALUE)      // minimum vote count of 250
                         .appendQueryParameter(RATING_MIN_PARAM, RATING_MIN_VALUE)    // minimum rating of 6/10
                         .appendQueryParameter(DATE_MIN_PARAM, dateSixMonthsAgo)      // released in the last 6 months
-                        .appendQueryParameter(DATE_MAX_PARAM, dateToday)           // make sure the movie is released
+                        .appendQueryParameter(DATE_MAX_PARAM, dateToday)             // make sure the movie is released
                         .appendQueryParameter(APIKEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                         .build();
             }else{
                 // if (sortingQuery == getContext().getResources().getString(R.string.pref_sort_popularity))
                 builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                         .appendQueryParameter(SORT_PARAM, sortingQuery)
+                        .appendQueryParameter(LANGUAGE_PARAM, LANGUAGE_VALUE)        // only english language
                         .appendQueryParameter(DATE_MIN_PARAM, dateOneMonthAgo)       // released in the last month
-                        .appendQueryParameter(DATE_MAX_PARAM, dateToday)           // make sure the movie is released
+                        .appendQueryParameter(DATE_MAX_PARAM, dateToday)             // make sure the movie is released
                         .appendQueryParameter(APIKEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                         .build();
             }
