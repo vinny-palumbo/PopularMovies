@@ -121,6 +121,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mUri = arguments.getParcelable(DetailFragment.DETAIL_URI);
         }
 
+        // initialize the trailer and review adapters
         mTrailerAdapter =
                 new TrailerAdapter(
                         getActivity(), // The current context (this activity)
@@ -150,6 +151,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         ExpandedListView reviewListView = (ExpandedListView) rootView.findViewById(R.id.listview_reviews);
         reviewListView.setAdapter(mReviewAdapter);
 
+        // link the text and image views to their associated IDs
         mTitleView = (TextView) rootView.findViewById(R.id.detail_title);
         mPosterView = (ImageView) rootView.findViewById(R.id.detail_poster);
         mPlotView = (TextView) rootView.findViewById(R.id.detail_plot);

@@ -3,6 +3,7 @@
     <string name="app_name">Popular Movies</string>
 
     <!-- Label for the actions in action bar [CHAR LIMIT=30] -->
+    <string name="action_sort">Sort By</string>
     <string name="action_settings">Settings</string>
     <string name="action_share_trailer">Share</string>
 
