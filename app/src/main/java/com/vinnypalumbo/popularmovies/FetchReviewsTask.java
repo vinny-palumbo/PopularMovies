@@ -50,6 +50,7 @@ public class FetchReviewsTask extends AsyncTask<String, Void, List<Review>> {
     @Override
     protected List<Review> doInBackground(String... params) {
         Log.d("vinny-debug", "FetchReviewsTask - doInBackground");
+        // Add useless code to test what happens when adding commit to a branch already merged with master
 
         // If there's no movieId, there's nothing to look up.  Verify size of params.
         if (params.length == 0) {
