@@ -18,6 +18,7 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         super(context, 0, reviews);
     }
 
+    // disable click events on the items of the Review ListView
     @Override
     public boolean isEnabled(int position) {
         return false;

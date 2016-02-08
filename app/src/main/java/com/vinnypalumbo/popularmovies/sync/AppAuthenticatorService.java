@@ -8,15 +8,15 @@ import android.util.Log;
 /**
  * Created by Vincent on 2016-01-26.
  */
-public class PopularMoviesAuthenticatorService extends Service {
+public class AppAuthenticatorService extends Service {
     // Instance field that stores the authenticator object
-    private PopularMoviesAuthenticator mAuthenticator;
+    private AppAuthenticator mAuthenticator;
 
     @Override
     public void onCreate() {
-        Log.d("vinny-debug", "PopularMoviesAuthenticatorService - onCreate");
+        Log.d("vinny-debug", "AppAuthenticatorService - onCreate");
         // Create a new authenticator object
-        mAuthenticator = new PopularMoviesAuthenticator(this);
+        mAuthenticator = new AppAuthenticator(this);
     }
 
     /*
@@ -25,7 +25,7 @@ public class PopularMoviesAuthenticatorService extends Service {
      */
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d("vinny-debug", "PopularMoviesAuthenticatorService - onBind");
+        Log.d("vinny-debug", "AppAuthenticatorService - onBind");
         return mAuthenticator.getIBinder();
     }
 }
