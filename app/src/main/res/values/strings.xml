@@ -14,7 +14,7 @@
     <!-- Label for the sort preference [CHAR LIMIT=30] -->
     <string name="pref_sort_label">Sort by</string>
     <!-- Label for popularity option in sort preference [CHAR LIMIT=25] -->
-    <string name="pref_sort_label_popularity">Most Popular</string>
+    <string name="pref_sort_label_popularity">New Movies</string>
     <!-- Label for rating option in sort preference [CHAR LIMIT=25] -->
     <string name="pref_sort_label_rating">Highest Rated</string>
     <!-- Label for watchlist option in sort preference [CHAR LIMIT=25] -->
