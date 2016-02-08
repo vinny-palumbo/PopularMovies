@@ -52,6 +52,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         Log.d("vinny-debug", "MovieSyncAdapter - onPerformSync");
         Log.d(LOG_TAG, "Starting sync");
         String sortingQuery = Utility.getSortSetting(getContext());
+        String presentDate = "2016-02-08";
 
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
@@ -70,15 +71,33 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
             final String FORECAST_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
             final String SORT_PARAM = "sort_by";
-            final String COUNT_PARAM = "vote_count.gte";
-            final String COUNT_VALUE = "500";
+            final String COUNT_MIN_PARAM = "vote_count.gte";
+            final String COUNT_MIN_VALUE = "250";
+            final String RATING_MIN_PARAM = "vote_average.gte";
+            final String RATING_MIN_VALUE = "6.0";
+            final String DATE_MIN_PARAM = "primary_release_date.gte";
+            final String DATE_MAX_PARAM = "primary_release_date.lte";
             final String APIKEY_PARAM = "api_key";
 
-            Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                    .appendQueryParameter(SORT_PARAM, sortingQuery)
-                    .appendQueryParameter(COUNT_PARAM, COUNT_VALUE)
-                    .appendQueryParameter(APIKEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
-                    .build();
+            Uri builtUri;
+            if(sortingQuery == getContext().getResources().getString(R.string.pref_sort_rating)){
+                builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                        .appendQueryParameter(SORT_PARAM, sortingQuery)
+                        .appendQueryParameter(COUNT_MIN_PARAM, COUNT_MIN_VALUE)      // minimum vote count of 250
+                        .appendQueryParameter(RATING_MIN_PARAM, RATING_MIN_VALUE)    // minimum rating of 6/10
+                        .appendQueryParameter(DATE_MIN_PARAM, "2015-08-07")          // presentDate - 6 months
+                        .appendQueryParameter(DATE_MAX_PARAM, presentDate)           // make sure the movie is released
+                        .appendQueryParameter(APIKEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
+                        .build();
+            }else{
+                // if (sortingQuery == getContext().getResources().getString(R.string.pref_sort_popularity))
+                builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                        .appendQueryParameter(SORT_PARAM, sortingQuery)
+                        .appendQueryParameter(DATE_MIN_PARAM, "2016-01-07")          // presentDate - 1 month
+                        .appendQueryParameter(DATE_MAX_PARAM, presentDate)           // make sure the movie is released
+                        .appendQueryParameter(APIKEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
+                        .build();
+            }
 
             URL url = new URL(builtUri.toString());
 
