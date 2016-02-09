@@ -40,6 +40,7 @@ public class SettingsActivity extends PreferenceActivity
     public void onCreate(Bundle savedInstanceState) {
         Log.d("vinny-debug", "SettingsActivity - onCreate");
         super.onCreate(savedInstanceState);
+
         // Add 'general' preferences, defined in the XML file
         addPreferencesFromResource(R.xml.pref_general);
 
@@ -47,6 +48,16 @@ public class SettingsActivity extends PreferenceActivity
         // updated when the preference changes.
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_sort_type_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_sort_time_key)));
+
+        // If Watchlist is selected for the Sort Type, disable the Sort Time List Preference
+        final ListPreference sortTypePreference = (ListPreference) findPreference(getString(R.string.pref_sort_type_key));
+        final ListPreference sortTimePreference = (ListPreference) findPreference(getString(R.string.pref_sort_time_key));
+        String currentSortType = sortTypePreference.getValue();
+        if (currentSortType.equals(getResources().getString(R.string.pref_sort_type_watchlist))){
+            sortTimePreference.setEnabled(false);
+        }else {
+            sortTimePreference.setEnabled(true);
+        }
     }
 
     /**
@@ -70,20 +81,30 @@ public class SettingsActivity extends PreferenceActivity
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
         Log.d("vinny-debug", "SettingsActivity - onPreferenceChange");
-        String stringValue = value.toString();
+        String currentValue = value.toString();
+
+        // If Watchlist is selected for the Sort Type, disable the Sort Time List Preference
+        final ListPreference sortTypePreference = (ListPreference) findPreference(getString(R.string.pref_sort_type_key));
+        final ListPreference sortTimePreference = (ListPreference) findPreference(getString(R.string.pref_sort_time_key));
+        if (currentValue.equals(getResources().getString(R.string.pref_sort_type_watchlist))){
+            sortTimePreference.setEnabled(false);
+        }else {
+            sortTimePreference.setEnabled(true);
+        }
 
         if (preference instanceof ListPreference) {
             // For list preferences, look up the correct display value in
             // the preference's 'entries' list (since they have separate labels/values).
             ListPreference listPreference = (ListPreference) preference;
-            int prefIndex = listPreference.findIndexOfValue(stringValue);
+            int prefIndex = listPreference.findIndexOfValue(currentValue);
             if (prefIndex >= 0) {
                 preference.setSummary(listPreference.getEntries()[prefIndex]);
             }
         } else {
             // For other preferences, set the summary to the value's simple string representation.
-            preference.setSummary(stringValue);
+            preference.setSummary(currentValue);
         }
+
         return true;
     }
 
