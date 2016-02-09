@@ -54,5 +54,25 @@ public class MovieAdapter extends CursorAdapter {
 
         ImageView posterView = (ImageView) view.findViewById(R.id.grid_item_movie_imageview);
         Picasso.with(context).load(IMAGE_BASE_URL + posterPath).into(posterView);
+
+
+//        // TODO: What is wrong with this code for uploading watchlist poster images from external memory?
+//
+//        // If "My Watchlist" sort option selected, read from watchlist table
+//        if(MovieFragment.isWatchlistSelected){
+//            posterPath= cursor.getString(MovieFragment.COL_WATCHLIST_POSTER);
+//            //Load from external memory
+//            Log.d("vinny-debug", "file - out: " + Environment.getExternalStorageDirectory() + posterPath);
+//            Picasso.with(context).load(Environment.getExternalStorageDirectory() + posterPath).into(posterView);
+//        }else{
+//            if(MovieFragment.isRatingSelected) {
+//                posterPath= cursor.getString(MovieFragment.COL_RATING_POSTER);
+//            }else{
+//                posterPath= cursor.getString(MovieFragment.COL_POPULARITY_POSTER);
+//            }
+//            Picasso.with(context).load(IMAGE_BASE_URL + posterPath).into(posterView);
+//        }
+
+        
     }
 }

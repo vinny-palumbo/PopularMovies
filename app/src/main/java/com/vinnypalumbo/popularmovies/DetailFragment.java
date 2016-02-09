@@ -53,7 +53,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private int movieId;
     public static String title; // needed for action share text in FetchTrailersTask's onPostExecute()
-    private String poster;
+    private String posterPath;
     private String plot;
     private double rating;
     public static int year; // needed for action share text in FetchTrailersTask's onPostExecute()
@@ -163,7 +163,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    addToWatchlist(movieId, title, poster, plot, rating, year);
+                    addToWatchlist(movieId, title, posterPath, plot, rating, year);
                 }else if(!isChecked && MovieFragment.isWatchlistSelected){
                     // The toggle is disabled, delete from watchlist
                     removeFromWatchlist(movieId);
@@ -236,15 +236,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
      * Helper method to handle insertion of a new movies in the watchlist database.
      * @param movie_id movie ID returned from the API
      * @param title A human-readable title, e.g "The Godfather"
-     * @param poster the path of the movie's poster
+     * @param posterPath the path of the movie's poster
      * @param plot the movie's plot synopsis
      * @param rating the movie's average vote
      * @param date the movie's release date
      * @return the row ID of the added movie.
      */
-    long addToWatchlist(int movie_id, String title, String poster, String plot, double rating, int date) {
+    long addToWatchlist(int movie_id, String title, String posterPath, String plot, double rating, int date) {
         Log.d("vinny-debug", "DetailFragment - addToWatchlist");
         long watchlistId;
+        String internalStoragePosterPath;
 
         // First, check if the movie with this ID exists in the db
         Cursor watchlistCursor = getContext().getContentResolver().query(
@@ -258,6 +259,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             int watchlistIdIndex = watchlistCursor.getColumnIndex(MovieContract.WatchlistEntry._ID);
             watchlistId = watchlistCursor.getLong(watchlistIdIndex);
         } else {
+//            // download poster image for watchlist movies
+//            final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500/";
+//            imageDownload(getContext(), IMAGE_BASE_URL + posterPath, posterPath);
+
             // Now that the content provider is set up, inserting rows of data is pretty simple.
             // First create a ContentValues object to hold the data you want to insert.
             ContentValues watchlistValues = new ContentValues();
@@ -266,7 +271,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             // so the content provider knows what kind of value is being inserted.
             watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_MOVIE_ID, movie_id);
             watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_TITLE, title);
-            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_POSTER, poster);
+            watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_POSTER, posterPath);
             watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_PLOT, plot);
             watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_RATING, rating);
             watchlistValues.put(MovieContract.WatchlistEntry.COLUMN_DATE, date);
@@ -285,6 +290,57 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // Wait, that worked?  Yes!
         return watchlistId;
     }
+
+//    // TODO: What is wrong with this code for downloading watchlist poster images to external memory?
+//
+//    //save image
+//    public static void imageDownload(Context ctx, String posterUrl, String targetUrl){
+//        Picasso.with(ctx)
+//                .load(posterUrl)
+//                .into(getTarget(targetUrl));
+//    }
+//
+//    //target to save
+//    private static Target getTarget(final String targetUrl){
+//
+//        Target target = new Target(){
+//
+//            @Override
+//            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+//                new Thread(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+////                        File file = new File(context.getFilesDir(), targetUrl);
+//                        File file = new File(Environment.getExternalStorageDirectory() + targetUrl);
+//                        Log.d("vinny-debug","file.getPath() - in: " + file.getPath());
+//                        try {
+//                            file.createNewFile();
+//                            FileOutputStream ostream = new FileOutputStream(file);
+//                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+//                            ostream.flush();
+//                            ostream.close();
+//                        } catch (IOException e) {
+//                            Log.e("IOException", e.getLocalizedMessage());
+//                        }
+//                    }
+//                }).start();
+//
+//            }
+//
+//            @Override
+//            public void onBitmapFailed(Drawable errorDrawable) {
+//
+//            }
+//
+//            @Override
+//            public void onPrepareLoad(Drawable placeHolderDrawable) {
+//
+//            }
+//        };
+//
+//        return target;
+//    }
 
     void removeFromWatchlist(int movieId){
         Log.d("vinny-debug", "DetailFragment - removeFromWatchlist");
@@ -368,8 +424,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mTitleView.setText(title);
 
             // Read poster path from cursor and update view using Picasso
-            poster = data.getString(COL_MOVIE_POSTER);
-            Picasso.with(getContext()).load(IMAGE_BASE_URL + poster).into(mPosterView);
+            posterPath = data.getString(COL_MOVIE_POSTER);
+            Picasso.with(getContext()).load(IMAGE_BASE_URL + posterPath).into(mPosterView);
 
             // Read plot synopsis from cursor and update view
             plot = data.getString(COL_MOVIE_PLOT);
