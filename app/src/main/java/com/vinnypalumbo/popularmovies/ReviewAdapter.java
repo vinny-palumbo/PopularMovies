@@ -1,6 +1,7 @@
 package com.vinnypalumbo.popularmovies;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,19 +25,27 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         return false;
     }
 
+
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
-        Review review = getItem(position);
-        View rootView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_review, parent, false);
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        TextView authorView = (TextView) rootView.findViewById(R.id.list_item_review_author);
-        String formattedAuthor = String.format(getContext().getString(R.string.format_author),review.author);
-        authorView.setText(formattedAuthor);
+        convertView = null;
 
-        TextView contentView = (TextView) rootView.findViewById(R.id.list_item_review_content);
-        contentView.setText(review.content);
+        if(convertView == null) {
+            convertView  = inflater.inflate(R.layout.list_item_review, parent, false);
+            Review review = getItem(position);
 
-        return rootView;
+            TextView authorView = (TextView) convertView.findViewById(R.id.list_item_review_author);
+            TextView contentView = (TextView) convertView.findViewById(R.id.list_item_review_content);
+
+            String formattedAuthor = String.format(getContext().getString(R.string.format_author),review.author);
+
+            authorView.setText(formattedAuthor);
+            contentView.setText(review.content);
+        }
+
+        return convertView;
     }
 
 }
