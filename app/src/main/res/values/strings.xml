@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
-    <string name="app_name">Popular Movies</string>
+    <string name="app_name">Vinny\'s Movies</string>
 
     <!-- Label for the actions in action bar [CHAR LIMIT=30] -->
     <string name="action_sort">Sort By</string>
