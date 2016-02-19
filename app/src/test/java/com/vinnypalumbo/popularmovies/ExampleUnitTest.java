@@ -1,4 +1,4 @@
-package com.vinnypalumbo.popularmovies;
+package com.vinnypalumbo.vinnysmovies;
 
 import org.junit.Test;
 

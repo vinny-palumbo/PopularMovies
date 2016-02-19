@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vinnypalumbo.popularmovies" >
+    package="com.vinnypalumbo.vinnysmovies" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.vinnypalumbo.vinnysmovies.MainActivity"
             android:theme="@style/MovieTheme"
             android:label="@string/app_name">
             <intent-filter>
@@ -32,30 +32,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailActivity"
+            android:name="com.vinnypalumbo.vinnysmovies.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.vinnypalumbo.vinnysmovies.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.vinnypalumbo.popularmovies.MainActivity" />
+                android:value="com.vinnypalumbo.vinnysmovies.MainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.vinnypalumbo.vinnysmovies.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.vinnypalumbo.vinnysmovies.MainActivity"
             android:theme="@style/SettingsTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.vinnypalumbo.popularmovies.MainActivity" />
+                android:value="com.vinnypalumbo.vinnysmovies.MainActivity" />
         </activity>
         <provider
             android:authorities="@string/content_authority"
-            android:name=".data.MovieProvider"
+            android:name="com.vinnypalumbo.vinnysmovies.data.MovieProvider"
             android:exported="false"
             android:syncable="true" />
 
         <!-- SyncAdapter's dummy authentication service -->
-        <service android:name=".sync.AppAuthenticatorService">
+        <service android:name="com.vinnypalumbo.vinnysmovies.sync.AppAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -66,7 +66,7 @@
 
         <!-- The SyncAdapter service -->
         <service
-            android:name=".sync.MovieSyncService"
+            android:name="com.vinnypalumbo.vinnysmovies.sync.MovieSyncService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
