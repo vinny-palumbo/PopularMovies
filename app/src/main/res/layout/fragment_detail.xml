@@ -41,74 +41,68 @@
             <LinearLayout
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- poster -->
+                <ImageView
+                    android:layout_weight="1"
+                    android:id="@+id/detail_poster"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"/>
 
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:paddingLeft="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingEnd="16dp">
 
-                    <!-- poster -->
-                    <ImageView
-                        android:layout_weight="1"
-                        android:id="@+id/detail_poster"
-                        android:layout_width="0dp"
+                    <!-- release year -->
+                    <TextView
+                        android:fontFamily="sans-serif-light"
+                        android:id="@+id/detail_year"
                         android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"/>
+                        android:layout_width="wrap_content"
+                        android:textSize="30sp" />
 
-                    <LinearLayout
-                        android:layout_weight="1"
+                    <!-- rating -->
+                    <TextView
+                        android:id="@+id/detail_rating"
                         android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:orientation="vertical"
-                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:textColor="@android:color/secondary_text_light"
+                        android:textSize="20sp" />
+
+                    <!-- favorite button -->
+                    <ToggleButton
+                        android:fontFamily="sans-serif-light"
+                        android:id="@+id/detail_favorite"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textSize="16dp"
+                        android:textOn="@string/button_text_on"
+                        android:textOff="@string/button_text_off"
                         android:gravity="center"
-                        android:paddingLeft="16dp"
-                        android:paddingStart="16dp"
-                        android:paddingRight="16dp"
-                        android:paddingEnd="16dp">
+                        android:background="@drawable/button_background_color"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@android:color/white"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp" />
 
-                        <!-- release year -->
-                        <TextView
-                            android:fontFamily="sans-serif-light"
-                            android:id="@+id/detail_year"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:textSize="30sp" />
-
-                        <!-- rating -->
-                        <TextView
-                            android:id="@+id/detail_rating"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:textColor="@android:color/secondary_text_light"
-                            android:textSize="20sp" />
-
-                        <!-- favorite button -->
-                        <ToggleButton
-                            android:fontFamily="sans-serif-light"
-                            android:id="@+id/detail_favorite"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:textSize="16dp"
-                            android:textOn="@string/button_text_on"
-                            android:textOff="@string/button_text_off"
-                            android:gravity="center"
-                            android:background="@drawable/button_background_color"
-                            android:layout_marginTop="10dp"
-                            android:textColor="@android:color/white"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp" />
-
-                    </LinearLayout>
                 </LinearLayout>
 
                 <!-- plot synopsis -->
                 <TextView
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:id="@+id/detail_plot"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
