@@ -23,7 +23,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
@@ -38,7 +37,6 @@ public class SettingsActivity extends PreferenceActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d("vinny-debug", "SettingsActivity - onCreate");
         super.onCreate(savedInstanceState);
 
         // Add 'general' preferences, defined in the XML file
@@ -66,7 +64,6 @@ public class SettingsActivity extends PreferenceActivity
      * is changed.)
      */
     private void bindPreferenceSummaryToValue(Preference preference) {
-        Log.d("vinny-debug", "SettingsActivity - bindPreferenceSummaryToValue");
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(this);
 
@@ -80,7 +77,6 @@ public class SettingsActivity extends PreferenceActivity
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
-        Log.d("vinny-debug", "SettingsActivity - onPreferenceChange");
         String currentValue = value.toString();
 
         // If Watchlist is selected for the Sort Type, disable the Sort Time List Preference
@@ -111,7 +107,6 @@ public class SettingsActivity extends PreferenceActivity
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public Intent getParentActivityIntent() {
-        Log.d("vinny-debug", "SettingsActivity - getParentActivityIntent");
         return super.getParentActivityIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     }
 }

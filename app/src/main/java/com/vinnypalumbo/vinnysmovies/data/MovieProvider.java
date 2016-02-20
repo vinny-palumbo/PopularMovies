@@ -23,7 +23,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.util.Log;
 
 import com.vinnypalumbo.vinnysmovies.MovieFragment;
 
@@ -74,7 +73,6 @@ public class MovieProvider extends ContentProvider {
 
     private Cursor getMovieByMovieId(
             Uri uri, String[] projection, String sortOrder) {
-        Log.d("vinny-debug", "MovieProvider - getMovieByMovieId");
         int id;
 
         if(MovieFragment.isWatchlistSelected){
@@ -116,7 +114,6 @@ public class MovieProvider extends ContentProvider {
         testUriMatcher test within TestUriMatcher.
      */
     static UriMatcher buildUriMatcher() {
-        Log.d("vinny-debug", "MovieProvider - buildUriMatcher");
         // I know what you're thinking.  Why create a UriMatcher when you can use regular
         // expressions instead?  Because you're not crazy, that's why.
 
@@ -144,7 +141,6 @@ public class MovieProvider extends ContentProvider {
      */
     @Override
     public boolean onCreate() {
-        Log.d("vinny-debug", "MovieProvider - onCreate");
         mOpenHelper = new MovieDbHelper(getContext());
         return true;
     }
@@ -156,7 +152,6 @@ public class MovieProvider extends ContentProvider {
      */
     @Override
     public String getType(Uri uri) {
-        Log.d("vinny-debug", "MovieProvider - getType");
         // Use the Uri Matcher to determine what kind of URI this is.
         final int match = sUriMatcher.match(uri);
 
@@ -181,7 +176,6 @@ public class MovieProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
-        Log.d("vinny-debug", "MovieProvider - query");
         // Here's the switch statement that, given a URI, will determine what kind of request it is,
         // and query the database accordingly.
         Cursor retCursor;
@@ -256,7 +250,6 @@ public class MovieProvider extends ContentProvider {
      */
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        Log.d("vinny-debug", "MovieProvider - insert");
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         Uri returnUri;
@@ -294,7 +287,6 @@ public class MovieProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        Log.d("vinny-debug", "MovieProvider - delete");
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         int rowsDeleted;
@@ -326,7 +318,6 @@ public class MovieProvider extends ContentProvider {
     @Override
     public int update(
             Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        Log.d("vinny-debug", "MovieProvider - update");
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         int rowsUpdated;
@@ -355,7 +346,6 @@ public class MovieProvider extends ContentProvider {
 
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
-        Log.d("vinny-debug", "MovieProvider - bulkInsert");
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         int returnCount = 0;
@@ -401,7 +391,6 @@ public class MovieProvider extends ContentProvider {
     @Override
     @TargetApi(11)
     public void shutdown() {
-        Log.d("vinny-debug", "MovieProvider - shutdown");
         mOpenHelper.close();
         super.shutdown();
     }

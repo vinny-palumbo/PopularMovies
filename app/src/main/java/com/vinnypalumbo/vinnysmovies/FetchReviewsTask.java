@@ -18,7 +18,6 @@ package com.vinnypalumbo.vinnysmovies;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +48,6 @@ public class FetchReviewsTask extends AsyncTask<String, Void, List<Review>> {
 
     @Override
     protected List<Review> doInBackground(String... params) {
-        Log.d("vinny-debug", "FetchReviewsTask - doInBackground");
 
         // If there's no movieId, there's nothing to look up.  Verify size of params.
         if (params.length == 0) {
@@ -111,7 +109,6 @@ public class FetchReviewsTask extends AsyncTask<String, Void, List<Review>> {
             }
             reviewJsonStr = buffer.toString();
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the review data, there's no point in attempting
             // to parse it.
             return null;
@@ -123,14 +120,12 @@ public class FetchReviewsTask extends AsyncTask<String, Void, List<Review>> {
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
                 }
             }
         }
         try {
             return getReviewDataFromJson(reviewJsonStr);
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
         // This will only happen if there was an error getting or parsing the forecast.
@@ -145,7 +140,6 @@ public class FetchReviewsTask extends AsyncTask<String, Void, List<Review>> {
      * into an Object hierarchy for us.
      */
     private List<Review> getReviewDataFromJson(String reviewJsonStr) throws JSONException {
-        Log.d("vinny-debug", "FetchReviewsTask - getReviewDataFromJson");
 
         // These are the names of the JSON objects that need to be extracted.
         final String TMDB_RESULTS = "results";
@@ -174,12 +168,10 @@ public class FetchReviewsTask extends AsyncTask<String, Void, List<Review>> {
 
                 reviews.add(new Review(reviewAuthor, reviewContent));
             }
-            Log.d(LOG_TAG, "Fetch Reviews Completed");
 
             return reviews;
 
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
         return null;

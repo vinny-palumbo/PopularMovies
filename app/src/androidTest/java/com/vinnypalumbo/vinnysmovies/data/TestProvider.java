@@ -25,7 +25,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.test.AndroidTestCase;
-import android.util.Log;
 
 /*
     Note: This is not a complete set of tests of the PopularMovies ContentProvider, but it does test
@@ -243,7 +242,6 @@ public class TestProvider extends AndroidTestCase {
 
         // Verify we got a row back.
         assertTrue(watchlistRowId != -1);
-        Log.d(LOG_TAG, "New row id: " + watchlistRowId);
 
         ContentValues updatedValues = new ContentValues(values);
         updatedValues.put(MovieContract.WatchlistEntry._ID, watchlistRowId);

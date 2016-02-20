@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.Time;
-import android.util.Log;
 
 import com.vinnypalumbo.vinnysmovies.BuildConfig;
 import com.vinnypalumbo.vinnysmovies.MovieFragment;
@@ -50,8 +49,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        Log.d("vinny-debug", "MovieSyncAdapter - onPerformSync");
-        Log.d(LOG_TAG, "Starting sync");
         String sortingTypeQuery = Utility.getSortTypeSetting(getContext());
         String sortingTimeQuery = Utility.getSortTimeSetting(getContext());
 
@@ -150,11 +147,9 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             movieJsonStr = buffer.toString();
             getMovieDataFromJson(movieJsonStr);
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the movie data, there's no point in attempting
             // to parse it.
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         } finally {
             if (urlConnection != null) {
@@ -164,7 +159,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
                 }
             }
         }
@@ -179,7 +173,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
      * into an Object hierarchy for us.
      */
     private void getMovieDataFromJson(String movieJsonStr) throws JSONException {
-        Log.d("vinny-debug", "MovieSyncAdapter - getMovieDataFromJson");
 
         // These are the names of the JSON objects that need to be extracted.
         final String TMDB_RESULTS = "results";
@@ -267,10 +260,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             }
 
-            Log.d(LOG_TAG, "Sync Complete. " + inserted + " Inserted");
 
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
     }
@@ -279,7 +270,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
      * Helper method to schedule the sync adapter periodic execution
      */
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
-        Log.d("vinny-debug", "MovieSyncAdapter - configurePeriodicSync");
         Account account = getSyncAccount(context);
         String authority = context.getString(R.string.content_authority);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -300,7 +290,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
-        Log.d("vinny-debug", "MovieSyncAdapter - syncImmediately");
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
@@ -317,7 +306,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
      * @return a fake account.
      */
     public static Account getSyncAccount(Context context) {
-        Log.d("vinny-debug", "MovieSyncAdapter - getSyncAccount");
         // Get an instance of the Android account manager
         AccountManager accountManager =
                 (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
@@ -349,7 +337,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private static void onAccountCreated(Account newAccount, Context context) {
-        Log.d("vinny-debug", "MovieSyncAdapter - onAccountCreated");
         /*
          * Since we've created an account
          */
@@ -367,7 +354,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     public static void initializeSyncAdapter(Context context) {
-        Log.d("vinny-debug", "MovieSyncAdapter - initializeSyncAdapter");
         getSyncAccount(context);
     }
 }

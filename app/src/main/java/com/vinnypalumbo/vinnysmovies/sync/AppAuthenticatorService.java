@@ -3,7 +3,6 @@ package com.vinnypalumbo.vinnysmovies.sync;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 /**
  * Created by Vincent on 2016-01-26.
@@ -14,7 +13,6 @@ public class AppAuthenticatorService extends Service {
 
     @Override
     public void onCreate() {
-        Log.d("vinny-debug", "AppAuthenticatorService - onCreate");
         // Create a new authenticator object
         mAuthenticator = new AppAuthenticator(this);
     }
@@ -25,7 +23,6 @@ public class AppAuthenticatorService extends Service {
      */
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d("vinny-debug", "AppAuthenticatorService - onBind");
         return mAuthenticator.getIBinder();
     }
 }

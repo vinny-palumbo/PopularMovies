@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,7 +20,6 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("vinny-debug", "MainActivity - onCreate");
         super.onCreate(savedInstanceState);
 
         // get selected sort type setting
@@ -68,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d("vinny-debug", "MainActivity - onCreateOptionsMenu");
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -76,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("vinny-debug", "MainActivity - onOptionsItemSelected");
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -93,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
 
     @Override
     protected void onResume() {
-        Log.d("vinny-debug", "MainActivity - onResume");
         super.onResume();
 
         // show watchlist , popularity or rating movies depending on selected sort type option
@@ -127,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
 
     @Override
     public void onItemSelected(Uri contentUri) {
-        Log.d("vinny-debug", "MainActivity - onItemSelected");
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a

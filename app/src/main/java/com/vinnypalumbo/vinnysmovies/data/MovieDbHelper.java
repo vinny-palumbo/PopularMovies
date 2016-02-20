@@ -18,10 +18,9 @@ package com.vinnypalumbo.vinnysmovies.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import com.vinnypalumbo.vinnysmovies.data.MovieContract.WatchlistEntry;
 import com.vinnypalumbo.vinnysmovies.data.MovieContract.PopularityEntry;
+import com.vinnypalumbo.vinnysmovies.data.MovieContract.WatchlistEntry;
 
 /**
  * Manages a local database for movie data.
@@ -39,7 +38,6 @@ public class MovieDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Log.d("vinny-debug", "MovieDbHelper - onCreate");
         final String SQL_CREATE_WATCHLIST_TABLE = "CREATE TABLE " + WatchlistEntry.TABLE_NAME + " (" +
                 WatchlistEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 WatchlistEntry.COLUMN_MOVIE_ID + " INTEGER UNIQUE NOT NULL, " +
@@ -77,7 +75,6 @@ public class MovieDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        Log.d("vinny-debug", "MovieDbHelper - onUpgrade");
         // This database is only a cache for online data, so its upgrade policy is
         // simply to discard the data and start over
         // Note that this only fires if you change the version number for your database.

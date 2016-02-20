@@ -19,7 +19,6 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 /**
  * Defines table and column names for the movie database.
@@ -87,7 +86,6 @@ public class MovieContract {
         }
 
         public static int getIdFromUri(Uri uri) {
-            Log.d("vinny-debug", "MovieContract - getIdFromUri");
             return Integer.parseInt(uri.getPathSegments().get(1));
         }
 
@@ -130,12 +128,10 @@ public class MovieContract {
         }
 
         public static Uri buildMovieId(int movieId) {
-            Log.d("vinny-debug", "MovieContract - buildMovieId");
             return CONTENT_URI.buildUpon().appendPath(String.valueOf(movieId)).build();
         }
 
         public static int getIdFromUri(Uri uri) {
-            Log.d("vinny-debug", "MovieContract - getIdFromUri");
             return Integer.parseInt(uri.getPathSegments().get(1));
         }
 
@@ -178,12 +174,10 @@ public class MovieContract {
         }
 
         public static Uri buildMovieId(int movieId) {
-            Log.d("vinny-debug", "MovieContract - buildMovieId");
             return CONTENT_URI.buildUpon().appendPath(String.valueOf(movieId)).build();
         }
 
         public static int getIdFromUri(Uri uri) {
-            Log.d("vinny-debug", "MovieContract - getIdFromUri");
             return Integer.parseInt(uri.getPathSegments().get(1));
         }
 

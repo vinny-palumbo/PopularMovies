@@ -12,7 +12,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -114,7 +113,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("vinny-debug", "DetailFragment - onCreateView");
 
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -214,7 +212,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     boolean isInWatchlist(int movieId){
-        Log.d("vinny-debug", "DetailFragment - isInWatchlist");
         boolean isInWatchlist = false;
         // check if the movie with this ID exists in the db
         Cursor watchlistCursor = getContext().getContentResolver().query(
@@ -243,7 +240,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
      * @return the row ID of the added movie.
      */
     long addToWatchlist(int movie_id, String title, String posterPath, String plot, double rating, int date) {
-        Log.d("vinny-debug", "DetailFragment - addToWatchlist");
         long watchlistId;
         String internalStoragePosterPath;
 
@@ -291,59 +287,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return watchlistId;
     }
 
-//    // TODO: What is wrong with this code for downloading watchlist poster images to external memory?
-//
-//    //save image
-//    public static void imageDownload(Context ctx, String posterUrl, String targetUrl){
-//        Picasso.with(ctx)
-//                .load(posterUrl)
-//                .into(getTarget(targetUrl));
-//    }
-//
-//    //target to save
-//    private static Target getTarget(final String targetUrl){
-//
-//        Target target = new Target(){
-//
-//            @Override
-//            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-//                new Thread(new Runnable() {
-//
-//                    @Override
-//                    public void run() {
-////                        File file = new File(context.getFilesDir(), targetUrl);
-//                        File file = new File(Environment.getExternalStorageDirectory() + targetUrl);
-//                        Log.d("vinny-debug","file.getPath() - in: " + file.getPath());
-//                        try {
-//                            file.createNewFile();
-//                            FileOutputStream ostream = new FileOutputStream(file);
-//                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-//                            ostream.flush();
-//                            ostream.close();
-//                        } catch (IOException e) {
-//                            Log.e("IOException", e.getLocalizedMessage());
-//                        }
-//                    }
-//                }).start();
-//
-//            }
-//
-//            @Override
-//            public void onBitmapFailed(Drawable errorDrawable) {
-//
-//            }
-//
-//            @Override
-//            public void onPrepareLoad(Drawable placeHolderDrawable) {
-//
-//            }
-//        };
-//
-//        return target;
-//    }
-
     void removeFromWatchlist(int movieId){
-        Log.d("vinny-debug", "DetailFragment - removeFromWatchlist");
 
         // Finally, insert movie data into the watchlist database.
         getContext().getContentResolver().delete(
@@ -355,14 +299,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.d("vinny-debug", "DetailFragment - onActivityCreated");
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.d("vinny-debug", "DetailFragment - onCreateLoader");
         if (null != mUri && MovieFragment.isWatchlistSelected) {
             // Now create and return a CursorLoader that will take care of
             // creating a Cursor for the data being displayed.
@@ -402,7 +344,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d("vinny-debug", "DetailFragment - onLoadFinished");
 
         final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500/";
 

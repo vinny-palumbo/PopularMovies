@@ -3,7 +3,6 @@ package com.vinnypalumbo.vinnysmovies;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ public class MovieAdapter extends CursorAdapter {
      */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        Log.d("vinny-debug", "MovieAdapter - newView");
         View view = LayoutInflater.from(context).inflate(R.layout.grid_item_movie, parent, false);
 
         return view;
@@ -37,7 +35,6 @@ public class MovieAdapter extends CursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Log.d("vinny-debug", "MovieAdapter - bindView");
 
         final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500/";
 
@@ -54,25 +51,5 @@ public class MovieAdapter extends CursorAdapter {
 
         ImageView posterView = (ImageView) view.findViewById(R.id.grid_item_movie_imageview);
         Picasso.with(context).load(IMAGE_BASE_URL + posterPath).into(posterView);
-
-
-//        // TODO: What is wrong with this code for uploading watchlist poster images from external memory?
-//
-//        // If "My Watchlist" sort option selected, read from watchlist table
-//        if(MovieFragment.isWatchlistSelected){
-//            posterPath= cursor.getString(MovieFragment.COL_WATCHLIST_POSTER);
-//            //Load from external memory
-//            Log.d("vinny-debug", "file - out: " + Environment.getExternalStorageDirectory() + posterPath);
-//            Picasso.with(context).load(Environment.getExternalStorageDirectory() + posterPath).into(posterView);
-//        }else{
-//            if(MovieFragment.isRatingSelected) {
-//                posterPath= cursor.getString(MovieFragment.COL_RATING_POSTER);
-//            }else{
-//                posterPath= cursor.getString(MovieFragment.COL_POPULARITY_POSTER);
-//            }
-//            Picasso.with(context).load(IMAGE_BASE_URL + posterPath).into(posterView);
-//        }
-
-        
     }
 }

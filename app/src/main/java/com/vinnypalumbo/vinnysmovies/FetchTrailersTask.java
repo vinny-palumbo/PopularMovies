@@ -18,7 +18,6 @@ package com.vinnypalumbo.vinnysmovies;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import org.json.JSONArray;
@@ -52,7 +51,6 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<Trailer>> {
 
     @Override
     protected List<Trailer> doInBackground(String... params) {
-        Log.d("vinny-debug", "FetchTrailersTask - doInBackground");
 
         // If there's no movieId, there's nothing to look up.  Verify size of params.
         if (params.length == 0) {
@@ -114,7 +112,6 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<Trailer>> {
             }
             trailerJsonStr = buffer.toString();
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the trailer data, there's no point in attempting
             // to parse it.
             return null;
@@ -126,14 +123,12 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<Trailer>> {
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
                 }
             }
         }
         try {
             return getTrailerDataFromJson(trailerJsonStr);
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
         // This will only happen if there was an error getting or parsing the forecast.
@@ -148,7 +143,6 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<Trailer>> {
      * into an Object hierarchy for us.
      */
     private List<Trailer> getTrailerDataFromJson(String trailerJsonStr) throws JSONException {
-        Log.d("vinny-debug", "FetchTrailersTask - getTrailerDataFromJson");
 
         // These are the names of the JSON objects that need to be extracted.
         final String TMDB_RESULTS = "results";
@@ -175,12 +169,10 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<Trailer>> {
 
                 trailers.add(new Trailer(trailerName, trailerKey));
             }
-            Log.d(LOG_TAG, "Fetch Trailers Completed");
 
             return trailers;
 
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
         return null;
@@ -188,7 +180,6 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<Trailer>> {
 
     @Override
     protected void onPostExecute(List<Trailer> trailers) {
-        Log.d("vinny-debug", "FetchTrailersTask - onPostExecute");
 
         final String TRAILER_STRING = "Trailer";
         final String YOUTUBE_BASE_URL = "https://youtu.be/";
@@ -206,7 +197,6 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<Trailer>> {
                     firstTrailerKey = trailer.key;
                     firstTrailerName = trailer.name;  // for debugging purposes
                     // We still need this for the trailer share intent text
-                    Log.d("vinny-debug", "FetchTrailersTask - onPostExecute: firstTrailerKey: " + firstTrailerKey + "-" + firstTrailerName);
                     DetailFragment.mTrailerShareText = String.format("%s - %s %s: %s%s ", DetailFragment.title, DetailFragment.year, TRAILER_STRING, YOUTUBE_BASE_URL, firstTrailerKey);
 
                     // If onCreateOptionsMenu has already happened, we need to update the share intent now.

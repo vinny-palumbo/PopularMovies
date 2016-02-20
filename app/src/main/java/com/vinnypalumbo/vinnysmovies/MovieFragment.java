@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +97,6 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("vinny-debug", "MovieFragment - onCreateView");
 
         // The COL_POPULARITY_POSTER or COL_RATING_POSTER will take data from a source and
         // use it to populate the GridView it's attached to.
@@ -150,14 +148,12 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.d("vinny-debug", "MovieFragment - onActivityCreated");
         getLoaderManager().initLoader(MOVIE_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
     // since we read the sort when we create the loader, all we need to do is restart things
     void onSortChanged( ) {
-        Log.d("vinny-debug", "MovieFragment - onSortChanged:" + isWatchlistSelected);
         if(!isWatchlistSelected){
             updateMovies();
         }
@@ -165,13 +161,11 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     private void updateMovies() {
-        Log.d("vinny-debug", "MovieFragment - updateMovies");
         MovieSyncAdapter.syncImmediately(getActivity());
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d("vinny-debug", "MovieFragment - onSaveInstanceState");
         // When tablets rotate, the currently selected list item needs to be saved.
         // When no item is selected, mPosition will be set to Listview.INVALID_POSITION,
         // so check for that before storing.
@@ -183,7 +177,6 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        Log.d("vinny-debug", "MovieFragment - onCreateLoader");
         if(isWatchlistSelected){
             Uri watchlistUri = MovieContract.WatchlistEntry.CONTENT_URI;
             return new CursorLoader(getActivity(),
@@ -213,7 +206,6 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d("vinny-debug", "MovieFragment - onLoadFinished");
         mMovieAdapter.swapCursor(data);
         if (mPosition != GridView.INVALID_POSITION) {
             // If we don't need to restart the loader, and there's a desired position to restore
@@ -224,7 +216,6 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        Log.d("vinny-debug", "MovieFragment - onLoaderReset");
         mMovieAdapter.swapCursor(null);
     }
 }
