@@ -41,7 +41,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
 
-    private static final String TRAILER_SHARE_HASHTAG = " #PopularMoviesApp";
+    private static final String TRAILER_SHARE_HASHTAG = " #VinnysMoviesApp";
 
     public static String mTrailerShareText;
     public static ShareActionProvider mShareActionProvider;
