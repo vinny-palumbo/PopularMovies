@@ -18,3 +18,8 @@ In order for the Popular Movies app to function properly, an API key for [themov
 You can obtain a key by [creating an account](https://www.themoviedb.org/account/signup) and following the instructions. Include the unique key for the build by adding the following line to [USER_HOME]/.gradle/gradle.properties
 
 MyTheMovieDBApiKey="[UNIQUE_API_KEY]"
+
+
+## License
+
+The contents of this repository are covered under the [MIT License](LICENSE).
