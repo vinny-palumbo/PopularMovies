@@ -22,4 +22,4 @@ MyTheMovieDBApiKey="[UNIQUE_API_KEY]"
 
 ## License
 
-The contents of this repository are covered under the [MIT License](LICENSE).
+The contents of this repository are covered under the [MIT License](LICENSE.txt).
