@@ -35,5 +35,7 @@ The contents of this repository are covered under the [MIT License](LICENSE.txt)
 
 ### On Phones
 
-![alt tag](https://raw.githubusercontent.com/vinny-palumbo/PopularMovies/85192274c9368f2576821b9f98a45ee4722efabc/screenshots/phone/phone-portrait-main.png)
-![alt tag](https://raw.githubusercontent.com/vinny-palumbo/PopularMovies/85192274c9368f2576821b9f98a45ee4722efabc/screenshots/phone/phone-portrait-detail.png)
+
+![alt tag](https://raw.githubusercontent.com/vinny-palumbo/PopularMovies/5de7c4295ce2821d1deee120eafcca988ffc815b/screenshots/phone/phone-portrait-main.png)
+![alt tag](https://raw.githubusercontent.com/vinny-palumbo/PopularMovies/5de7c4295ce2821d1deee120eafcca988ffc815b/screenshots/phone/phone-portrait-detail.png)
+
