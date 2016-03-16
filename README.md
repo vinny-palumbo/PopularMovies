@@ -30,3 +30,10 @@ You can obtain a key by [creating an account](https://www.themoviedb.org/account
 ## License
 
 The contents of this repository are covered under the [MIT License](LICENSE.txt).
+
+## Screenshots
+
+### On Phones
+
+![alt tag](https://raw.githubusercontent.com/vinny-palumbo/PopularMovies/85192274c9368f2576821b9f98a45ee4722efabc/screenshots/phone/phone-portrait-main.png)
+![alt tag](https://raw.githubusercontent.com/vinny-palumbo/PopularMovies/85192274c9368f2576821b9f98a45ee4722efabc/screenshots/phone/phone-portrait-detail.png)
